@@ -2,15 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="102f05a9-8e8a-41b0-864f-543ae5c7de8a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lexer.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/mikecompiler.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/mikecompiler.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/utils.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <ignored path="MikeCompiler.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/Dummy.txt" changelist="102f05a9-8e8a-41b0-864f-543ae5c7de8a" time="1390843120294" ignored="false" />
     <file path="/mikecompiler.css" changelist="102f05a9-8e8a-41b0-864f-543ae5c7de8a" time="1390843412174" ignored="false" />
+    <file path="/README.md" changelist="102f05a9-8e8a-41b0-864f-543ae5c7de8a" time="1390843821780" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,13 +69,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="mikecompiler.html" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="mikecompiler.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/mikecompiler.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="36" selection-start="1208" selection-end="1208" vertical-scroll-proportion="0.5906921">
+            <state line="38" column="36" selection-start="1208" selection-end="1208" vertical-scroll-proportion="-20.625">
               <folding>
                 <element signature="n#style#0;n#img#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="3" column="38" selection-start="65" selection-end="65" vertical-scroll-proportion="0.052204177">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -131,6 +138,7 @@
         <option value="$PROJECT_DIR$/utils.js" />
         <option value="$PROJECT_DIR$/lexer.js" />
         <option value="$PROJECT_DIR$/mikecompiler.html" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -423,10 +431,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/mikecompiler.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="36" selection-start="1208" selection-end="1208" vertical-scroll-proportion="0.5906921">
+        <state line="38" column="36" selection-start="1208" selection-end="1208" vertical-scroll-proportion="-20.625">
           <folding>
             <element signature="n#style#0;n#img#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="38" selection-start="65" selection-end="65" vertical-scroll-proportion="0.052204177">
+          <folding />
         </state>
       </provider>
     </entry>
