@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="102f05a9-8e8a-41b0-864f-543ae5c7de8a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mikecompiler.html" afterPath="$PROJECT_DIR$/mikecompiler.html" />
-    </list>
+    <list default="true" id="102f05a9-8e8a-41b0-864f-543ae5c7de8a" name="Default" comment="" />
     <ignored path="MikeCompiler.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/Dummy.txt" changelist="102f05a9-8e8a-41b0-864f-543ae5c7de8a" time="1390848483115" ignored="false" />
