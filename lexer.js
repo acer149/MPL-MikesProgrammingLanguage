@@ -13,10 +13,10 @@
     function test() {
     
         var code = document.getElementById("regExpTest").value;
-        code = trim(code);
+        //code.trim();
         code = code.split("");
         console.log("Source Code: " + code);
-        
+        console.log("Source Code Length " + code.length);
 //        var alphabet = {"a":8, "b":30, "c":8, "d":8, "e":8, "f":39, "g":8, "h":8, "i":16, "j":8, "k":8, "l":8, "m":8, "n":8, "o":8, "p":3, "q":8, "r":8, "s":24, "t":44, "u":8,
 //                    "v":8, "w":11, "x":8, "y":8, "z":8, "0":37, "1":37, "2":37, "3":37, "4":37, "5":37, "6":37, "7":37, "8":37, "9":37, "=":9, "+":48, "!=":38, "{":1,
 //                    "}":2, "(":20, ")":21, "\"":18, "\"":19, "$":49};
@@ -34,23 +34,32 @@
         			];
         
         var token = "";
+        var j = 0;
         
-        for (var i = 0; i <= code.length; i++ ) {
+        for (var i = 0; i < code.length; i++ ) {
         	var element = code[i];
-        	var nextState = array[i][0][element];
+        	var nextState = array[j][0][element];
+        	//console.log("i = " + i);
+        	//console.log("j = " + j);
         	//console.log("Next State " + nextState);
+        	//console.log("Element to check alphabet for " + element);
         	
-        	if (element in array[nextState][0]) { //array[0][0] is the same as alphabet
-        		console.log("Element " + element + " is in alphabet and points to the next state " + nextState );
+        	
+        	if (element != " ") {
+        		if (element in array[nextState][0]) { //array[0][0] is the same as alphabet
         		
         		
-        		token += element;
-        		console.log(token);
+        			console.log("Element " + element + " is in alphabet and points to the next state " + nextState );
+        			
+        			j = nextState;
         		
+        			token += element;
+        			//console.log("Token after processing each element" + token);
+        		}
+	
         	}
-        }
-        
-           
-    	//console.log(array[0][1]);
-    
+        	else {
+        		console.log("Here is your token " + token);
+        	}
+        }    
     }
