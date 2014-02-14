@@ -14,6 +14,7 @@
     var tokenArray = [];
     
     var openQuote = false;
+    var endOfFileReached = false;
     
     function test() {
     
@@ -94,7 +95,7 @@
         	console.log("Element to check alphabet for " + element);
         	
         	//If not white space progress through the matrix
-        	if (element != " " && element !="\n" && element != "$") {
+        	if (element != " " && element !="\n" && element != "$" && endOfFileReached === false) {
         		console.log("j = " + j);
         		if (element in matrix[j][0]) {
         		
@@ -119,6 +120,7 @@
         	}
         	//When whitespace or newline is encountered
         	else {
+        		console.log("IIII" + i);
         		//Set the token label (T_ID, T_PRINT, etc.)
 				var label = matrix[j][0][element];
 				console.log("Label " + label);
@@ -142,17 +144,47 @@
 				if (element === "$") {
 					token = element;
 					label = "T_EOF";
+					endOfFileReached = true;	
 				}
-							
+				
+				//Throw warning if there is anything after $
+				if (endOfFileReached) {
+					i = code.length + 1; //Stops loop
+					warnings();
+				}
+				
+				if (i === code.length-1 && endOfFileReached === false) {
+					warnings();
+				}
+						
         		console.log("Here is your token and label: <" + label + " , " + token + ">");
         		
         		//TODO:push to token array
         		//TODO:increment token count
         		
         		token = ""; //Clear out previous token
-        		j = 0; //reset the DFA to state zero
-        		i = code.length + 1; //Stops loop
+  	    		j = 0; //reset the DFA to state zero
         		
         	}
         }   
     }
+    
+
+function warnings() {
+	
+	//Warns of excess code after EOF marker
+	if (endOfFileReached) {
+		console.log("WARNING: There is stuff after the EOF marker, this will be ignored.");
+	}
+	
+	//Warns if EOF was reached without reading a $. Inserts $
+	if (!endOfFileReached) {
+		console.log("WARNING: EOF was reached without the use of '$'. I have inserted this symbol for you.");
+		var code2 = document.getElementById("regExpTest").value;
+		code2 += "\n\n$";
+		document.getElementById("regExpTest").value = code2;
+	}	
+
+
+
+}
