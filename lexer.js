@@ -76,14 +76,7 @@
 					  [{" ":'T_PLUS', "\n":'T_PLUS'}],
 					  [{" ":'T_EOF', "\n":'T_EOF', "":'T_EOF'}]
         			 ];
-         
-//        var array = [ [{"a":4, "b":1, "c":4, "d":4, "e":4, " ":'T_ID'}],
-//					  [{"a":4, "b":4, "c":4, "d":4, "e":2, " ":'T_ID'}],
-//					  [{"a":4, "b":4, "c":4, "d":3, "e":4, " ":'T_ID'}],
-//					  [{"a":4, "b":4, "c":4, "d":4, "e":4, " ":'T_BED'}],
-//					  [{"a":4, "b":4, "c":4, "d":4, "e":4, " ":'T_ID'}]        			
-//        			];
-        
+                 
         var token = "";
         var j = 0;
         
@@ -120,7 +113,6 @@
         	}
         	//When whitespace or newline is encountered
         	else {
-        		console.log("IIII" + i);
         		//Set the token label (T_ID, T_PRINT, etc.)
 				var label = matrix[j][0][element];
 				console.log("Label " + label);
@@ -130,7 +122,7 @@
 					label = "T_CLOSEQUOTE";
 					openQuote = false;
 				}
-				else if (label == "T_QUOTE" && openQuote === false) {
+				else if (label == "T_QUOTE" && !openQuote) {
 					label = "T_OPENQUOTE";
 					openQuote = true;
 				}
@@ -153,7 +145,7 @@
 					warnings();
 				}
 				
-				if (i === code.length-1 && endOfFileReached === false) {
+				if (i === code.length-1 && !endOfFileReached) {
 					warnings();
 				}
 						
