@@ -162,10 +162,13 @@
 						
         		console.log("Here is your token and label: <" + label + " , " + token + ">");
         		
-        		//TODO:push to token array
-        		newToken(label, token);
-        		//TODO:increment token count
-        		tokenCount++;
+        		//Label check prevents extra spaces from becoming undefined tokens
+        		if (label != undefined) {
+        			//TODO:push to token array
+        			newToken(label, token);
+        			//TODO:increment token count
+        			tokenCount++;
+        		}
         		
         		token = ""; //Clear out previous token
   	    		j = 0; //reset the DFA to state zero  	    		
