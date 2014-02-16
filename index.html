@@ -1,12 +1,12 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>MikeCompiler</title>
+    <title>MPL - Mike's Programming Language</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <link rel="stylesheet" type="text/css" href="mikecompiler.css"/>
 </head>
 <body onload="init();">
-<h1>Mike's Compiler Project</h1>
+<h1>MPL - Mike's Programming Language</h1>
 
 <p>
     . . . <em>a simple parser for a simple grammar</em>:
@@ -20,14 +20,30 @@ O ::== + | -
 <div>
     <!-- <img style="float:right;" src="images/CompilerPhases.png" alt="Compiler Phases diagram"/> -->
 </div>
-<div>
+
+<table>
+	<tbody>
+		<tr>
+			<th colspan="1">Source Code:</th>
+			<th colspan="1">Output:</th>
+		</tr>
+		<tr> 
+			<td><textarea id="taSourceCode" cols="32" rows="18"></textarea></td>
+			<td><textarea id="taOutput" cols="32" rows="18"></textarea></td>
+		</tr>	
+		<tr> 
+			<td><input type="button" id="btnCompile" value="Compile" onclick="test();"/></td>
+		</tr>
+	</tbody>
+</table>
+<!--<div>
     <textarea id="taSourceCode" cols="32" rows="18"></textarea>
-    <br>
+    <br> -->
     <!-- <input type="button" id="btnCompile" value="Compile" onclick="btnCompile_click();"/> -->
-    <input type="button" id="btnCompile" value="Compile" onclick="test();"/>
+ <!--   <input type="button" id="btnCompile" value="Compile" onclick="test();"/>
     <br>
     <textarea id="taOutput" cols="32" rows="18"></textarea>
-</div>
+</div> -->
 
 
 <!-- Testing Code -->

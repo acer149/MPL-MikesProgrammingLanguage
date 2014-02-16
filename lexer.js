@@ -20,7 +20,9 @@
     var endOfFileReached = false;
     
     function test() {
-    
+    	
+    	document.getElementById("taOutput").value = "Lexing in Process:";
+    	
         var code = document.getElementById("taSourceCode").value;
         //code.trim();
         code = code.split("");
@@ -90,6 +92,7 @@
         	//console.log("i = " + i);
         	console.log("j = " + j);
         	console.log("Element to check alphabet for " + element);
+        	document.getElementById("taOutput").value = "Checking alphabet for " + element;
         	
         	//If not white space progress through the matrix
         	if (element != " " && element !="\n" && element != "$" && !endOfFileReached) {
@@ -119,29 +122,29 @@
         	}
         	//When whitespace or newline is encountered
         	else {
-        		//Set the token label (T_ID, T_PRINT, etc.)
-				var label = matrix[j][0][element];
-				console.log("Label " + label);
+        		//Set the token type (T_ID, T_PRINT, etc.)
+				var type = matrix[j][0][element];
+				console.log("Type " + type);
 				
 				//Check if quotation is an open quote or a closing quote using a global boolean variable: openQuote
-				if (label == "T_QUOTE" && openQuote) {
-					label = "T_CLOSEQUOTE";
+				if (type == "T_QUOTE" && openQuote) {
+					type = "T_CLOSEQUOTE";
 					openQuote = false;
 				}
-				else if (label == "T_QUOTE" && !openQuote) {
-					label = "T_OPENQUOTE";
+				else if (type == "T_QUOTE" && !openQuote) {
+					type = "T_OPENQUOTE";
 					openQuote = true;
 				}
 				
-				//Check if there is ! before = sign, if there is set label to T_NOTEQUAL
-				if (label == "T_EQUAL" && token.length > 1) {
-					label = "T_NOTEQUAL";
+				//Check if there is ! before = sign, if there is set type to T_NOTEQUAL
+				if (type == "T_EQUAL" && token.length > 1) {
+					type = "T_NOTEQUAL";
 				}
 				
 				//Check for EOF
 				if (element === "$") {
 					token = element;
-					label = "T_EOF";
+					type = "T_EOF";
 					endOfFileReached = true;	
 				}
 				
@@ -160,12 +163,13 @@
 					lineNumber++;
 				}
 						
-        		console.log("Here is your token and label: <" + label + " , " + token + ">");
+        		console.log("Here is your token and type: <" + type + " , " + token + ">");
+        		document.getElementById("taOutput").value = "Token created: <" + type + " , " + token + ">";
         		
-        		//Label check prevents extra spaces from becoming undefined tokens
-        		if (label != undefined) {
+        		//Type check prevents extra spaces from becoming undefined tokens
+        		if (type != undefined) {
         			//TODO:push to token array
-        			newToken(label, token);
+        			newToken(type, token);
         			//TODO:increment token count
         			tokenCount++;
         		}
@@ -179,8 +183,8 @@
     }
     
     
-function newToken(label, token) {
-	var newToken = "<" + label + " , " + token + ">";
+function newToken(type, token) {
+	var newToken = "<" + type + " , " + token + ">";
 	
 	tokenArray.push(newToken);
 	
