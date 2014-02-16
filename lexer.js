@@ -21,7 +21,7 @@
     
     function test() {
     
-        var code = document.getElementById("regExpTest").value;
+        var code = document.getElementById("taSourceCode").value;
         //code.trim();
         code = code.split("");
         console.log("Source Code: " + code);
@@ -111,6 +111,8 @@
         		//Handles unrecognized symbols
         		else {
         			console.log("Syntax error on line " + lineNumber);
+        			document.getElementById("taOutput").value = "Syntax error on line " + lineNumber;
+        			
         			i = code.length + 1; //Stops loop
         		}
 	
@@ -187,13 +189,16 @@ function warnings() {
 	//Warns of excess code after EOF marker
 	if (endOfFileReached) {
 		console.log("WARNING: There is stuff after the EOF marker, this will be ignored.");
+		document.getElementById("taOutput").value = "WARNING: There is stuff after the EOF marker, this will be ignored.";
 	}
 	
 	//Warns if EOF was reached without reading a $. Inserts $
 	if (!endOfFileReached) {
 		console.log("WARNING: EOF was reached without the use of '$'. I have inserted this symbol for you.");
-		var code2 = document.getElementById("regExpTest").value;
+		document.getElementById("taOutput").value = "WARNING: EOF was reached without the use of '$'. I have inserted this symbol for you.";
+		
+		var code2 = document.getElementById("taSourceCode").value;
 		code2 += "\n\n$";
-		document.getElementById("regExpTest").value = code2;
+		document.getElementById("taSourceCode").value = code2;
 	}	
 }
