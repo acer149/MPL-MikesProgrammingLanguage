@@ -31,7 +31,28 @@ td {
 	
 }
 
-#taSourceCode {
+.btnTr {
+	vertical-align: top;
+	text-align: center;
+	padding: 0px 10px 0px 10px;	
+}
+
+.btn {
+	padding: 5px;
+	text-align:center;
+	margin: 5px 0px 5px 0px;
+	width: 80px;
+	height: 15px;
+	background-color:#CCCCCC;
+	border-radius: 2px;
+}
+
+.btn:hover {
+	background-color: #000000;
+	color: #FFFFFF;
+}
+
+/*#taSourceCode {
 	width: 500px;
 	height: 500px;
 }
@@ -39,4 +60,4 @@ td {
 #taOutput {
 	width: 500px;
 	height: 500px;	
-}
+}*/

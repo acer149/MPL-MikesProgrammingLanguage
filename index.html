@@ -25,15 +25,23 @@ O ::== + | -
 	<tbody>
 		<tr>
 			<th colspan="1">Source Code:</th>
+			<th></th>
 			<th colspan="1">Output:</th>
 		</tr>
 		<tr> 
-			<td><textarea id="taSourceCode" cols="32" rows="18"></textarea></td>
-			<td><textarea id="taOutput" cols="32" rows="18"></textarea></td>
+			<td><textarea id="taSourceCode" cols="75" rows="30" placeholder="Enter Source Code Here..."></textarea></td>
+			<td class="btnTr">
+				<div class="btn" id="btnCompile" onclick="test();">Compile -></div>
+				<div class="btn" id="btnTest1" onclick="">Test 1</div>
+				<div class="btn" id="btnTest2" onclick="">Test 2</div>
+				<div class="btn" id="btnTest3" onclick="">Test 3</div>
+				<!-- <input type="button" class="btn" id="btnCompile" value="Compile ->" onclick="test();"/><br />
+				<input type="button" class="btn" id="btnTest1" value="Test 1" onclick=""/><br />
+				<input type="button" class="btn" id="btnTest2" value="Test 2" onclick=""/><br />
+				<input type="button" class="btn" id="btnTest3" value="Test 3" onclick=""/> -->
+			</td>
+			<td><textarea id="taOutput" cols="75" rows="30" placeholder="Some Output..."></textarea></td>
 		</tr>	
-		<tr> 
-			<td><input type="button" id="btnCompile" value="Compile" onclick="test();"/></td>
-		</tr>
 	</tbody>
 </table>
 <!--<div>

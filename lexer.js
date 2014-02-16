@@ -20,7 +20,7 @@
     var endOfFileReached = false;
     
     function test() {
-    	
+    	document.getElementById("taOutput").value = "";
     	document.getElementById("taOutput").value = "Lexing in Process:";
     	
         var code = document.getElementById("taSourceCode").value;
