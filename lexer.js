@@ -12,6 +12,9 @@
     
     
     var tokenArray = [];
+    var tokenCount;
+    
+    var lineNumber = 1;;
     
     var openQuote = false;
     var endOfFileReached = false;
@@ -89,7 +92,7 @@
         	console.log("Element to check alphabet for " + element);
         	
         	//If not white space progress through the matrix
-        	if (element != " " && element !="\n" && element != "$" && endOfFileReached === false) {
+        	if (element != " " && element !="\n" && element != "$" && !endOfFileReached) {
         		console.log("j = " + j);
         		if (element in matrix[j][0]) {
         		
@@ -107,7 +110,7 @@
         		}
         		//Handles unrecognized symbols
         		else {
-        			console.log("Syntax Error");
+        			console.log("Syntax error on line " + lineNumber);
         			i = code.length + 1; //Stops loop
         		}
 	
@@ -149,18 +152,34 @@
 				if (i === code.length-1 && !endOfFileReached) {
 					warnings();
 				}
+				
+				//If newline, increment line count
+				if (element === "\n") {
+					lineNumber++;
+				}
 						
         		console.log("Here is your token and label: <" + label + " , " + token + ">");
         		
         		//TODO:push to token array
+        		newToken(label, token);
         		//TODO:increment token count
+        		tokenCount++;
         		
         		token = ""; //Clear out previous token
-  	    		j = 0; //reset the DFA to state zero
+  	    		j = 0; //reset the DFA to state zero  	    		
         		
         	}
-        }   
+        }  
+        console.log(tokenArray); //Prints out token array
     }
+    
+    
+function newToken(label, token) {
+	var newToken = "<" + label + " , " + token + ">";
+	
+	tokenArray.push(newToken);
+	
+}
     
 
 function warnings() {
@@ -177,7 +196,4 @@ function warnings() {
 		code2 += "\n\n$";
 		document.getElementById("regExpTest").value = code2;
 	}	
-
-
-
 }
