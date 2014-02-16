@@ -21,7 +21,7 @@
     
     function test() {
     	document.getElementById("taOutput").value = "";
-    	document.getElementById("taOutput").value = "Lexing in Process:";
+    	document.getElementById("taOutput").value += "Lexing in Process:";
     	
         var code = document.getElementById("taSourceCode").value;
         //code.trim();
@@ -31,8 +31,8 @@
                     
         
         var matrix = [[{"a":8, "b":30, "c":8, "d":8, "e":8, "f":39, "g":8, "h":8, "i":16, "j":8, "k":8, "l":8, "m":8, "n":8, "o":8, "p":3, "q":8, "r":8, "s":24, "t":44, "u":8, "v":8, "w":11, "x":8, "y":8, "z":8, "0":37, "1":37, "2":37, "3":37, "4":37, "5":37, "6":37, "7":37, "8":37, "9":37, "=":9, "+":48, "!":38, "{":1, "}":2, "(":20, ")":21, "\"":18, "$":49}],
-        			  [{" ": 'T_RBRACKET', "\n":'T_RBRACKET'}],
         			  [{" ": 'T_LBRACKET', "\n":'T_LBRACKET'}],
+        			  [{" ": 'T_RBRACKET', "\n":'T_RBRACKET'}],
         			  [{"a":8, "b":8, "c":8, "d":8, "e":8, "f":8, "g":8, "h":8, "i":8, "j":8, "k":8, "l":8, "m":8, "n":8, "o":8, "p":8, "q":8, "r":4, "s":8, "t":8, "u":8, "v":8, "w":8, "x":8, "y":8, "z":8, "0":8, "1":8, "2":8, "3":8, "4":8, "5":8, "6":8, "7":8, "8":8, "9":8}],
         			  [{"a":8, "b":8, "c":8, "d":8, "e":8, "f":8, "g":8, "h":8, "i":5, "j":8, "k":8, "l":8, "m":8, "n":8, "o":8, "p":8, "q":8, "r":8, "s":8, "t":8, "u":8, "v":8, "w":8, "x":8, "y":8, "z":8, "0":8, "1":8, "2":8, "3":8, "4":8, "5":8, "6":8, "7":8, "8":8, "9":8}],
         			  [{"a":8, "b":8, "c":8, "d":8, "e":8, "f":8, "g":8, "h":8, "i":8, "j":8, "k":8, "l":8, "m":8, "n":6, "o":8, "p":8, "q":8, "r":8, "s":8, "t":8, "u":8, "v":8, "w":8, "x":8, "y":8, "z":8, "0":8, "1":8, "2":8, "3":8, "4":8, "5":8, "6":8, "7":8, "8":8, "9":8}],
@@ -91,8 +91,10 @@
         	
         	//console.log("i = " + i);
         	console.log("j = " + j);
-        	console.log("Element to check alphabet for " + element);
-        	document.getElementById("taOutput").value = "Checking alphabet for " + element;
+        	if (element != " " && element != "\n") {
+        		console.log("Element to check alphabet for " + element);
+        		document.getElementById("taOutput").value += "\n\tChecking alphabet for " + element;
+        	}
         	
         	//If not white space progress through the matrix
         	if (element != " " && element !="\n" && element != "$" && !endOfFileReached) {
@@ -103,6 +105,7 @@
         			console.log("Next State " + nextState);
         		
         			console.log("Element " + element + " is in alphabet and points to the next state " + nextState );
+        			document.getElementById("taOutput").value += "\n\t\t" + element + " found ";
         			
         			//Sets j to the next state that the DFA should visit
         			j = nextState;
@@ -114,7 +117,7 @@
         		//Handles unrecognized symbols
         		else {
         			console.log("Syntax error on line " + lineNumber);
-        			document.getElementById("taOutput").value = "Syntax error on line " + lineNumber;
+        			document.getElementById("taOutput").value += "\n\tSyntax error on line " + lineNumber;
         			
         			i = code.length + 1; //Stops loop
         		}
@@ -164,7 +167,7 @@
 				}
 						
         		console.log("Here is your token and type: <" + type + " , " + token + ">");
-        		document.getElementById("taOutput").value = "Token created: <" + type + " , " + token + ">";
+        		document.getElementById("taOutput").value += "\n\n\tToken created: <" + type + " , " + token + ">\n";
         		
         		//Type check prevents extra spaces from becoming undefined tokens
         		if (type != undefined) {
@@ -179,6 +182,8 @@
         		
         	}
         }  
+        document.getElementById("taOutput").value += "\n\nLexing Complete";
+        
         console.log(tokenArray); //Prints out token array
     }
     
@@ -196,13 +201,13 @@ function warnings() {
 	//Warns of excess code after EOF marker
 	if (endOfFileReached) {
 		console.log("WARNING: There is stuff after the EOF marker, this will be ignored.");
-		document.getElementById("taOutput").value = "WARNING: There is stuff after the EOF marker, this will be ignored.";
+		document.getElementById("taOutput").value += "\n\n\tWARNING: There is stuff after the EOF marker, this will be ignored.";
 	}
 	
 	//Warns if EOF was reached without reading a $. Inserts $
 	if (!endOfFileReached) {
 		console.log("WARNING: EOF was reached without the use of '$'. I have inserted this symbol for you.");
-		document.getElementById("taOutput").value = "WARNING: EOF was reached without the use of '$'. I have inserted this symbol for you.";
+		document.getElementById("taOutput").value += "\n\n\tWARNING: EOF was reached without the use of '$'. I have inserted this symbol for you.";
 		
 		var code2 = document.getElementById("taSourceCode").value;
 		code2 += "\n\n$";
