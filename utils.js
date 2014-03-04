@@ -45,10 +45,10 @@ function rot13(str)     // An easy-to understand implementation of the famous an
 
 function test1() {
 	
-		document.getElementById("taSourceCode").value = "{\nprint (" + " \"hello\" " + ")" + "\n$";	
+		document.getElementById("taSourceCode").value = "{\nprint (" + " \"hello\" " + ")\n}" + "\n$";	
 }
 
 function test2() {
 	
-		document.getElementById("taSourceCode").value = "{\nprint (" + " \"hello\" " + ")" + "\n$";	
+		document.getElementById("taSourceCode").value = "{\nprint (" + " \"hello\" " + ")\n}" + "\n$";	
 }

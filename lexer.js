@@ -30,19 +30,44 @@
         var code = document.getElementById("taSourceCode").value;
         //code.trim();
         //code = code.split("");
-        console.log("Source Code: " + code);
-        console.log("Source Code Length " + code.length);
+        //console.log("Source Code: " + code);
         
         
         //**************
-        var keywordArray = ["print", "while", "if", "int", "string", "boolean", "true", "false"];
-        var re = /[a-z]/g;
-        var reg = /\w*/;
-        console.log(code.match(reg));
+        code = code.match(/[^\s]+/g);
+        console.log("Source Code: " + code);
+        console.log("Source Code Length " + code.length);
+
         
-        var someMatch = code.match(reg);
-        if ($.inArray(someMatch, keywordArray)) {
-        	console.log("New Token: " + someMatch);
+        for (var i = 0; i < code.length; i++) {
+        	var token = code[i];
+        	
+        	checkForToken(token);
+        	
+        }
+        
+        function checkForToken(token) {
+        	var keywordArray = ["print", "while", "if", "int", "string", "boolean", "true", "false"];
+        	var alphaNumeric = /[a-z][0-9]/g;
+        	var wordRegEx = /\w*/;
+        	
+        	if (token.match(wordRegEx)) { //token is a word, check for keyword or identifiers
+        		console.log("Check for in array: " + $.inArray(token.toString(), keywordArray));
+        		//Check for keyword
+        	    if ($.inArray(token.toString(), keywordArray) != -1) {
+        			console.log("New keyword token: " + token);
+        		}
+        		else {
+        			console.log("New identifier : " + token);
+        		}	 		
+        	}
+        	else if (token.match("{")) {
+        		console.log("New openBracket: " + token);
+        	}
+        	else {
+        		console.log("Error");
+        	}
+        	
         }
         //**************
         
