@@ -20,6 +20,7 @@
     var endOfFileReached = false;
     var openQuote = false;
     var openParen = false;
+    var duplicateToken = false;
     var whiteSpaceCount = 0; //Keeps track of extra spaces and skips over them
     
     function test() {
@@ -28,10 +29,25 @@
     	
         var code = document.getElementById("taSourceCode").value;
         //code.trim();
-        code = code.split("");
+        //code = code.split("");
         console.log("Source Code: " + code);
         console.log("Source Code Length " + code.length);
-                    
+        
+        
+        //**************
+        var keywordArray = ["print", "while", "if", "int", "string", "boolean", "true", "false"];
+        var re = /[a-z]/g;
+        var reg = /\w*/;
+        console.log(code.match(reg));
+        
+        var someMatch = code.match(reg);
+        if ($.inArray(someMatch, keywordArray)) {
+        	console.log("New Token: " + someMatch);
+        }
+        //**************
+        
+        
+        /*    
         
         var matrix = [[{"a":8, "b":30, "c":8, "d":8, "e":8, "f":39, "g":8, "h":8, "i":16, "j":8, "k":8, "l":8, "m":8, "n":8, "o":8, "p":3, "q":8, "r":8, "s":24, "t":44, "u":8, "v":8, "w":11, "x":8, "y":8, "z":8, "0":37, "1":37, "2":37, "3":37, "4":37, "5":37, "6":37, "7":37, "8":37, "9":37, "=":9, "+":48, "!":38, "{":1, "}":2, "(":20, ")":21, "\"":18, "$":49}],
         			  [{" ": 'T_LBRACKET', "\n":'T_LBRACKET'}],
@@ -84,7 +100,7 @@
 					  [{" ":'T_PLUS', "\n":'T_PLUS'}],
 					  [{" ":'T_EOF', "\n":'T_EOF', "":'T_EOF'}],
 					  [{" ":'T_STRINGEXP', "\n":'T_STRINGEXP'}],
-					  [{" ": 'T_PRINT'}]
+					  [{" ": 'T_PRINT, T_RPAREN'}]
         			 ];
          //T_StringEXP === line 50        
         var token = "";
@@ -92,6 +108,7 @@
         
         for (var i = 0; i < code.length; i++ ) {
         	var element = code[i];
+        	duplicateToken = false;
         	
         	//console.log("i = " + i);
         	console.log("j = " + j);
@@ -163,6 +180,7 @@
 					
 					if (type == "T_PRINT" && token === "print(") {
 						openParen = true;
+						duplicateToken = true;
 						var splitToken = token.split("(");
 						newToken(type, splitToken[0]);
 						newToken("T_OPENPAREN", "(");
@@ -178,8 +196,8 @@
         			//console.log("Here is your token and type: <" + type + " , " + token + ">");
         			//document.getElementById("taOutput").value += "\n\n\tToken created: <" + type + " , " + token + ">\n";
         		
-        			//Type check prevents extra spaces from becoming undefined tokens
-        			if (type != undefined) {
+        			//Type check prevents extra spaces from becoming undefined tokens and stops duplicate tokens from being created
+        			if (type != undefined && !duplicateToken) {
         				//TODO:push to token array
         				newToken(type, token);
         				//TODO:increment token count
@@ -265,4 +283,6 @@ function errors() {
 		console.log("Unended expression");
         document.getElementById("taOutput").value += "\n\tERROR: Unended expression";		
 	}
+	
+	*/
 }
