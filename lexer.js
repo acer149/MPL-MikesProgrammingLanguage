@@ -38,30 +38,47 @@
         //code = code.match(/[^\s]+/g);
         console.log("Source Code: " + code);
 		var token = "";
-		var sourceCodeLength = code.length - 1;
-		console.log("Source Code Length minus 1 = " + sourceCodeLength);
+		var sourceCodeLengthMinusOne = code.length - 1;
+		console.log("Source Code Length minus 1 = " + sourceCodeLengthMinusOne);
         
         for (var i = 0; i < code.length; i++) {
-        	console.log("i = " + i);
+        	//console.log("i = " + i);
+        	
+        	//RegEx
         	var alpha = /[a-z]/;
-        	var alphaNumeric = /[a-z][0-9]/;
+        	var alphaNumeric = /[a-z]+[a-z0-9]*/;
+        	var digit = /[0-9]+/;
         	var space = /[\s]/;
         	var newLine = /[\n]/;
         	var endOfFile = /[\$]/;
         	var brackets = /[\{\}]/;
         	
+        	//Checks char for alpha match
         	if (code[i].match(alpha)) {
         		token += code[i];
         		//console.log("Token = " + token);
         	}
+        	//Checks char for alphanumeric match
         	else if (code[i].match(alphaNumeric)) {
         		token += code[i];
         	}
+        	//Checks char for brackets match
         	else if (code[i].match(brackets)) {
+        		//Bracket reached, process token before the bracket(there was no space between token and bracket) or bracket
         		checkForKeyword(token);
         		token = code[i];
         	}
-        	if (code[i].match(space || newLine || endOfFile) || i === sourceCodeLength) {
+        	//Checks for digit, then checks if token is an alpha numeric or just one or more digits
+        	else if (code[i].match(digit)) {
+        		if (token.match(alphaNumeric)) {
+        			token += code[i];	
+        		}
+        		else {
+        			token += code[i];       			
+        		}        		
+        	}
+        	//If char matches a space, newline, or EOF marker or if there is no more source code and processes token
+        	if (code[i].match(space || newLine || endOfFile) || i === sourceCodeLengthMinusOne) {
         		checkForKeyword(token);
         		console.log("Token Array = " + tokenArray);
         		token = "";
@@ -70,9 +87,13 @@
         	
         }
         
+        //Checks if the token is a keyword
         function checkForKeyword(token) {
         	var keywordArray = ["print", "while", "if", "int", "string", "boolean", "true", "false"];
+        	
         	//TODO:Store in tokenArray as T_ID, T_PRINT, etc
+        	
+        	//jQuery to see if token is in keywordArray
         	if ($.inArray(token.toString(), keywordArray) != -1) {
         		console.log("The token " + token + " is a keyword");
         		tokenArray.push(token);
@@ -87,12 +108,15 @@
         	}
         	        	
         }
+        //If token is not a keyword, describe what it is
         function describeType(token) {
-        	if (token.match(alphaNumeric)) {
+        	//Check for identifier
+        	if (token.match(alphaNumeric)) { //add \g ?
         		console.log ("Token " + token + " is an identifier");
         		tokenArray.push(token);
         		token = "";        		
         	}
+        	//Check for bracket
         	else if (token.match(brackets)) {
         		if (!openBracket) {
         			console.log ("Token " + token + " is an open bracket");
@@ -107,6 +131,11 @@
         			openBracket = false;        			
         		}
           		
+        	}
+        	else if (token.match(digit)) {
+        		console.log ("Token " + token + " is a digit");
+        		tokenArray.push(token);
+        		token = "";        		
         	}
 
         }
