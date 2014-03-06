@@ -52,6 +52,7 @@
         	var newLine = /[\n]/;
         	var endOfFile = /[\$]/;
         	var brackets = /[\{\}]/;
+        	var parens = /[\(\)]/;
         	
         	//Checks char for alpha match
         	if (code[i].match(alpha)) {
@@ -76,6 +77,11 @@
         		else {
         			token += code[i];       			
         		}        		
+        	}
+        	else if (code[i].match(parens)) {
+         		//Paren reached, process token before the paren(there was no space between token and paren) or paren
+        		checkForKeyword(token);
+        		token = code[i];       		
         	}
         	//If char matches a space, newline, or EOF marker or if there is no more source code and processes token
         	if (code[i].match(space || newLine || endOfFile) || i === sourceCodeLengthMinusOne) {
@@ -136,6 +142,20 @@
         		console.log ("Token " + token + " is a digit");
         		tokenArray.push(token);
         		token = "";        		
+        	}
+        	else if (token.match(parens)) {
+        		if (!openParen) {
+         			console.log ("Token " + token + " is an open paren");
+        			tokenArray.push(token);
+        			token = "";   
+        			openParen = true;       			
+        		}
+        		else {
+         			console.log ("Token " + token + " is a closing paren");
+        			tokenArray.push(token);
+        			token = "";   
+        			openParen = false;        			
+        		}
         	}
 
         }
