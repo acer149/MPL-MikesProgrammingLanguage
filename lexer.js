@@ -87,7 +87,6 @@
         		token = code[i];       		
         	}
         	else if (code[i].match(equalsSign)) {
-        		console.log("Got here");
         		//peek ahead to check for double equal
         		if (code[i+1].match(equalsSign)) {
          			isEqualityOperator = true;
@@ -103,11 +102,29 @@
         		}
         	
         	}
-        	//If char matches a space, newline, or EOF marker or if there is no more source code and processes token
-        	if (code[i].match(space || newLine || endOfFile) || i === sourceCodeLengthMinusOne) {
+        	else if (code[i].match(endOfFile)) {
+        		token += code[i];
+        		checkForKeyword(token);
+        		token = code[i];
+        		endOfFileReached = true;
+        	}
+        	//If char matches a space, newline, process token
+        	else if (code[i].match(space || newLine) || i === sourceCodeLengthMinusOne) {
         		checkForKeyword(token);
         		console.log("Token Array: " + tokenArray);
         		token = "";
+        		
+        		if (code[i].match(newLine)) {
+        			lineNumber++;
+        		}
+        		if (code[i].match(endOfFile)) {
+        			endOfFileReached = true;
+        		}
+        		
+        	}
+        	else {
+        		unrecognizedSymbol = true;
+				errors();
         		
         	}
         	
@@ -192,8 +209,53 @@
         		}
         		
         	}
+        	else if (token.match(endOfFile)) {
+        		console.log ("Token " + token + " is the EOF marker");
+        		tokenArray.push(token);
+        		token = "";
+        		endOfFileReached = true;
+        	}
 
         }
+        
+	function warnings() {
+	
+		//Warns of excess code after EOF marker
+		if (endOfFileReached) {
+			console.log("WARNING: There is stuff after the EOF marker, this will be ignored.");
+			document.getElementById("taOutput").value += "\n\n\tWARNING: There is stuff after the EOF marker, this will be ignored.";
+		}
+	
+		//Warns if EOF was reached without reading a $. Inserts $
+		if (!endOfFileReached) {
+			console.log("WARNING: EOF was reached without the use of '$'. I have inserted this symbol for you.");
+			document.getElementById("taOutput").value += "\n\n\tWARNING: EOF was reached without the use of '$'. I have inserted this symbol for you.";
+		
+			var code2 = document.getElementById("taSourceCode").value;
+			code2 += "\n\n$";
+			document.getElementById("taSourceCode").value = code2;
+		}	
+	}
+
+	function errors() {
+		//Syntax Error
+		if (unrecognizedSymbol) {
+			console.log("ERROR: Syntax error on line " + lineNumber);
+   		    document.getElementById("taOutput").value += "\n\tSyntax error on line " + lineNumber;
+        			
+      	    i = code.length + 1; //Stops loop
+		}
+	
+		if (openQuote) {
+			console.log("Unended String");
+    	    document.getElementById("taOutput").value += "\n\tERROR: Unended String";		
+		}
+	
+		if (openParen) {
+			console.log("Unended expression");
+   	        document.getElementById("taOutput").value += "\n\tERROR: Unended expression";		
+		}
+	}
         //**************
         
         
