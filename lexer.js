@@ -34,40 +34,56 @@
         
         
         //**************
-        code = code.match(/[^\s]+/g);
+        //code = code.match(/[^\s]+/g);
         console.log("Source Code: " + code);
-        console.log("Source Code Length " + code.length);
-
+		var token = "";
+		var sourceCodeLength = code.length - 1;
+		console.log("Source Code Length minus 1 = " + sourceCodeLength);
         
         for (var i = 0; i < code.length; i++) {
-        	var token = code[i];
+        	console.log("i = " + i);
+        	var alpha = /[a-z]/;
+        	var alphaNumeric = /[a-z][0-9]/;
+        	var space = /[\s]/;
+        	var newLine = /[\n]/;
+        	var endOfFile = /[\$]/;
         	
-        	checkForToken(token);
+        	if (code[i].match(alpha)) {
+        		token += code[i];
+        		//console.log("Token = " + token);
+        	}
+        	else if (code[i].match(alphaNumeric)) {
+        		token += code[i];
+        	}
+        	else if (code[i].match("{")) {
+        		checkForKeyword(token);
+        	}
+        	if (code[i].match(space || newLine || endOfFile) || i === sourceCodeLength) {
+        		checkForKeyword(token);
+        		
+        	}
         	
         }
         
-        function checkForToken(token) {
+        function checkForKeyword(token) {
         	var keywordArray = ["print", "while", "if", "int", "string", "boolean", "true", "false"];
-        	var alphaNumeric = /[a-z][0-9]/g;
-        	var wordRegEx = /\w*/;
-        	
-        	if (token.match(wordRegEx)) { //token is a word, check for keyword or identifiers
-        		console.log("Check for in array: " + $.inArray(token.toString(), keywordArray));
-        		//Check for keyword
-        	    if ($.inArray(token.toString(), keywordArray) != -1) {
-        			console.log("New keyword token: " + token);
-        		}
-        		else {
-        			console.log("New identifier : " + token);
-        		}	 		
-        	}
-        	else if (token.match("{")) {
-        		console.log("New openBracket: " + token);
+        	//TODO:Store in tokenArray as T_ID, T_PRINT, etc
+        	if ($.inArray(token.toString(), keywordArray) != -1) {
+        		console.log("The token " + token + " is a keyword");
+        		tokenArray.push(token);
+        		token = "";
         	}
         	else {
-        		console.log("Error");
+        		console.log("Token " + token + " is not a keyword");
+        		classifyAsIdentifier(token);
+        		token = "";
+        		
         	}
-        	
+        	        	
+        }
+        function classifyAsIdentifier(token) {
+        	console.log ("Token " + token + " is an identifier");
+        	tokenArray.push(token);
         }
         //**************
         
