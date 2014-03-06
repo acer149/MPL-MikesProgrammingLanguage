@@ -20,6 +20,7 @@
     var endOfFileReached = false;
     var openQuote = false;
     var openParen = false;
+    var openBracket = false;
     var duplicateToken = false;
     var whiteSpaceCount = 0; //Keeps track of extra spaces and skips over them
     
@@ -47,6 +48,7 @@
         	var space = /[\s]/;
         	var newLine = /[\n]/;
         	var endOfFile = /[\$]/;
+        	var brackets = /[\{\}]/;
         	
         	if (code[i].match(alpha)) {
         		token += code[i];
@@ -55,11 +57,14 @@
         	else if (code[i].match(alphaNumeric)) {
         		token += code[i];
         	}
-        	else if (code[i].match("{")) {
+        	else if (code[i].match(brackets)) {
         		checkForKeyword(token);
+        		token = code[i];
         	}
         	if (code[i].match(space || newLine || endOfFile) || i === sourceCodeLength) {
         		checkForKeyword(token);
+        		console.log("Token Array = " + tokenArray);
+        		token = "";
         		
         	}
         	
@@ -72,18 +77,38 @@
         		console.log("The token " + token + " is a keyword");
         		tokenArray.push(token);
         		token = "";
+        		console.log("Token value " + token);
         	}
         	else {
         		console.log("Token " + token + " is not a keyword");
-        		classifyAsIdentifier(token);
+        		describeType(token);
         		token = "";
         		
         	}
         	        	
         }
-        function classifyAsIdentifier(token) {
-        	console.log ("Token " + token + " is an identifier");
-        	tokenArray.push(token);
+        function describeType(token) {
+        	if (token.match(alphaNumeric)) {
+        		console.log ("Token " + token + " is an identifier");
+        		tokenArray.push(token);
+        		token = "";        		
+        	}
+        	else if (token.match(brackets)) {
+        		if (!openBracket) {
+        			console.log ("Token " + token + " is an open bracket");
+        			tokenArray.push(token);
+        			token = "";   
+        			openBracket = true;     			
+        		}
+        		else {
+         			console.log ("Token " + token + " is a closing bracket");
+        			tokenArray.push(token);
+        			token = "";   
+        			openBracket = false;        			
+        		}
+          		
+        	}
+
         }
         //**************
         
