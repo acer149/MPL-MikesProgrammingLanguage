@@ -21,6 +21,7 @@
     var openQuote = false;
     var openParen = false;
     var openBracket = false;
+    var isEqualityOperator = false;
     var duplicateToken = false;
     var whiteSpaceCount = 0; //Keeps track of extra spaces and skips over them
     
@@ -53,6 +54,7 @@
         	var endOfFile = /[\$]/;
         	var brackets = /[\{\}]/;
         	var parens = /[\(\)]/;
+        	var equalsSign = /[\=]/;
         	
         	//Checks char for alpha match
         	if (code[i].match(alpha)) {
@@ -78,15 +80,33 @@
         			token += code[i];       			
         		}        		
         	}
+        	//Checks char for paren match
         	else if (code[i].match(parens)) {
          		//Paren reached, process token before the paren(there was no space between token and paren) or paren
         		checkForKeyword(token);
         		token = code[i];       		
         	}
+        	else if (code[i].match(equalsSign)) {
+        		console.log("Got here");
+        		//peek ahead to check for double equal
+        		if (code[i+1].match(equalsSign)) {
+         			isEqualityOperator = true;
+         			//= reached, process token before the =(there was no space between token and =) or =
+        			checkForKeyword(token);
+        			token = code[i] + code[i+1];
+        			i++; //prevents processing the second equal sign a second time       			
+        		}
+        		else {
+         			//= reached, process token before the =(there was no space between token and =) or =
+        			checkForKeyword(token);
+        			token = code[i];       			
+        		}
+        	
+        	}
         	//If char matches a space, newline, or EOF marker or if there is no more source code and processes token
         	if (code[i].match(space || newLine || endOfFile) || i === sourceCodeLengthMinusOne) {
         		checkForKeyword(token);
-        		console.log("Token Array = " + tokenArray);
+        		console.log("Token Array: " + tokenArray);
         		token = "";
         		
         	}
@@ -156,6 +176,21 @@
         			token = "";   
         			openParen = false;        			
         		}
+        	}
+        	else if (token.match(equalsSign)) {
+        		
+        		if (!isEqualityOperator) {
+         			console.log ("Token " + token + " is an assignment operator");
+        			tokenArray.push(token);
+        			token = "";       			
+        		}
+        		else {
+          			console.log ("Token " + token + " is an equality operator");
+        			tokenArray.push(token);
+        			token = "";   
+        			isEqualityOperator = false;     			
+        		}
+        		
         	}
 
         }
