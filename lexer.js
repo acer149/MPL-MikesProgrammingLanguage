@@ -102,7 +102,6 @@
         			checkForKeyword(token);
         			token = code[i];       			
         		}
-        	
         	}
         	else if (code[i].match(endOfFile)) {
         		//token += code[i];
@@ -236,7 +235,7 @@
 			document.getElementById("taOutput").value += "\n\n\tWARNING: EOF was reached without the use of '$'. I have inserted this symbol for you.";
 		
 			var code2 = document.getElementById("taSourceCode").value;
-			code2 += "\n\n$";
+			code2 += "\n$";
 			document.getElementById("taSourceCode").value = code2;
 		}	
 	}
