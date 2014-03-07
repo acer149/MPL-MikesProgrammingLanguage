@@ -58,6 +58,8 @@
         	var equalsSign = /[\=]/;
         	var quote = /[\"]/;
         	var stringExpr = /[\"alphaNumeric\"]/;
+        	var notEqual = /[\!]/;
+        	var plusSign = /[\+]/;
         	
         	//Checks char for alpha match
         	if (code[i].match(alpha)) {
@@ -105,7 +107,7 @@
         			token = code[i];       			
         		}
         	}
-        	else if(code[i].match(quote)) {
+        	else if (code[i].match(quote)) {
         		token += code[i];
         		i +=1;
         		while (!code[i].match(quote) && !(i === sourceCodeLengthMinusOne)) {
@@ -114,6 +116,25 @@
         		}
         		token += "\"";
         		checkForKeyword(token);
+        	}
+        	else if (code[i].match(notEqual)) {
+        		//peek ahead to check for equal sign
+        		if (code[i+1].match(equalsSign)) {
+         			//= reached, process token before the =(there was no space between token and =) or =
+        			checkForKeyword(token);
+        			token = code[i] + code[i+1];
+        			i++; //prevents processing the second equal sign a second time       			
+        		}
+        		else {
+					unrecognizedSymbol = true;
+					errors();       			
+        		}        		
+        	}
+        	else if (code[i].match(plusSign)) {
+        		token += code[i];
+        		checkForKeyword(token);
+        		//token = code[i]; 
+        		        		
         	}
         	else if (code[i].match(endOfFile)) {
         		//token += code[i];
@@ -209,7 +230,7 @@
         			openParen = false;        			
         		}
         	}
-        	else if (token.match(equalsSign)) {
+        	else if (token.match(equalsSign) && !token.match(notEqual)) {
         		
         		if (!isEqualityOperator) {
          			console.log ("Token " + token + " is an assignment operator");
@@ -227,6 +248,14 @@
         	else if (token.match(stringExpr)) {
            		console.log ("Token " + token + " is an string expression");
         		tokenArray.push(token);       		
+        	}
+        	else if (token.match(notEqual)) {
+            	console.log ("Token " + token + " is a not equal sign");
+        		tokenArray.push(token);       		
+        	}
+        	else if (token.match(plusSign)) {
+            	console.log ("Token " + token + " is a plus sign");
+        		tokenArray.push(token);        		
         	}
         	else if (token.match(endOfFile)) {
         		console.log ("Token " + token + " is the EOF marker");
