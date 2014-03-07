@@ -42,7 +42,8 @@
 		var sourceCodeLengthMinusOne = code.length - 1;
 		console.log("Source Code Length minus 1 = " + sourceCodeLengthMinusOne);
         
-        for (var i = 0; i < code.length; i++) {
+        var i = 0;
+        for (i = 0; i < code.length; i++) {
         	//console.log("i = " + i);
         	
         	//RegEx
@@ -67,9 +68,10 @@
         	}
         	//Checks char for brackets match
         	else if (code[i].match(brackets)) {
+        		token += code[i];
         		//Bracket reached, process token before the bracket(there was no space between token and bracket) or bracket
         		checkForKeyword(token);
-        		token = code[i];
+        		token = code[i+1];
         	}
         	//Checks for digit, then checks if token is an alpha numeric or just one or more digits
         	else if (code[i].match(digit)) {
@@ -103,7 +105,7 @@
         	
         	}
         	else if (code[i].match(endOfFile)) {
-        		token += code[i];
+        		//token += code[i];
         		checkForKeyword(token);
         		token = code[i];
         		endOfFileReached = true;
@@ -120,15 +122,17 @@
         		if (code[i].match(endOfFile)) {
         			endOfFileReached = true;
         		}
-        		
         	}
         	else {
+        		console.log("Unrecognized");
         		unrecognizedSymbol = true;
 				errors();
         		
         	}
         	
         }
+        
+        warnings();
         
         //Checks if the token is a keyword
         function checkForKeyword(token) {
@@ -240,8 +244,8 @@
 	function errors() {
 		//Syntax Error
 		if (unrecognizedSymbol) {
-			console.log("ERROR: Syntax error on line " + lineNumber);
-   		    document.getElementById("taOutput").value += "\n\tSyntax error on line " + lineNumber;
+			console.log("ERROR: Syntax error on line " + lineNumber + " There was an unrecognized symbol  " + code[i]);
+   		    document.getElementById("taOutput").value += "\n\tSyntax error on line " + lineNumber + " There was an unrecognized symbol  " + code[i];
         			
       	    i = code.length + 1; //Stops loop
 		}
