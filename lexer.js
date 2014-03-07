@@ -56,6 +56,8 @@
         	var brackets = /[\{\}]/;
         	var parens = /[\(\)]/;
         	var equalsSign = /[\=]/;
+        	var quote = /[\"]/;
+        	var stringExpr = /[\"alphaNumeric\"]/;
         	
         	//Checks char for alpha match
         	if (code[i].match(alpha)) {
@@ -102,6 +104,16 @@
         			checkForKeyword(token);
         			token = code[i];       			
         		}
+        	}
+        	else if(code[i].match(quote)) {
+        		token += code[i];
+        		i +=1;
+        		while (!code[i].match(quote) && !(i === sourceCodeLengthMinusOne)) {
+        			token += code[i++];
+        			console.log("Building token " + token);
+        		}
+        		token += "\"";
+        		checkForKeyword(token);
         	}
         	else if (code[i].match(endOfFile)) {
         		//token += code[i];
@@ -157,7 +169,7 @@
         //If token is not a keyword, describe what it is
         function describeType(token) {
         	//Check for identifier
-        	if (token.match(alphaNumeric)) { //add \g ?
+        	if (token.match(alphaNumeric) && !token.match(quote)) { //add \g ?
         		console.log ("Token " + token + " is an identifier");
         		tokenArray.push(token);
         		token = "";        		
@@ -211,6 +223,10 @@
         			isEqualityOperator = false;     			
         		}
         		
+        	}
+        	else if (token.match(stringExpr)) {
+           		console.log ("Token " + token + " is an string expression");
+        		tokenArray.push(token);       		
         	}
         	else if (token.match(endOfFile)) {
         		console.log ("Token " + token + " is the EOF marker");
