@@ -25,6 +25,7 @@
     	document.getElementById("taOutput").value += "Lexing in Process:";
     	
         _Code = document.getElementById("taSourceCode").value;
+        //_Code += " ";
         //code.trim();
         //code = code.split("");
         //console.log("Source Code: " + code);
@@ -42,7 +43,7 @@
         	//console.log("i = " + i);
         	
         	//RegEx
-        	var alpha = /[a-z]/;
+        	var character = /[a-z]/;
         	var alphaNumeric = /[a-z]+[a-z0-9]*/;
         	var digit = /[0-9]+/;
         	var space = /[\s]/;
@@ -56,8 +57,8 @@
         	var notEqual = /[\!]/;
         	var plusSign = /[\+]/;
         	
-        	//Checks char for alpha match
-        	if (_Code[i].match(alpha)) {
+        	//Checks char for character match
+        	if (_Code[i].match(character)) {
         		token += _Code[i];
         		//console.log("Token = " + token);
         	}
@@ -174,6 +175,10 @@
         		token = "";
         		console.log("Token value " + token);
         	}
+        	else if (token.match(character) && token.length > 1) { //If token is not a keyword
+        		unrecognizedSymbol = true;
+				errors();
+        	}
         	else {
         		console.log("Token " + token + " is not a keyword");
         		describeType(token);
@@ -283,8 +288,8 @@
 	function errors() {
 		//Syntax Error
 		if (unrecognizedSymbol) {
-			console.log("ERROR: Syntax error on line " + _LineNumber + " There was an unrecognized symbol  " + _Code[i]);
-   		    document.getElementById("taOutput").value += "\n\tSyntax error on line " + _LineNumber + " There was an unrecognized symbol  " + _Code[i];
+			console.log("ERROR: Syntax error on line " + _LineNumber + " There was an unrecognized symbol  " + token);//_Code[i]);
+   		    document.getElementById("taOutput").value += "\n\tSyntax error on line " + _LineNumber + " There was an unrecognized symbol  " + token;
         			
       	    i = _Code.length + 1; //Stops loop
 		}
