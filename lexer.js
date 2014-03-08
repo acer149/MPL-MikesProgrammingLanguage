@@ -140,11 +140,11 @@
         	//If char matches a space, newline, process token
         	else if (_Code[i].match(space || newLine) || i === sourceCodeLengthMinusOne) {
         		checkForKeyword(token);
-        		console.log("Token Array: " + tokenArray);
+        		console.log("Token Array: " + _TokenArray);
         		token = "";
         		
         		if (_Code[i].match(newLine)) {
-        			lineNumber++;
+        			_LineNumber++;
         		}
         		if (_Code[i].match(endOfFile)) {
         			endOfFileReached = true;
@@ -165,12 +165,12 @@
         function checkForKeyword(token) {
         	var keywordArray = ["print", "while", "if", "int", "string", "boolean", "true", "false"];
         	
-        	//TODO:Store in tokenArray as T_ID, T_PRINT, etc
+        	//TODO:Store in _TokenArray as T_ID, T_PRINT, etc
         	
         	//jQuery to see if token is in keywordArray
         	if ($.inArray(token.toString(), keywordArray) != -1) {
         		console.log("The token " + token + " is a keyword");
-        		tokenArray.push(token);
+        		_TokenArray.push(token);
         		token = "";
         		console.log("Token value " + token);
         	}
@@ -187,20 +187,20 @@
         	//Check for identifier
         	if (token.match(alphaNumeric) && !token.match(quote)) { //add \g ?
         		console.log ("Token " + token + " is an identifier");
-        		tokenArray.push(token);
+        		_TokenArray.push(token);
         		token = "";        		
         	}
         	//Check for bracket
         	else if (token.match(brackets)) {
         		if (!openBracket) {
         			console.log ("Token " + token + " is an open bracket");
-        			tokenArray.push(token);
+        			_TokenArray.push(token);
         			token = "";   
         			openBracket = true;     			
         		}
         		else {
          			console.log ("Token " + token + " is a closing bracket");
-        			tokenArray.push(token);
+        			_TokenArray.push(token);
         			token = "";   
         			openBracket = false;        			
         		}
@@ -208,19 +208,19 @@
         	}
         	else if (token.match(digit)) {
         		console.log ("Token " + token + " is a digit");
-        		tokenArray.push(token);
+        		_TokenArray.push(token);
         		token = "";        		
         	}
         	else if (token.match(parens)) {
         		if (!openParen) {
          			console.log ("Token " + token + " is an open paren");
-        			tokenArray.push(token);
+        			_TokenArray.push(token);
         			token = "";   
         			openParen = true;       			
         		}
         		else {
          			console.log ("Token " + token + " is a closing paren");
-        			tokenArray.push(token);
+        			_TokenArray.push(token);
         			token = "";   
         			openParen = false;        			
         		}
@@ -229,12 +229,12 @@
         		
         		if (!isEqualityOperator) {
          			console.log ("Token " + token + " is an assignment operator");
-        			tokenArray.push(token);
+        			_TokenArray.push(token);
         			token = "";       			
         		}
         		else {
           			console.log ("Token " + token + " is an equality operator");
-        			tokenArray.push(token);
+        			_TokenArray.push(token);
         			token = "";   
         			isEqualityOperator = false;     			
         		}
@@ -242,19 +242,19 @@
         	}
         	else if (token.match(stringExpr)) {
            		console.log ("Token " + token + " is an string expression");
-        		tokenArray.push(token);       		
+        		_TokenArray.push(token);       		
         	}
         	else if (token.match(notEqual)) {
             	console.log ("Token " + token + " is a not equal sign");
-        		tokenArray.push(token);       		
+        		_TokenArray.push(token);       		
         	}
         	else if (token.match(plusSign)) {
             	console.log ("Token " + token + " is a plus sign");
-        		tokenArray.push(token);        		
+        		_TokenArray.push(token);        		
         	}
         	else if (token.match(endOfFile)) {
         		console.log ("Token " + token + " is the EOF marker");
-        		tokenArray.push(token);
+        		_TokenArray.push(token);
         		token = "";
         		endOfFileReached = true;
         	}
@@ -283,8 +283,8 @@
 	function errors() {
 		//Syntax Error
 		if (unrecognizedSymbol) {
-			console.log("ERROR: Syntax error on line " + lineNumber + " There was an unrecognized symbol  " + _Code[i]);
-   		    document.getElementById("taOutput").value += "\n\tSyntax error on line " + lineNumber + " There was an unrecognized symbol  " + _Code[i];
+			console.log("ERROR: Syntax error on line " + _LineNumber + " There was an unrecognized symbol  " + _Code[i]);
+   		    document.getElementById("taOutput").value += "\n\tSyntax error on line " + _LineNumber + " There was an unrecognized symbol  " + _Code[i];
         			
       	    i = _Code.length + 1; //Stops loop
 		}
