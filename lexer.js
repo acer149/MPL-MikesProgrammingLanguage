@@ -27,7 +27,7 @@
         _Code = document.getElementById("taSourceCode").value;
         //_Code += " ";
         //code.trim();
-        //code = code.split("");
+        _Code = _Code.split("");
         //console.log("Source Code: " + code);
         
         
@@ -89,6 +89,7 @@
         		token = _Code[i];       		
         	}
         	else if (_Code[i].match(equalsSign)) {
+        		console.log("Code at iiiii: " + _Code[i]);
         		//peek ahead to check for double equal
         		if (_Code[i+1].match(equalsSign)) {
          			isEqualityOperator = true;
@@ -127,7 +128,7 @@
         		}        		
         	}
         	else if (_Code[i].match(plusSign)) {
-        		token += _Code[i];
+        		token = _Code[i];
         		checkForKeyword(token);
         		//token = _Code[i]; 
         		       		        		
