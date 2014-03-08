@@ -134,7 +134,7 @@
         		token += code[i];
         		checkForKeyword(token);
         		//token = code[i]; 
-        		        		
+        		       		        		
         	}
         	else if (code[i].match(endOfFile)) {
         		//token += code[i];
