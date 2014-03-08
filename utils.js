@@ -44,7 +44,9 @@ function rot13(str)     // An easy-to understand implementation of the famous an
 }
 
 function getNextChar() {
-	
+	if (index != _Code.length) {
+		return _Code[index + 1];	
+	}
 }
 
 function test1() {

@@ -10,13 +10,7 @@
         // TODO: remove all spaces in the middle; remove line breaks too.
         return sourceCode;
     }
-    
-    
-    var tokenArray = [];
-    var tokenCount = 0;
-    
-    var lineNumber = 1;;
-    
+        
     var unrecognizedSymbol = false;
     var endOfFileReached = false;
     var openQuote = false;
@@ -30,7 +24,7 @@
     	document.getElementById("taOutput").value = "";
     	document.getElementById("taOutput").value += "Lexing in Process:";
     	
-        var code = document.getElementById("taSourceCode").value;
+        _Code = document.getElementById("taSourceCode").value;
         //code.trim();
         //code = code.split("");
         //console.log("Source Code: " + code);
@@ -38,13 +32,13 @@
         
         //**************
         //code = code.match(/[^\s]+/g);
-        console.log("Source Code: " + code);
+        console.log("Source Code: " + _Code);
 		var token = "";
-		var sourceCodeLengthMinusOne = code.length - 1;
+		var sourceCodeLengthMinusOne = _Code.length - 1;
 		console.log("Source Code Length minus 1 = " + sourceCodeLengthMinusOne);
         
         var i = 0;
-        for (i = 0; i < code.length; i++) {
+        for (i = 0; i < _Code.length; i++) {
         	//console.log("i = " + i);
         	
         	//RegEx
@@ -63,67 +57,67 @@
         	var plusSign = /[\+]/;
         	
         	//Checks char for alpha match
-        	if (code[i].match(alpha)) {
-        		token += code[i];
+        	if (_Code[i].match(alpha)) {
+        		token += _Code[i];
         		//console.log("Token = " + token);
         	}
         	//Checks char for alphanumeric match
-        	else if (code[i].match(alphaNumeric)) {
-        		token += code[i];
+        	else if (_Code[i].match(alphaNumeric)) {
+        		token += _Code[i];
         	}
         	//Checks char for brackets match
-        	else if (code[i].match(brackets)) {
-        		token += code[i];
+        	else if (_Code[i].match(brackets)) {
+        		token += _Code[i];
         		//Bracket reached, process token before the bracket(there was no space between token and bracket) or bracket
         		checkForKeyword(token);
-        		token = code[i+1];
+        		token = _Code[i+1];
         	}
         	//Checks for digit, then checks if token is an alpha numeric or just one or more digits
-        	else if (code[i].match(digit)) {
+        	else if (_Code[i].match(digit)) {
         		if (token.match(alphaNumeric)) {
-        			token += code[i];	
+        			token += _Code[i];	
         		}
         		else {
-        			token += code[i];       			
+        			token += _Code[i];       			
         		}        		
         	}
         	//Checks char for paren match
-        	else if (code[i].match(parens)) {
+        	else if (_Code[i].match(parens)) {
          		//Paren reached, process token before the paren(there was no space between token and paren) or paren
         		checkForKeyword(token);
-        		token = code[i];       		
+        		token = _Code[i];       		
         	}
-        	else if (code[i].match(equalsSign)) {
+        	else if (_Code[i].match(equalsSign)) {
         		//peek ahead to check for double equal
-        		if (code[i+1].match(equalsSign)) {
+        		if (_Code[i+1].match(equalsSign)) {
          			isEqualityOperator = true;
          			//= reached, process token before the =(there was no space between token and =) or =
         			checkForKeyword(token);
-        			token = code[i] + code[i+1];
+        			token = _Code[i] + _Code[i+1];
         			i++; //prevents processing the second equal sign a second time       			
         		}
         		else {
          			//= reached, process token before the =(there was no space between token and =) or =
         			checkForKeyword(token);
-        			token = code[i];       			
+        			token = _Code[i];       			
         		}
         	}
-        	else if (code[i].match(quote)) {
-        		token += code[i];
+        	else if (_Code[i].match(quote)) {
+        		token += _Code[i];
         		i +=1;
-        		while (!code[i].match(quote) && !(i === sourceCodeLengthMinusOne)) {
-        			token += code[i++];
+        		while (!_Code[i].match(quote) && !(i === sourceCodeLengthMinusOne)) {
+        			token += _Code[i++];
         			console.log("Building token " + token);
         		}
         		token += "\"";
         		checkForKeyword(token);
         	}
-        	else if (code[i].match(notEqual)) {
+        	else if (_Code[i].match(notEqual)) {
         		//peek ahead to check for equal sign
-        		if (code[i+1].match(equalsSign)) {
+        		if (_Code[i+1].match(equalsSign)) {
          			//= reached, process token before the =(there was no space between token and =) or =
         			checkForKeyword(token);
-        			token = code[i] + code[i+1];
+        			token = _Code[i] + _Code[i+1];
         			i++; //prevents processing the second equal sign a second time       			
         		}
         		else {
@@ -131,28 +125,28 @@
 					errors();       			
         		}        		
         	}
-        	else if (code[i].match(plusSign)) {
-        		token += code[i];
+        	else if (_Code[i].match(plusSign)) {
+        		token += _Code[i];
         		checkForKeyword(token);
-        		//token = code[i]; 
+        		//token = _Code[i]; 
         		       		        		
         	}
-        	else if (code[i].match(endOfFile)) {
-        		//token += code[i];
+        	else if (_Code[i].match(endOfFile)) {
+        		//token += _Code[i];
         		checkForKeyword(token);
-        		token = code[i];
+        		token = _Code[i];
         		endOfFileReached = true;
         	}
         	//If char matches a space, newline, process token
-        	else if (code[i].match(space || newLine) || i === sourceCodeLengthMinusOne) {
+        	else if (_Code[i].match(space || newLine) || i === sourceCodeLengthMinusOne) {
         		checkForKeyword(token);
         		console.log("Token Array: " + tokenArray);
         		token = "";
         		
-        		if (code[i].match(newLine)) {
+        		if (_Code[i].match(newLine)) {
         			lineNumber++;
         		}
-        		if (code[i].match(endOfFile)) {
+        		if (_Code[i].match(endOfFile)) {
         			endOfFileReached = true;
         		}
         	}
@@ -289,10 +283,10 @@
 	function errors() {
 		//Syntax Error
 		if (unrecognizedSymbol) {
-			console.log("ERROR: Syntax error on line " + lineNumber + " There was an unrecognized symbol  " + code[i]);
-   		    document.getElementById("taOutput").value += "\n\tSyntax error on line " + lineNumber + " There was an unrecognized symbol  " + code[i];
+			console.log("ERROR: Syntax error on line " + lineNumber + " There was an unrecognized symbol  " + _Code[i]);
+   		    document.getElementById("taOutput").value += "\n\tSyntax error on line " + lineNumber + " There was an unrecognized symbol  " + _Code[i];
         			
-      	    i = code.length + 1; //Stops loop
+      	    i = _Code.length + 1; //Stops loop
 		}
 	
 		if (openQuote) {
