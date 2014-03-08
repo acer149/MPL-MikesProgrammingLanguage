@@ -13,7 +13,7 @@
     
     
     var tokenArray = [];
-    var tokenCount;
+    var tokenCount = 0;
     
     var lineNumber = 1;;
     
