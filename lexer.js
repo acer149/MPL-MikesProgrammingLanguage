@@ -1,5 +1,6 @@
 /* lexer.js  */
 
+
     function lex()
     {
         // Grab the "raw" source code.
