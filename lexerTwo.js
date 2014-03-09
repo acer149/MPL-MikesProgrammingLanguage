@@ -16,8 +16,7 @@ var openParen = false;
 var openBracket = false;
 var isEqualityOperator = false;
 var duplicateToken = false;
-var whiteSpaceCount = 0;
-//Keeps track of extra spaces and skips over them
+var whiteSpacesInARowCount = 0; //Keeps track of extra spaces that are in a row
 
 //RegEx
 var character = /[a-z]/;
@@ -131,18 +130,15 @@ function test() {
 			token = _Code[_Index];
 			endOfFileReached = true;
 		}
-		//If char matches a space, newline, process token
-		else if (_Code[_Index].match(space || newLine) || _Index === sourceCodeLengthMinusOne) {
-			//checkForKeyword(token);
-			console.log("Token Array: " + _TokenArray);
-			token = "";
-
-			if (_Code[_Index].match(newLine)) {
-				_LineNumber++;
-			}
-			if (_Code[_Index].match(endOfFile)) {
-				endOfFileReached = true;
-			}
+		else if (_Code[_Index].match(newLine)) {
+			_LineNumber++;
+		}
+		else if (_Code[_Index].match(endOfFile)) {
+			endOfFileReached = true;
+		}
+		else if (_Code[_Index].match(space)) {
+			var tmpIndexHolder = _Index;
+			//whiteSpacesInARowCount	
 		} 
 		else {
 			console.log("Unrecognized");
