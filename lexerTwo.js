@@ -37,9 +37,9 @@
 		var token = "";
 		var sourceCodeLengthMinusOne = _Code.length - 1;
 		console.log("Source Code Length minus 1 = " + sourceCodeLengthMinusOne);
-        
-        var q = 0;
-        while (q < _Code.length) {
+     
+        //var q = 0;
+        while (_Index < _Code.length) {
         	//console.log("i = " + i);
         	
         	//RegEx
@@ -59,50 +59,46 @@
         	
         	//Checks char for character match
         	if (_Code[_Index].match(character)) {
-        		token += _Code[_Index];
+        		token = _Code[_Index];
         		checkForKeyword(token);
         		//console.log("Token = " + token);
         	}
         	//Checks char for brackets match
         	else if (_Code[_Index].match(brackets)) {
-        		token += _Code[_Index];
+        		token = _Code[_Index];
         		//Bracket reached, process token before the bracket(there was no space between token and bracket) or bracket
         		checkForKeyword(token);
-        		token = _Code[_Index+1];
+        		//token = _Code[_Index+1];
         	}
         	//Checks for digit, then checks if token is an alpha numeric or just one or more digits
         	else if (_Code[_Index].match(digit)) {
-        		if (token.match(alphaNumeric)) {
-        			token += _Code[_Index];	
-        		}
-        		else {
-        			token += _Code[_Index];       			
-        		}        		
+				token = _Code[_Index];
+				checkForKeyword(token);        		
         	}
         	//Checks char for paren match
         	else if (_Code[_Index].match(parens)) {
          		//Paren reached, process token before the paren(there was no space between token and paren) or paren
+         		token = _Code[_Index];
         		checkForKeyword(token);
-        		token = _Code[_Index];       		
+        		       		
         	}
         	else if (_Code[_Index].match(equalsSign)) {
-        		console.log("Code at iiiii: " + _Code[_Index]);
         		//peek ahead to check for double equal
-        		if (_Code[_Index+1].match(equalsSign)) {
+        		if (_Code[_Index + 1].match(equalsSign)) {
          			isEqualityOperator = true;
+         			token = _Code[_Index] + _Code[_Index+1];
          			//= reached, process token before the =(there was no space between token and =) or =
         			checkForKeyword(token);
-        			token = _Code[_Index] + _Code[_Index+1];
         			_Index++; //prevents processing the second equal sign a second time       			
         		}
         		else {
          			//= reached, process token before the =(there was no space between token and =) or =
+         			token = _Code[_Index];
         			checkForKeyword(token);
-        			token = _Code[_Index];       			
         		}
         	}
         	else if (_Code[_Index].match(quote)) {
-        		token += _Code[_Index];
+        		token = _Code[_Index];
         		_Index +=1;
         		while (!_Code[_Index].match(quote) && !(_Index === sourceCodeLengthMinusOne)) {
         			token += _Code[_Index++];
@@ -138,7 +134,7 @@
         	}
         	//If char matches a space, newline, process token
         	else if (_Code[_Index].match(space || newLine) || _Index === sourceCodeLengthMinusOne) {
-        		checkForKeyword(token);
+        		//checkForKeyword(token);
         		console.log("Token Array: " + _TokenArray);
         		token = "";
         		
@@ -155,7 +151,8 @@
 				errors();
         		
         	}
-        	q++;	
+        	//q++;
+        	_Index++;	
         }
         
         warnings();
@@ -164,26 +161,53 @@
         function checkForKeyword(token) {
         	var keywordArray = ["print", "while", "if", "int", "string", "boolean", "true", "false"];
         	var firstLetterOfkeywordsArray = ["p", "w", "i", "s", "b", "t", "f"];
-        	
+        	var charLookAhead = 0;
         	//TODO:Store in _TokenArray as T_ID, T_PRINT, etc
         	
+        	//If token matches the first letter of any keywords, look ahead based on length of the keyword
+        	//to determine if it is one 
         	if ($.inArray(token.toString(), firstLetterOfkeywordsArray) != -1) {
+        		if (token === "p" || token === "w" || token === "f") {
+        			charLookAhead = 4;
+        		}
+        		else if (token === "i") {
+        			if (_Code[_Index+1] = "n") {
+        				charLookAhead = 2;
+        			}
+        			else {
+        				charLookAhead = 1;
+        			} 
+        		}
+        		else if (token === "s") {
+        			charLookAhead = 5;
+        		}	
+        		else if (token === "b") {
+        			charLookAhead = 6;
+        		}
+        		else if (token === "t") {
+        			charLookAhead = 3;
+        		}
         		
+        		for (var y = 0; y < charLookAhead; y++) {
+        			token += _Code[_Index + y];
+        		}
+        		
+        		//jQuery to see if token is in keywordArray
+        		if ($.inArray(token.toString(), keywordArray) != -1) {
+        			console.log("The token " + token + " is a keyword");
+        			_TokenArray.push(token);
+        			token = "";
+        			console.log("Token value " + token);
+        			_Index += charLookAhead; 
+        		}                			
         	}
         	
-        	//jQuery to see if token is in keywordArray
-        	if ($.inArray(token.toString(), keywordArray) != -1) {
-        		console.log("The token " + token + " is a keyword");
-        		_TokenArray.push(token);
-        		token = "";
-        		console.log("Token value " + token);
-        	}
-        	else if (token.match(character) && token.length > 1) { //If token is not a keyword
+        	else if (token.match(character) && token.length > 1) { 
         		unrecognizedSymbol = true;
 				errors();
         	}
-        	else {
-        		console.log("Token " + token + " is not a keyword");
+        	else { //If token is not a keyword
+        		console.log("Token " + token + " is not a keyword"); 
         		describeType(token);
         		token = "";
         		
