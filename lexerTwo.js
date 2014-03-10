@@ -33,6 +33,8 @@ var stringExpr = /[\"alphaNumeric\"]/;
 var notEqual = /[\!]/;
 var plusSign = /[\+]/;
 
+var token = "";
+
 function test() {
 	document.getElementById("taOutput").value = "";
 	document.getElementById("taOutput").value += "Lexing in Process:";
@@ -46,7 +48,6 @@ function test() {
 	//**************
 	//code = code.match(/[^\s]+/g);
 	console.log("Source Code: " + _Code);
-	var token = "";
 	var sourceCodeLengthMinusOne = _Code.length - 1;
 	console.log("Source Code Length minus 1 = " + sourceCodeLengthMinusOne);
 
@@ -63,37 +64,34 @@ function test() {
 		//Checks char for brackets match
 		else if (_Code[_Index].match(brackets)) {
 			token = _Code[_Index];
-			//Bracket reached, process token before the bracket(there was no space between token and bracket) or bracket
 			checkTokenType(token);
-			//token = _Code[_Index+1];
 		}
-		//Checks for digit, then checks if token is an alpha numeric or just one or more digits
+		//Checks for digit
 		else if (_Code[_Index].match(digit)) {
 			token = _Code[_Index];
 			checkTokenType(token);
 		}
 		//Checks char for paren match
-		else if (_Code[_Index].match(parens)) {
-			//Paren reached, process token before the paren(there was no space between token and paren) or paren
+		else if (_Code[_Index].match(parens)) {		
 			token = _Code[_Index];
 			checkTokenType(token);
 
 		} 
+		//Checks for equal sign
 		else if (_Code[_Index].match(equalsSign)) {
 			//peek ahead to check for double equal
 			if (_Code[_Index + 1].match(equalsSign)) {
 				isEqualityOperator = true;
 				token = _Code[_Index] + _Code[_Index + 1];
-				//= reached, process token before the =(there was no space between token and =) or =
 				checkTokenType(token);
 				_Index++; //prevents processing the second equal sign a second time
 			} 
 			else {
-				//= reached, process token before the =(there was no space between token and =) or =
 				token = _Code[_Index];
 				checkTokenType(token);
 			}
 		} 
+		//Checks for quote, if found creates a string expression token
 		else if (_Code[_Index].match(quote)) {
 			token = _Code[_Index];
 			_Index += 1;
@@ -105,43 +103,48 @@ function test() {
 			token += "\"";
 			checkTokenType(token);
 		} 
+		//Checks for not equal
 		else if (_Code[_Index].match(notEqual)) {
 			//peek ahead to check for equal sign
 			if (_Code[_Index + 1].match(equalsSign)) {
-				//= reached, process token before the =(there was no space between token and =) or =
 				checkTokenType(token);
 				token = _Code[_Index] + _Code[_Index + 1];
 				_Index++; //prevents processing the equal sign a second time
 			} 
+			//Throw a syntax error if a ! is processed without a trailing = 
 			else {
 				unrecognizedSymbol = true;
 				errors();
 			}
 		} 
+		//Checks for plus sign
 		else if (_Code[_Index].match(plusSign)) {
 			token = _Code[_Index];
 			checkTokenType(token);
-			//token = _Code[_Index];
 
 		} 
+		//Checks for EOF marker
 		else if (_Code[_Index].match(endOfFile)) {
-			//token += _Code[_Index];
-			checkTokenType(token);
 			token = _Code[_Index];
+			checkTokenType(token);
 			endOfFileReached = true;
 		}
+		//Checks for newline
 		else if (_Code[_Index].match(newLine)) {
 			_LineNumber++;
 		}
+		//Checks for EOF
 		else if (_Code[_Index].match(endOfFile)) {
 			endOfFileReached = true;
 		}
+		//Checks for whitespace
 		else if (_Code[_Index].match(space)) {
 			var tmpIndexHolder = _Index;
 			//whiteSpacesInARowCount	
 		} 
 		else {
 			console.log("Unrecognized");
+			token = _Code[_Index];
 			unrecognizedSymbol = true;
 			errors();
 		}
@@ -155,7 +158,7 @@ function test() {
 	//**************
 }
 
-//Checks if the token is a keyword
+//Checks if the token is a keyword, if not move to describeToken
 function checkTokenType(token) {
 	var keywordArray = ["print", "while", "if", "int", "string", "boolean", "true", "false"];
 	var firstLetterOfkeywordsArray = ["p", "w", "i", "s", "b", "t", "f"];
@@ -169,7 +172,7 @@ function checkTokenType(token) {
 			charLookAhead = 4;
 		} 
 		else if (token === "i") {
-			if (_Code[_Index + 1] = "n") {
+			if (_Code[_Index + 1] === "n") {
 				charLookAhead = 2;
 			} 
 			else {
