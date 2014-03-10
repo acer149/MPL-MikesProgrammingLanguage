@@ -49,6 +49,25 @@ function getNextChar() {
 	}
 }
 
+
+$( "#toggleVerbose" ).change(function() {
+  if (_Verbose) {
+  	_Verbose = false;
+  }
+  else if (!_Verbose) {
+  	_Verbose = true;
+  }
+});
+
+// document.getElementById("toggleVerbose").onclick = function() {
+    // if (this.checked) {
+    	// _Verbose = true;
+    // }
+    // else {
+    	// _Verbose = false;
+    // }
+// };
+
 function test1() {
 	
 		document.getElementById("taSourceCode").value = "{\nprint (" + " \"hello\" " + ")\n}" + "\n$";	

@@ -54,7 +54,10 @@ function test() {
 	//var q = 0;
 	while (_Index < _Code.length) {
 		//console.log("i = " + i);
-		console.log("Processing Character " + _Code[_Index]);
+		if (_Verbose) {
+			document.getElementById("taOutput").value += "Processing Symbol " + _Code[_Index] + "\n";	
+		}
+		console.log("Processing Symbol " + _Code[_Index]);
 		//Checks char for character match
 		if (_Code[_Index].match(character)) {
 			token = _Code[_Index];
@@ -140,14 +143,14 @@ function test() {
 		//Checks for whitespace
 		else if (_Code[_Index].match(space)) {
 			var tmpIndexHolder = _Index;
-			console.log("tmpIndexHolder before while loop: " + tmpIndexHolder);
+			//console.log("tmpIndexHolder before while loop: " + tmpIndexHolder);
 			while (_Code[tmpIndexHolder].match(space)) { //&& !(tmpIndexHolder === sourceCodeLengthMinusOne)) {
 				whiteSpacesInARowCount +=1;
 				tmpIndexHolder++;
 			}
 			_Index += (whiteSpacesInARowCount - 1); //Subtract one to avoid off by one error. Main while loop will increment _Index as well
-			console.log("tmpIndexHolder after while loop: " + tmpIndexHolder);
-			console.log("Index after while loop: " + _Index);	
+			//console.log("tmpIndexHolder after while loop: " + tmpIndexHolder);
+			//console.log("Index after while loop: " + _Index);	
 		} 
 		else {
 			console.log("Unrecognized");
@@ -155,7 +158,6 @@ function test() {
 			unrecognizedSymbol = true;
 			errors();
 		}
-		//q++;
 		_Index++;
 	}
 	console.log("Token Array: " + _TokenArray);
