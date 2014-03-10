@@ -57,8 +57,8 @@ function test() {
 		//console.log("i = " + i);
 		
 		//If _Verbose is true print to console message with the current symbol being processed
-		//Check for spaces and new lines separatly to avoid printing a message with a black symbol 
-		//(becasue spaces and newlines don't have visible representations)
+		//Check for spaces and new lines separately to avoid printing a message with a black symbol 
+		//(because spaces and newlines don't have visible representations)
 		if (_Verbose) {
 			if (_Code[_Index].match(space) && !_Code[_Index].match(newLine)) {
 				document.getElementById("taOutput").value += "Processing Symbol \\s \n";
