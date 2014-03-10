@@ -57,26 +57,26 @@ function test() {
 		//Checks char for character match
 		if (_Code[_Index].match(character)) {
 			token = _Code[_Index];
-			checkForKeyword(token);
+			checkTokenType(token);
 			//console.log("Token = " + token);
 		}
 		//Checks char for brackets match
 		else if (_Code[_Index].match(brackets)) {
 			token = _Code[_Index];
 			//Bracket reached, process token before the bracket(there was no space between token and bracket) or bracket
-			checkForKeyword(token);
+			checkTokenType(token);
 			//token = _Code[_Index+1];
 		}
 		//Checks for digit, then checks if token is an alpha numeric or just one or more digits
 		else if (_Code[_Index].match(digit)) {
 			token = _Code[_Index];
-			checkForKeyword(token);
+			checkTokenType(token);
 		}
 		//Checks char for paren match
 		else if (_Code[_Index].match(parens)) {
 			//Paren reached, process token before the paren(there was no space between token and paren) or paren
 			token = _Code[_Index];
-			checkForKeyword(token);
+			checkTokenType(token);
 
 		} 
 		else if (_Code[_Index].match(equalsSign)) {
@@ -85,13 +85,13 @@ function test() {
 				isEqualityOperator = true;
 				token = _Code[_Index] + _Code[_Index + 1];
 				//= reached, process token before the =(there was no space between token and =) or =
-				checkForKeyword(token);
+				checkTokenType(token);
 				_Index++; //prevents processing the second equal sign a second time
 			} 
 			else {
 				//= reached, process token before the =(there was no space between token and =) or =
 				token = _Code[_Index];
-				checkForKeyword(token);
+				checkTokenType(token);
 			}
 		} 
 		else if (_Code[_Index].match(quote)) {
@@ -103,13 +103,13 @@ function test() {
 				//_Index +=1;
 			}
 			token += "\"";
-			checkForKeyword(token);
+			checkTokenType(token);
 		} 
 		else if (_Code[_Index].match(notEqual)) {
 			//peek ahead to check for equal sign
 			if (_Code[_Index + 1].match(equalsSign)) {
 				//= reached, process token before the =(there was no space between token and =) or =
-				checkForKeyword(token);
+				checkTokenType(token);
 				token = _Code[_Index] + _Code[_Index + 1];
 				_Index++; //prevents processing the equal sign a second time
 			} 
@@ -120,13 +120,13 @@ function test() {
 		} 
 		else if (_Code[_Index].match(plusSign)) {
 			token = _Code[_Index];
-			checkForKeyword(token);
+			checkTokenType(token);
 			//token = _Code[_Index];
 
 		} 
 		else if (_Code[_Index].match(endOfFile)) {
 			//token += _Code[_Index];
-			checkForKeyword(token);
+			checkTokenType(token);
 			token = _Code[_Index];
 			endOfFileReached = true;
 		}
@@ -156,7 +156,7 @@ function test() {
 }
 
 //Checks if the token is a keyword
-function checkForKeyword(token) {
+function checkTokenType(token) {
 	var keywordArray = ["print", "while", "if", "int", "string", "boolean", "true", "false"];
 	var firstLetterOfkeywordsArray = ["p", "w", "i", "s", "b", "t", "f"];
 	var charLookAhead = 0;
