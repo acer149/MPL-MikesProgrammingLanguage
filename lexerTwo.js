@@ -38,7 +38,7 @@ var token = "";
 
 function test() {
 	document.getElementById("taOutput").value = "";
-	document.getElementById("taOutput").value += "Lexing in Process:";
+	document.getElementById("taOutput").value += "Lexing in Process: \n";
 
 	_Code = document.getElementById("taSourceCode").value;
 	//_Code += " ";
@@ -55,8 +55,20 @@ function test() {
 	//var q = 0;
 	while (_Index < _Code.length) {
 		//console.log("i = " + i);
+		
+		//If _Verbose is true print to console message with the current symbol being processed
+		//Check for spaces and new lines separatly to avoid printing a message with a black symbol 
+		//(becasue spaces and newlines don't have visible representations)
 		if (_Verbose) {
-			document.getElementById("taOutput").value += "Processing Symbol " + _Code[_Index] + "\n";	
+			if (_Code[_Index].match(space) && !_Code[_Index].match(newLine)) {
+				document.getElementById("taOutput").value += "Processing Symbol \\s \n";
+			}
+			else if(_Code[_Index].match(space) && _Code[_Index].match(newLine)) {
+				document.getElementById("taOutput").value += "Processing Symbol \\n \n";
+			}
+			else {
+				document.getElementById("taOutput").value += "Processing Symbol " + _Code[_Index] + "\n";
+			}	
 		}
 		console.log("Processing Symbol " + _Code[_Index]);
 		//Checks char for character match
