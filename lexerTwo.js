@@ -148,6 +148,7 @@ function test() {
 		//Checks for newline
 		else if (_Code[_Index].match(newLine)) {
 			_LineNumber++;
+			newLinesInARowCount = 0; //Reset
 			var tmpIndexHolder = _Index;
 			//console.log("tmpIndexHolder before while loop: " + tmpIndexHolder);
 			while (_Code[tmpIndexHolder].match(newLine)) { //&& !(tmpIndexHolder === sourceCodeLengthMinusOne)) {
@@ -163,6 +164,7 @@ function test() {
 		//Checks for whitespace
 		else if (_Code[_Index].match(space)) {
 			var tmpIndexHolder = _Index;
+			whiteSpacesInARowCount = 0; //Reset
 			//console.log("tmpIndexHolder before while loop: " + tmpIndexHolder);
 			while (_Code[tmpIndexHolder].match(space)) { //&& !(tmpIndexHolder === sourceCodeLengthMinusOne)) {
 				whiteSpacesInARowCount +=1;
