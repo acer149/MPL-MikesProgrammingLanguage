@@ -112,6 +112,9 @@ function test() {
 			token = _Code[_Index];
 			_Index += 1;
 			while (!_Code[_Index].match(quote) && !(_Index === sourceCodeLengthMinusOne)) {
+				if (_Verbose) {
+					document.getElementById("taOutput").value += "Processing Symbol " + _Code[_Index] + "\n";
+				}
 				token += _Code[_Index++];
 				console.log("Building token " + token);
 				//_Index +=1;
@@ -151,6 +154,8 @@ function test() {
 			newLinesInARowCount = 0; //Reset
 			var tmpIndexHolder = _Index;
 			//console.log("tmpIndexHolder before while loop: " + tmpIndexHolder);
+			
+			//While a newline is matched, continue looping. Then add the new line count to the index to skip over them
 			while (_Code[tmpIndexHolder].match(newLine)) { //&& !(tmpIndexHolder === sourceCodeLengthMinusOne)) {
 				newLinesInARowCount +=1;
 				tmpIndexHolder++;
@@ -166,6 +171,8 @@ function test() {
 			var tmpIndexHolder = _Index;
 			whiteSpacesInARowCount = 0; //Reset
 			//console.log("tmpIndexHolder before while loop: " + tmpIndexHolder);
+			
+			//While a space is matched, continue looping. Then add the white space count to the index to skip over them
 			while (_Code[tmpIndexHolder].match(space)) { //&& !(tmpIndexHolder === sourceCodeLengthMinusOne)) {
 				whiteSpacesInARowCount +=1;
 				tmpIndexHolder++;
@@ -174,6 +181,7 @@ function test() {
 			//console.log("tmpIndexHolder after while loop: " + tmpIndexHolder);
 			//console.log("Index after while loop: " + _Index);	
 		} 
+		//Unrecognized symbol, throw error
 		else {
 			console.log("Unrecognized");
 			token = _Code[_Index];
@@ -221,6 +229,9 @@ function checkTokenType(token) {
 		}
 
 		for (var y = 1; y <= charLookAhead; y++) {
+			if (_Verbose) {
+				document.getElementById("taOutput").value += "Processing Symbol " + _Code[_Index + y] + "\n";
+			}
 			token += _Code[_Index + y];
 			console.log("Building potential keyword: " + token);
 		}
@@ -228,6 +239,9 @@ function checkTokenType(token) {
 		//jQuery to see if token is in keywordArray
 		if ($.inArray(token.toString(), keywordArray) != -1) {
 			console.log("The token " + token + " is a keyword");
+			if (_Verbose) {
+				document.getElementById("taOutput").value += "Token created: " + token + "\n";
+			}
 			_TokenArray.push(token);
 			token = "";
 			console.log("Token value " + token);
@@ -248,6 +262,11 @@ function describeType(token) {
 	//Check for identifier
 	if (token.match(character) && !token.match(quote)) {//add \g ?
 		console.log("Token " + token + " is an identifier");
+		
+		if (_Verbose) {
+			document.getElementById("taOutput").value += "Token created: " + token + "\n";
+		}
+			
 		_TokenArray.push(token);
 		token = "";
 		console.log("Index: " + _Index);
@@ -256,12 +275,22 @@ function describeType(token) {
 	else if (token.match(brackets)) {
 		if (!openBracket) {
 			console.log("Token " + token + " is an open bracket");
+			
+			if (_Verbose) {
+				document.getElementById("taOutput").value += "Token created: " + token + "\n";
+			}
+			
 			_TokenArray.push(token);
 			token = "";
 			openBracket = true;
 		} 
 		else {
 			console.log("Token " + token + " is a closing bracket");
+			
+			if (_Verbose) {
+				document.getElementById("taOutput").value += "Token created: " + token + "\n";
+			}
+			
 			_TokenArray.push(token);
 			token = "";
 			openBracket = false;
@@ -270,18 +299,33 @@ function describeType(token) {
 	} 
 	else if (token.match(digit)) {
 		console.log("Token " + token + " is a digit");
+		
+		if (_Verbose) {
+			document.getElementById("taOutput").value += "Token created: " + token + "\n";
+		}
+		
 		_TokenArray.push(token);
 		token = "";
 	} 
 	else if (token.match(parens)) {
 		if (!openParen) {
 			console.log("Token " + token + " is an open paren");
+			
+			if (_Verbose) {
+				document.getElementById("taOutput").value += "Token created: " + token + "\n";
+			}
+			
 			_TokenArray.push(token);
 			token = "";
 			openParen = true;
 		} 
 		else {
 			console.log("Token " + token + " is a closing paren");
+			
+			if (_Verbose) {
+				document.getElementById("taOutput").value += "Token created: " + token + "\n";
+			}
+			
 			_TokenArray.push(token);
 			token = "";
 			openParen = false;
@@ -291,11 +335,21 @@ function describeType(token) {
 
 		if (!isEqualityOperator) {
 			console.log("Token " + token + " is an assignment operator");
+			
+			if (_Verbose) {
+				document.getElementById("taOutput").value += "Token created: " + token + "\n";
+			}
+			
 			_TokenArray.push(token);
 			token = "";
 		} 
 		else {
 			console.log("Token " + token + " is an equality operator");
+			
+			if (_Verbose) {
+				document.getElementById("taOutput").value += "Token created: " + token + "\n";
+			}
+			
 			_TokenArray.push(token);
 			token = "";
 			isEqualityOperator = false;
@@ -304,18 +358,38 @@ function describeType(token) {
 	} 
 	else if (token.match(stringExpr)) {
 		console.log("Token " + token + " is an string expression");
+		
+		if (_Verbose) {
+			document.getElementById("taOutput").value += "Token created: " + token + "\n";
+		}
+		
 		_TokenArray.push(token);
 	} 
 	else if (token.match(notEqual)) {
 		console.log("Token " + token + " is a not equal sign");
+		
+		if (_Verbose) {
+			document.getElementById("taOutput").value += "Token created: " + token + "\n";
+		}
+		
 		_TokenArray.push(token);
 	} 
 	else if (token.match(plusSign)) {
 		console.log("Token " + token + " is a plus sign");
+		
+		if (_Verbose) {
+			document.getElementById("taOutput").value += "Token created: " + token + "\n";
+		}
+		
 		_TokenArray.push(token);
 	} 
 	else if (token.match(endOfFile)) {
 		console.log("Token " + token + " is the EOF marker");
+		
+		if (_Verbose) {
+			document.getElementById("taOutput").value += "Token created: " + token + "\n";
+		}
+		
 		_TokenArray.push(token);
 		token = "";
 		endOfFileReached = true;
