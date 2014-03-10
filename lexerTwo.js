@@ -17,6 +17,7 @@ var openBracket = false;
 var isEqualityOperator = false;
 var duplicateToken = false;
 var whiteSpacesInARowCount = 0; //Keeps track of extra spaces that are in a row
+var newLinesInARowCount = 0; //Keeps track of extra newLines that are consecutive
 
 //RegEx
 var character = /[a-z]/;
@@ -135,6 +136,13 @@ function test() {
 		//Checks for newline
 		else if (_Code[_Index].match(newLine)) {
 			_LineNumber++;
+			var tmpIndexHolder = _Index;
+			//console.log("tmpIndexHolder before while loop: " + tmpIndexHolder);
+			while (_Code[tmpIndexHolder].match(newLine)) { //&& !(tmpIndexHolder === sourceCodeLengthMinusOne)) {
+				newLinesInARowCount +=1;
+				tmpIndexHolder++;
+			}
+			_Index += (newLinesInARowCount - 1); //Subtract one to avoid off by one error. Main while loop will increment _Index as well
 		}
 		//Checks for EOF
 		else if (_Code[_Index].match(endOfFile)) {
