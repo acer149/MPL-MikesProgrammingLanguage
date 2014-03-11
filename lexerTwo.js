@@ -202,7 +202,8 @@ function test() {
 		}
 		_Index++;
 	}
-	console.log("Token Array: " + _TokenArray);
+	
+	printTokenArray();
 	token = "";
 	//warnings();
 
@@ -262,7 +263,7 @@ function checkTokenType(token) {
 			if (_Verbose) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
-			_TokenArray.push(token);
+			_TokenArray.push(new tokenObject("T_Keyword", token));
 			token = "";
 			console.log("Token value " + token);
 			_Index += charLookAhead;
@@ -287,7 +288,7 @@ function describeType(token) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 		}
 			
-		_TokenArray.push(token);
+		_TokenArray.push(new tokenObject("T_Id", token));
 		token = "";
 		console.log("Index: " + _Index);
 	}
@@ -300,7 +301,7 @@ function describeType(token) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
 			
-			_TokenArray.push(token);
+			_TokenArray.push(new tokenObject("T_OpenBracket", token));
 			token = "";
 			openBracket = true;
 		} 
@@ -311,7 +312,7 @@ function describeType(token) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
 			
-			_TokenArray.push(token);
+			_TokenArray.push(new tokenObject("T_CloseBracket" ,token));
 			token = "";
 			openBracket = false;
 		}
@@ -324,7 +325,7 @@ function describeType(token) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 		}
 		
-		_TokenArray.push(token);
+		_TokenArray.push(new tokenObject("T_Digit", token));
 		token = "";
 	} 
 	else if (token.match(parens)) {
@@ -335,7 +336,7 @@ function describeType(token) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
 			
-			_TokenArray.push(token);
+			_TokenArray.push(new tokenObject("T_OpenParen", token));
 			token = "";
 			openParen = true;
 		} 
@@ -346,7 +347,7 @@ function describeType(token) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
 			
-			_TokenArray.push(token);
+			_TokenArray.push(new tokenObject("T_CloseParen", token));
 			token = "";
 			openParen = false;
 		}
@@ -360,7 +361,7 @@ function describeType(token) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
 			
-			_TokenArray.push(token);
+			_TokenArray.push(new tokenObject("T_Assign", token));
 			token = "";
 		} 
 		else {
@@ -370,7 +371,7 @@ function describeType(token) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
 			
-			_TokenArray.push(token);
+			_TokenArray.push(new tokenObject("T_Equality", token));
 			token = "";
 			isEqualityOperator = false;
 		}
@@ -383,7 +384,7 @@ function describeType(token) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 		}
 		
-		_TokenArray.push(token);
+		_TokenArray.push(new tokenObject("T_StrExpr", token));
 	} 
 	else if (token.match(notEqual)) {
 		console.log("Token " + token + " is a not equal sign");
@@ -392,7 +393,7 @@ function describeType(token) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 		}
 		
-		_TokenArray.push(token);
+		_TokenArray.push(new tokenObject("T_NotEqual", token));
 	} 
 	else if (token.match(plusSign)) {
 		console.log("Token " + token + " is a plus sign");
@@ -401,7 +402,7 @@ function describeType(token) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 		}
 		
-		_TokenArray.push(token);
+		_TokenArray.push(new tokenObject("T_Plus", token));
 	} 
 	else if (token.match(endOfFile)) {
 		console.log("Token " + token + " is the EOF marker");
@@ -409,8 +410,9 @@ function describeType(token) {
 		if (_Verbose) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 		}
+		document.getElementById("taOutput").value += "Lexing Complete \n\n";
 		
-		_TokenArray.push(token);
+		_TokenArray.push(new tokenObject("T_EOF", token));
 		token = "";
 		endOfFileReached = true;
 		

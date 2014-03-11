@@ -59,21 +59,28 @@ $( "#toggleVerbose" ).change(function() {
   }
 });
 
-// document.getElementById("toggleVerbose").onclick = function() {
-    // if (this.checked) {
-    	// _Verbose = true;
-    // }
-    // else {
-    	// _Verbose = false;
-    // }
-// };
+function tokenObject (type, value) {
+	this.type = type;
+	this.value = value;
+}
 
-function test1() {
+function printTokenArray () {
+	console.log("Token Array: " + _TokenArray);
+	
+	document.getElementById("taOutput").value += "\tAll Tokens:\n";
+	
+	for (var i = 0; i < _TokenArray.length; i++) {
+		document.getElementById("taOutput").value += "\n\tType: " + _TokenArray[i].type + ",  Value: " + _TokenArray[i].value +  "\n";	
+	}
+	
+}
+
+function test1 () {
 	
 		document.getElementById("taSourceCode").value = "{\nprint (" + " \"hello\" " + ")\n}" + "\n$";	
 }
 
-function test2() {
-	
+function test2 () {
+	 
 		document.getElementById("taSourceCode").value = "{\nprint (" + " \"hello\" " + ")\n}" + "\n$";	
 }
