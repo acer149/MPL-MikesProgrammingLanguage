@@ -54,9 +54,17 @@ function getNextChar() {
 $( "#toggleVerbose" ).change(function() {
   if (_Verbose) {
   	_Verbose = false;
+  	_JustLexVerbose = false;
+  	_JustParseVerbose = false;
+  	$("#toggleLexVerbose").prop('checked', false);
+  	$("#toggleParseVerbose").prop('checked', false);
   }
   else if (!_Verbose) {
   	_Verbose = true;
+  	_JustLexVerbose = true;
+  	_JustParseVerbose = true;
+  	$("#toggleLexVerbose").prop('checked', true);
+  	$("#toggleParseVerbose").prop('checked', true);
   }
 });
 

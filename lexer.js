@@ -60,7 +60,7 @@ function test() {
 		//If _Verbose is true print to console message with the current symbol being processed
 		//Check for spaces and new lines separately to avoid printing a message with a black symbol 
 		//(because spaces and newlines don't have visible representations)
-		if (_Verbose) {
+		if (_Verbose && _JustLexVerbose) {
 			if (_Code[_Index].match(space) && !_Code[_Index].match(newLine)) {
 				document.getElementById("taOutput").value += "\tProcessing Symbol \\s \n\n";
 			}
@@ -114,7 +114,7 @@ function test() {
 			token = _Code[_Index];
 			_Index += 1;
 			while (!_Code[_Index].match(quote) && !(_Index === sourceCodeLengthMinusOne)) {
-				if (_Verbose) {
+				if (_Verbose && _JustLexVerbose) {
 					document.getElementById("taOutput").value += "\tProcessing Symbol " + _Code[_Index] + "\n\n";
 				}
 				token += _Code[_Index++];
@@ -125,7 +125,7 @@ function test() {
 			if (_Code[_Index].match(quote)) {
 				openQuote = false;
 			}
-			if (_Verbose && !openQuote) {
+			if (_Verbose && _JustLexVerbose && !openQuote) {
 				document.getElementById("taOutput").value += "\tProcessing Symbol \"\n\n";
 			}
 			//Only do this if there is a closing quote
@@ -253,7 +253,7 @@ function checkTokenType(token) {
 		}
 
 		for (var y = 1; y <= charLookAhead; y++) {
-			if (_Verbose) {
+			if (_Verbose && _JustLexVerbose) {
 				document.getElementById("taOutput").value += "\tProcessing Symbol " + _Code[_Index + y] + "\n\n";
 			}
 			token += _Code[_Index + y];
@@ -263,7 +263,7 @@ function checkTokenType(token) {
 		//jQuery to see if token is in keywordArray
 		if ($.inArray(token.toString(), keywordArray) != -1) {
 			console.log("The token " + token + " is a keyword");
-			if (_Verbose) {
+			if (_Verbose && _JustLexVerbose) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
 			_TokenArray.push(new tokenObject("T_Keyword", token));
@@ -287,7 +287,7 @@ function describeType(token) {
 	if (token.match(character) && !token.match(quote)) {//add \g ?
 		console.log("Token " + token + " is an identifier");
 		
-		if (_Verbose) {
+		if (_Verbose && _JustLexVerbose) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 		}
 			
@@ -300,7 +300,7 @@ function describeType(token) {
 		if (!openBracket) {
 			console.log("Token " + token + " is an open bracket");
 			
-			if (_Verbose) {
+			if (_Verbose && _JustLexVerbose) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
 			
@@ -311,7 +311,7 @@ function describeType(token) {
 		else {
 			console.log("Token " + token + " is a closing bracket");
 			
-			if (_Verbose) {
+			if (_Verbose && _JustLexVerbose) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
 			
@@ -324,7 +324,7 @@ function describeType(token) {
 	else if (token.match(digit)) {
 		console.log("Token " + token + " is a digit");
 		
-		if (_Verbose) {
+		if (_Verbose && _JustLexVerbose) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 		}
 		
@@ -335,7 +335,7 @@ function describeType(token) {
 		if (!openParen) {
 			console.log("Token " + token + " is an open paren");
 			
-			if (_Verbose) {
+			if (_Verbose && _JustLexVerbose) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
 			
@@ -346,7 +346,7 @@ function describeType(token) {
 		else {
 			console.log("Token " + token + " is a closing paren");
 			
-			if (_Verbose) {
+			if (_Verbose && _JustLexVerbose) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
 			
@@ -360,7 +360,7 @@ function describeType(token) {
 		if (!isEqualityOperator) {
 			console.log("Token " + token + " is an assignment operator");
 			
-			if (_Verbose) {
+			if (_Verbose && _JustLexVerbose) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
 			
@@ -370,7 +370,7 @@ function describeType(token) {
 		else {
 			console.log("Token " + token + " is an equality operator");
 			
-			if (_Verbose) {
+			if (_Verbose && _JustLexVerbose) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
 			
@@ -383,7 +383,7 @@ function describeType(token) {
 	else if (token.match(stringExpr)) {
 		console.log("Token " + token + " is an string expression");
 		
-		if (_Verbose) {
+		if (_Verbose && _JustLexVerbose) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 		}
 		
@@ -392,7 +392,7 @@ function describeType(token) {
 	else if (token.match(notEqual)) {
 		console.log("Token " + token + " is a not equal sign");
 		
-		if (_Verbose) {
+		if (_Verbose && _JustLexVerbose) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 		}
 		
@@ -401,7 +401,7 @@ function describeType(token) {
 	else if (token.match(plusSign)) {
 		console.log("Token " + token + " is a plus sign");
 		
-		if (_Verbose) {
+		if (_Verbose && _JustLexVerbose) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 		}
 		
@@ -410,7 +410,7 @@ function describeType(token) {
 	else if (token.match(endOfFile)) {
 		console.log("Token " + token + " is the EOF marker");
 		
-		if (_Verbose) {
+		if (_Verbose && _JustLexVerbose) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 		}
 		document.getElementById("taOutput").value += "Lexing Complete \n\n";
