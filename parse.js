@@ -1,8 +1,9 @@
 /* parse.js */
 
 function parseProgram() {
+	document.getElementById("taOutput").value += "\Parsing in Process: \n\n";
 	parseBlock();
-	match(EOF);
+	//match();
 }
 
 function parseBlock() {
@@ -87,4 +88,11 @@ function parseBoolval() {
 
 function parseIntop() {
 	
+}
+
+
+function match(expectedToken) {
+	switch(expectedToken) {
+		//case "T_OpenBracket"
+	}
 }

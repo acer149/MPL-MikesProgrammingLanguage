@@ -49,7 +49,8 @@ function getNextChar() {
 	}
 }
 
-
+//JQuery for toggles
+//Overall verbose on and off
 $( "#toggleVerbose" ).change(function() {
   if (_Verbose) {
   	_Verbose = false;
@@ -59,6 +60,27 @@ $( "#toggleVerbose" ).change(function() {
   }
 });
 
+//Toggle Lex Verbose Output
+$( "#toggleLexVerbose" ).change(function() {
+  if (_JustLexVerbose) {
+  	_JustLexVerbose = false;
+  }
+  else if (!_JustLexVerbose) {
+  	_JustLexVerbose = true;
+  }
+});
+
+//Toggle Parse Verbose Output
+$( "#toggleParseVerbose" ).change(function() {
+  if (_JustParseVerbose) {
+  	_JustParseVerbose = false;
+  }
+  else if (!_JustParseVerbose) {
+  	_JustParseVerbose = true;
+  }
+});
+
+//Creates a new token
 function tokenObject (type, value) {
 	this.type = type;
 	this.value = value;
@@ -68,11 +90,23 @@ function printTokenArray () {
 	console.log("Token Array: " + _TokenArray);
 	
 	document.getElementById("taOutput").value += "\tAll Tokens:\n";
-	
+	_TokenCount = _TokenArray.length; //Sets token count
+	console.log("Token Count = " + _TokenCount);
 	for (var i = 0; i < _TokenArray.length; i++) {
 		document.getElementById("taOutput").value += "\n\tType: " + _TokenArray[i].type + ",  Value: " + _TokenArray[i].value +  "\n";	
 	}
 	
+}
+
+//Used in parse
+function getNextToken() {
+	var tokenToParse = "T_EOF";
+	
+	if (_TokenIndex < _TokenArray.length) {
+		tokenToParse = _TokenArray[_TokenIndex];
+		_TokenIndex++;
+	}
+	return tokenToParse;
 }
 
 function test1 () {
