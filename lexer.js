@@ -37,9 +37,13 @@ var plusSign = /[\+]/;
 
 var token = "";
 
-function test() {
+function lexer() {
 	document.getElementById("taOutput").value = "";
+	document.getElementById("taOutput").value += "*****LEXER*****\n\n";
 	document.getElementById("taOutput").value += "Lexing in Process: \n\n";
+	if (!_Verbose || !_JustLexVerbose) {
+		document.getElementById("taOutput").value += "\tLexing Output Hidden \n\n";	
+	}
 
 	_Code = document.getElementById("taSourceCode").value;
 	//_Code += " ";
@@ -414,7 +418,7 @@ function describeType(token) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 		}
 		document.getElementById("taOutput").value += "Lexing Complete \n\n";
-		
+		document.getElementById("taOutput").value += "*****END LEXER*****\n\n";
 		_TokenArray.push(new tokenObject("T_EOF", token));
 		token = "";
 		endOfFileReached = true;

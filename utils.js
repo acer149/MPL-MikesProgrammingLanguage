@@ -3,6 +3,11 @@
 
    Utility functions.
    -------- */
+  
+function startCompiler() {
+	lexer();
+	parseProgram();
+}
 
 function trim(str)      // Use a regular expression to remove leading and trailing spaces.
 {
