@@ -1,7 +1,8 @@
 /* parse.js */
 
 function parseProgram() {
-	
+	parseBlock();
+	match(EOF);
 }
 
 function parseBlock() {

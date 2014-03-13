@@ -203,6 +203,10 @@ function test() {
 		_Index++;
 	}
 	
+	if (!endOfFileReached) {
+		_TokenArray.push(new tokenObject("T_EOF", "$"));
+	}
+	
 	printTokenArray();
 	token = "";
 	//warnings();
