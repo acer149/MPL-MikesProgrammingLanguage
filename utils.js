@@ -6,7 +6,7 @@
   
 function startCompiler() {
 	lexer();
-	parseProgram();
+	beginParse();
 }
 
 function trim(str)      // Use a regular expression to remove leading and trailing spaces.
@@ -113,13 +113,14 @@ function printTokenArray () {
 
 //Used in parse
 function getNextToken() {
-	var tokenToParse = "T_EOF";
+	var nextTokenToParse = "T_EOF";
 	
 	if (_TokenIndex < _TokenArray.length) {
-		tokenToParse = _TokenArray[_TokenIndex];
+		nextTokenToParse = _TokenArray[_TokenIndex];
 		_TokenIndex++;
 	}
-	return tokenToParse;
+	console.log("Returning: " + nextTokenToParse);
+	return nextTokenToParse;
 }
 
 function test1 () {
