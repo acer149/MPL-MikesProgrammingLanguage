@@ -31,17 +31,43 @@ function parseBlock() {
 }
 
 function parseStatementList() {
-	console.log("Token in parseStatementList is: " + tokenToParse);
+	console.log("Token in parseStatementList is: " + tokenToParse.value);
+	//Check ahead for a closing bracket. If found, the block is empty
 	if (tokenToParse.value === "}") {
-		document.getElementById("taOutput").value += "\n\tEmpty Block\n";
+		document.getElementById("taOutput").value += "\n\t\tFound Empty Block\n";
 	}
 	else {
-		//parseStatement();
+		parseStatement();
 		//parseStatementList();
 	}
 }
 
 function parseStatement() {
+	console.log("Token in parseStatement is: " + tokenToParse.type);
+	if (tokenToParse.type === "T_Print") {
+		match("T_Print");
+		//parsePrintStatement();	
+	}
+	else if (tokenToParse.type === "T_Id") {
+		match("T_Id");
+		//parseAssignmentStatement();	
+	}
+	else if (tokenToParse.type === "T_Int" || tokenToParse.type === "T_String" || tokenToParse.type === "T_Boolean") {
+		match("T_VarDeclType");
+		//parseVarDecl();
+	}
+	else if (tokenToParse.type === "T_While") {
+		match("T_While");
+		//parseWhileStatement();
+	}
+	else if (tokenToParse.type === "T_If") {
+		match("T_If");
+		//parseIfStatement();
+	}
+	else if (tokenToParse.type === "T_") {
+		match("T_If");
+		//parseIfStatement();
+	}
 	
 }
 
@@ -138,6 +164,36 @@ function match(expectedToken) {
 				document.getElementById("taOutput").value += "\n\tDid NOT find a closing bracket\n";
 			}
 			break;
+		
+		case "T_Print": 
+			if (tokenToParse.value === "print") {
+				document.getElementById("taOutput").value += "\n\t\tParsing Print Statement\n";
+			}
+			break;
+			
+		case "T_Id":
+			if (tokenToParse.value.match(character)) {
+				document.getElementById("taOutput").value += "\n\t\tParsing Assignment Statement\n";
+			}
+			break;
+		
+		case "T_VarDeclType":
+			if (tokenToParse.value.match(character)) {
+				document.getElementById("taOutput").value += "\n\t\tParsing VarDecl\n";
+				document.getElementById("taOutput").value += "\n\t\t/tExpecting an identifier\n";
+			}
+			break;
+		
+		case "T_While":
+			if (tokenToParse.value === "while") {
+				document.getElementById("taOutput").value += "\n\t\tParsing While Statement\n";
+			}
+			break;
+		case "T_If":
+			if (tokenToParse.value === "if") {
+				document.getElementById("taOutput").value += "\n\t\tParsing If Statement\n";
+			}
+			break;						
 			
 		case "T_EOF": document.getElementById("taOutput").value += "\n\tExpecting an EOF marker\n";
 			if (tokenToParse.value === "$") {

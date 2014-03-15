@@ -263,14 +263,54 @@ function checkTokenType(token) {
 			token += _Code[_Index + y];
 			//console.log("Building potential keyword: " + token);
 		}
-
+		
+		var keywordType = token;
+		
 		//jQuery to see if token is in keywordArray
 		if ($.inArray(token.toString(), keywordArray) != -1) {
 			//console.log("The token " + token + " is a keyword");
 			if (_Verbose && _JustLexVerbose) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
-			_TokenArray.push(new tokenObject("T_Keyword", token));
+			//Switch assigns a specific type to each keyword
+			switch(keywordType) {
+				case "print": {
+					_TokenArray.push(new tokenObject("T_Print", token));
+					break;
+				}
+				case "while": {
+					_TokenArray.push(new tokenObject("T_While", token));
+					break;
+				}
+				case "if": {
+					_TokenArray.push(new tokenObject("T_If", token));
+					break;
+				}
+				case "int": {
+					_TokenArray.push(new tokenObject("T_Int", token));
+					break;
+				}
+				case "string": {
+					_TokenArray.push(new tokenObject("T_String", token));
+					break;
+				}
+				case "boolean": {
+					_TokenArray.push(new tokenObject("T_Boolean", token));
+					break;
+				}
+				case "true": {
+					_TokenArray.push(new tokenObject("T_True", token));
+					break;
+				}
+				case "false": {
+					_TokenArray.push(new tokenObject("T_False", token));
+					break;
+				}
+				default: {
+					break;
+				}
+			}
+			//_TokenArray.push(new tokenObject("T_Keyword", token));
 			token = "";
 			//console.log("Token value " + token);
 			_Index += charLookAhead;

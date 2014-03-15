@@ -259,13 +259,13 @@ function checkTokenType(token) {
 
 		//jQuery to see if token is in keywordArray
 		if ($.inArray(token.toString(), keywordArray) != -1) {
-			console.log("The token " + token + " is a keyword");
-			if (_Verbose) {
+			//console.log("The token " + token + " is a keyword");
+			if (_Verbose && _JustLexVerbose) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
 			_TokenArray.push(new tokenObject("T_Keyword", token));
 			token = "";
-			console.log("Token value " + token);
+			//console.log("Token value " + token);
 			_Index += charLookAhead;
 		}
 	} 
