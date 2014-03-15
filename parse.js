@@ -99,7 +99,7 @@ function parseWhileStatement() {
 function parseIfStatement() {
 	document.getElementById("taOutput").value += "\n\t\tParsing If Statement\n";
 	//parseBooleanExpr();
-	//parseBlock();	
+	parseBlock();	
 }
 
 function parseExpr() {
