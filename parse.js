@@ -66,7 +66,7 @@ function parseStatement() {
 		parseIfStatement();
 	}
 	else if (tokenToParse.type === "T_OpenBracket") {
-		//parseBlock();
+		parseBlock();
 	}
 	
 }
@@ -82,7 +82,7 @@ function parsePrintStatement() {
 function parseAssignmentStatement() {
 	document.getElementById("taOutput").value += "\n\t\tParsing Assignment Statement\n";
 	match("T_Equal");
-	//parseExpr();
+	parseExpr();
 }
 
 function parseVarDecl() {
@@ -105,7 +105,7 @@ function parseIfStatement() {
 function parseExpr() {
 	if (tokenToParse.type === "T_Digit") {
 		//match() here?
-		//parseIntExpr();
+		parseIntExpr();
 	}
 	//Would be T_Quote, but I used a holistic approach. Also, why is 'holistic spelled without a 'w'??
 	else if (tokenToParse.type === "T_StringExpr") {  
@@ -122,6 +122,14 @@ function parseExpr() {
 }
 
 function parseIntExpr() {
+	if (tokenToParse.type === "T_Plus") {
+		match("T_Plus");
+		//parseIntOp();
+	}
+	else if (tokenToParse.type === "T_Digit") {
+		match("T_Digit");
+		//parseDigit();
+	}	
 	
 }
 
@@ -234,7 +242,19 @@ function match(expectedToken) {
 			if (tokenToParse.value === "=") {
 				document.getElementById("taOutput").value += "\n\t\tFound an Equal Sign\n";
 			}
-			break;					
+			break;	
+			
+		case "T_Plus": document.getElementById("taOutput").value += "\n\t\tExpecting an Plus Sign\n";
+			if (tokenToParse.value === "+") {
+				document.getElementById("taOutput").value += "\n\t\tFound an Plus Sign\n";
+			}
+			break;	
+			
+		case "T_Digit": document.getElementById("taOutput").value += "\n\t\tExpecting a Digit\n";
+			if (tokenToParse.value.match(digit)) {
+				document.getElementById("taOutput").value += "\n\t\tFound a Digit\n";
+			}
+			break;			
 			
 		case "T_EOF": document.getElementById("taOutput").value += "\n\tExpecting an EOF marker\n";
 			if (tokenToParse.value === "$") {
