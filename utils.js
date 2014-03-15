@@ -118,7 +118,7 @@ function getNextToken() {
 		nextTokenToParse = _TokenArray[_TokenIndex];
 		_TokenIndex++;
 	}
-	console.log("getNextToken is returning: " + nextTokenToParse);
+	console.log("getNextToken is returning: " + nextTokenToParse.value);
 	return nextTokenToParse;
 }
 

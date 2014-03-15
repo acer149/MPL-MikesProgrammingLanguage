@@ -55,7 +55,7 @@ function lexer() {
 	//code = code.match(/[^\s]+/g);
 	console.log("Source Code: " + _Code);
 	var sourceCodeLengthMinusOne = _Code.length - 1;
-	console.log("Source Code Length minus 1 = " + sourceCodeLengthMinusOne);
+	//console.log("Source Code Length minus 1 = " + sourceCodeLengthMinusOne);
 
 	//var q = 0;
 	while (_Index < _Code.length) {
@@ -75,7 +75,7 @@ function lexer() {
 				document.getElementById("taOutput").value += "\tProcessing Symbol " + _Code[_Index] + "\n\n";
 			}	
 		}
-		console.log("Processing Symbol " + _Code[_Index]);
+		//console.log("Processing Symbol " + _Code[_Index]);
 		//Checks char for character match
 		if (_Code[_Index].match(character)) {
 			token = _Code[_Index];
@@ -122,7 +122,7 @@ function lexer() {
 					document.getElementById("taOutput").value += "\tProcessing Symbol " + _Code[_Index] + "\n\n";
 				}
 				token += _Code[_Index++];
-				console.log("Building token " + token);
+				//console.log("Building token " + token);
 				//_Index +=1;
 			}
 			//Matches end quote so set openQuote to false
@@ -261,23 +261,23 @@ function checkTokenType(token) {
 				document.getElementById("taOutput").value += "\tProcessing Symbol " + _Code[_Index + y] + "\n\n";
 			}
 			token += _Code[_Index + y];
-			console.log("Building potential keyword: " + token);
+			//console.log("Building potential keyword: " + token);
 		}
 
 		//jQuery to see if token is in keywordArray
 		if ($.inArray(token.toString(), keywordArray) != -1) {
-			console.log("The token " + token + " is a keyword");
+			//console.log("The token " + token + " is a keyword");
 			if (_Verbose && _JustLexVerbose) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
 			_TokenArray.push(new tokenObject("T_Keyword", token));
 			token = "";
-			console.log("Token value " + token);
+			//console.log("Token value " + token);
 			_Index += charLookAhead;
 		}
 	} 
 	else {//If token is not a keyword
-		console.log("Token " + token + " is not a keyword");
+		//console.log("Token " + token + " is not a keyword");
 		describeType(token);
 		token = "";
 
@@ -289,7 +289,7 @@ function checkTokenType(token) {
 function describeType(token) {
 	//Check for identifier
 	if (token.match(character) && !token.match(quote)) {//add \g ?
-		console.log("Token " + token + " is an identifier");
+		//console.log("Token " + token + " is an identifier");
 		
 		if (_Verbose && _JustLexVerbose) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
@@ -297,12 +297,12 @@ function describeType(token) {
 			
 		_TokenArray.push(new tokenObject("T_Id", token));
 		token = "";
-		console.log("Index: " + _Index);
+		//console.log("Index: " + _Index);
 	}
 	//Check for bracket
 	else if (token.match(brackets)) {
 		if (!openBracket) {
-			console.log("Token " + token + " is an open bracket");
+			//console.log("Token " + token + " is an open bracket");
 			
 			if (_Verbose && _JustLexVerbose) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
@@ -313,7 +313,7 @@ function describeType(token) {
 			openBracket = true;
 		} 
 		else {
-			console.log("Token " + token + " is a closing bracket");
+			//console.log("Token " + token + " is a closing bracket");
 			
 			if (_Verbose && _JustLexVerbose) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
@@ -326,7 +326,7 @@ function describeType(token) {
 
 	} 
 	else if (token.match(digit)) {
-		console.log("Token " + token + " is a digit");
+		//console.log("Token " + token + " is a digit");
 		
 		if (_Verbose && _JustLexVerbose) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
@@ -337,7 +337,7 @@ function describeType(token) {
 	} 
 	else if (token.match(parens)) {
 		if (!openParen) {
-			console.log("Token " + token + " is an open paren");
+			//console.log("Token " + token + " is an open paren");
 			
 			if (_Verbose && _JustLexVerbose) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
@@ -348,7 +348,7 @@ function describeType(token) {
 			openParen = true;
 		} 
 		else {
-			console.log("Token " + token + " is a closing paren");
+			//console.log("Token " + token + " is a closing paren");
 			
 			if (_Verbose && _JustLexVerbose) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
@@ -362,7 +362,7 @@ function describeType(token) {
 	else if (token.match(equalsSign) && !token.match(notEqual)) {
 
 		if (!isEqualityOperator) {
-			console.log("Token " + token + " is an assignment operator");
+			//console.log("Token " + token + " is an assignment operator");
 			
 			if (_Verbose && _JustLexVerbose) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
@@ -372,7 +372,7 @@ function describeType(token) {
 			token = "";
 		} 
 		else {
-			console.log("Token " + token + " is an equality operator");
+			//console.log("Token " + token + " is an equality operator");
 			
 			if (_Verbose && _JustLexVerbose) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
@@ -385,7 +385,7 @@ function describeType(token) {
 
 	} 
 	else if (token.match(stringExpr)) {
-		console.log("Token " + token + " is an string expression");
+		//console.log("Token " + token + " is an string expression");
 		
 		if (_Verbose && _JustLexVerbose) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
@@ -394,7 +394,7 @@ function describeType(token) {
 		_TokenArray.push(new tokenObject("T_StrExpr", token));
 	} 
 	else if (token.match(notEqual)) {
-		console.log("Token " + token + " is a not equal sign");
+		//console.log("Token " + token + " is a not equal sign");
 		
 		if (_Verbose && _JustLexVerbose) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
@@ -403,7 +403,7 @@ function describeType(token) {
 		_TokenArray.push(new tokenObject("T_NotEqual", token));
 	} 
 	else if (token.match(plusSign)) {
-		console.log("Token " + token + " is a plus sign");
+		//console.log("Token " + token + " is a plus sign");
 		
 		if (_Verbose && _JustLexVerbose) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
@@ -412,7 +412,7 @@ function describeType(token) {
 		_TokenArray.push(new tokenObject("T_Plus", token));
 	} 
 	else if (token.match(endOfFile)) {
-		console.log("Token " + token + " is the EOF marker");
+		//console.log("Token " + token + " is the EOF marker");
 		
 		if (_Verbose && _JustLexVerbose) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
@@ -438,13 +438,13 @@ function warnings() {
 
 	//Warns of excess code after EOF marker
 	if (endOfFileReached && thereIsStuffAfterEOF) {
-		console.log("WARNING: There is stuff after the EOF marker, this will be ignored.");
+		//console.log("WARNING: There is stuff after the EOF marker, this will be ignored.");
 		document.getElementById("taOutput").value += "\n\n\tWARNING: There is/are symbol(s) after the EOF marker, this/they will be ignored.";
 	}
 
 	//Warns if EOF was reached without reading a $. Inserts $
 	if (!endOfFileReached) {
-		console.log("WARNING: EOF was reached without the use of '$'. I have inserted this symbol for you.");
+		//console.log("WARNING: EOF was reached without the use of '$'. I have inserted this symbol for you.");
 		document.getElementById("taOutput").value += "\n\n\tWARNING: EOF was reached without the use of '$'. I have inserted this symbol for you.";
 
 		var code2 = document.getElementById("taSourceCode").value;
@@ -456,7 +456,7 @@ function warnings() {
 function errors() {
 	//Syntax Error
 	if (unrecognizedSymbol) {
-		console.log("ERROR: Syntax error on line " + _LineNumber + " There was an unrecognized symbol  " + token);
+		//console.log("ERROR: Syntax error on line " + _LineNumber + " There was an unrecognized symbol  " + token);
 		//_Code[i]);
 		document.getElementById("taOutput").value += "\n\tSyntax error on line " + _LineNumber + " There was an unrecognized symbol  " + token;
 
@@ -465,12 +465,12 @@ function errors() {
 	}
 
 	if (openQuote) {
-		console.log("Unended String");
+		//console.log("Unended String");
 		document.getElementById("taOutput").value += "\n\tERROR: Unended String";
 	}
 
 	if (openParen) {
-		console.log("Unended expression");
+		//console.log("Unended expression");
 		document.getElementById("taOutput").value += "\n\tERROR: Unended expression";
 	}
 }

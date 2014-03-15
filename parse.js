@@ -24,13 +24,21 @@ function parseProgram() {
 }
 
 function parseBlock() {
+	console.log("Token in parseBlock is: " + tokenToParse);
 	match("T_OpenBracket");
 	parseStatementList();
 	match("T_CloseBracket");
 }
 
 function parseStatementList() {
-	
+	console.log("Token in parseStatementList is: " + tokenToParse);
+	if (tokenToParse.value === "}") {
+		document.getElementById("taOutput").value += "\n\tEmpty Block\n";
+	}
+	else {
+		//parseStatement();
+		//parseStatementList();
+	}
 }
 
 function parseStatement() {
