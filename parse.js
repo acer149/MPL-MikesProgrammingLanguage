@@ -24,7 +24,8 @@ function parseProgram() {
 }
 
 function parseBlock() {
-	console.log("Token in parseBlock is: " + tokenToParse);
+	document.getElementById("taOutput").value += "\n\tParsing token " + tokenToParse.index + " Value: " + tokenToParse.value + "\n";
+	console.log("Token in parseBlock is: " + tokenToParse.value);
 	match("T_OpenBracket");
 	parseStatementList();
 	match("T_CloseBracket");
@@ -54,11 +55,11 @@ function parseStatement() {
 	}
 	else if (tokenToParse.type === "T_Int" || tokenToParse.type === "T_String" || tokenToParse.type === "T_Boolean") {
 		match("T_VarDeclType");
-		//parseVarDecl();
+		parseVarDecl();
 	}
 	else if (tokenToParse.type === "T_While") {
 		match("T_While");
-		//parseWhileStatement();
+		parseWhileStatement();
 	}
 	else if (tokenToParse.type === "T_If") {
 		match("T_If");
@@ -71,6 +72,7 @@ function parseStatement() {
 }
 
 function parsePrintStatement() {
+	document.getElementById("taOutput").value += "\n\t\tParsing Print Statement\n";
 	match("T_OpenParen");
 	//parseExpr();
 	match("T_CloseParen");
@@ -78,20 +80,26 @@ function parsePrintStatement() {
 }
 
 function parseAssignmentStatement() {
+	document.getElementById("taOutput").value += "\n\t\tParsing Assignment Statement\n";
 	match("T_Equal");
 	//parseExpr();
 }
 
 function parseVarDecl() {
-	
+	document.getElementById("taOutput").value += "\n\t\tParsing VarDecl\n";
+	match("T_Id");	
 }
 
 function parseWhileStatement() {
-	
+	document.getElementById("taOutput").value += "\n\t\tParsing While Statement\n";
+	//parseBooleanExpr();
+	//parseBlock();
 }
 
 function parseIfStatement() {
-	
+	document.getElementById("taOutput").value += "\n\t\tParsing If Statement\n";
+	//parseBooleanExpr();
+	//parseBlock();	
 }
 
 function parseExpr() {
@@ -170,31 +178,27 @@ function match(expectedToken) {
 		
 		case "T_Print": 
 			if (tokenToParse.value === "print") {
-				document.getElementById("taOutput").value += "\n\t\tParsing Print Statement\n";
 			}
 			break;
 			
-		case "T_Id":
+		case "T_Id": document.getElementById("taOutput").value += "\n\t\t\tExpecting an identifier\n";
 			if (tokenToParse.value.match(character)) {
-				document.getElementById("taOutput").value += "\n\t\tParsing Assignment Statement\n";
+				document.getElementById("taOutput").value += "\n\t\tFound an identifier\n";
 			}
 			break;
 		
 		case "T_VarDeclType":
 			if (tokenToParse.value.match(character)) {
-				document.getElementById("taOutput").value += "\n\t\tParsing VarDecl\n";
-				document.getElementById("taOutput").value += "\n\t\t/tExpecting an identifier\n";
+				//document.getElementById("taOutput").value += "\n\t\t\tParsing\n";
 			}
 			break;
 		
 		case "T_While":
 			if (tokenToParse.value === "while") {
-				document.getElementById("taOutput").value += "\n\t\tParsing While Statement\n";
 			}
 			break;
 		case "T_If":
 			if (tokenToParse.value === "if") {
-				document.getElementById("taOutput").value += "\n\t\tParsing If Statement\n";
 			}
 			break;	
 			

@@ -94,9 +94,10 @@ $( "#toggleParseVerbose" ).change(function() {
 });
 
 //Creates a new token
-function tokenObject (type, value) {
+function tokenObject (type, value, index) {
 	this.type = type;
 	this.value = value;
+	this.index = _TokenArray.length + 1;
 }
 
 function printTokenArray () {
