@@ -114,12 +114,11 @@ function printTokenArray () {
 //Used in parse
 function getNextToken() {
 	var nextTokenToParse = "T_EOF";
-	
 	if (_TokenIndex < _TokenArray.length) {
 		nextTokenToParse = _TokenArray[_TokenIndex];
 		_TokenIndex++;
 	}
-	console.log("Returning: " + nextTokenToParse);
+	console.log("getNextToken is returning: " + nextTokenToParse);
 	return nextTokenToParse;
 }
 
