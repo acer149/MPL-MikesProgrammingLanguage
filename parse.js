@@ -63,7 +63,7 @@ function parseStatement() {
 	}
 	else if (tokenToParse.type === "T_If") {
 		match("T_If");
-		//parseIfStatement();
+		parseIfStatement();
 	}
 	else if (tokenToParse.type === "T_OpenBracket") {
 		//parseBlock();

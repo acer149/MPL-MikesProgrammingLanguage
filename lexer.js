@@ -13,8 +13,8 @@ var unrecognizedSymbol = false;
 var endOfFileReached = false;
 var thereIsStuffAfterEOF = false;
 var openQuote = false;
-var openParen = false;
-var openBracket = false;
+//var openParen = false;
+//var openBracket = false;
 var isEqualityOperator = false;
 var duplicateToken = false;
 var whiteSpacesInARowCount = 0; //Keeps track of extra spaces that are in a row
@@ -29,6 +29,10 @@ var newLine = /[\n]/;
 var endOfFile = /[\$]/;
 var brackets = /[\{\}]/;
 var parens = /[\(\)]/;
+var openBracket = /[\{]/;
+var closeBracket = /[\}]/;
+var openParen = /[\(]/;
+var closeParen = /[\)]/;
 var equalsSign = /[\=]/;
 var quote = /[\"]/;
 var stringExpr = /[\"alphaNumeric\"]/;
@@ -341,7 +345,7 @@ function describeType(token) {
 	}
 	//Check for bracket
 	else if (token.match(brackets)) {
-		if (!openBracket) {
+		if (token.match(openBracket)) {
 			//console.log("Token " + token + " is an open bracket");
 			
 			if (_Verbose && _JustLexVerbose) {
@@ -350,7 +354,7 @@ function describeType(token) {
 			
 			_TokenArray.push(new tokenObject("T_OpenBracket", token));
 			token = "";
-			openBracket = true;
+			//openBracket = true;
 		} 
 		else {
 			//console.log("Token " + token + " is a closing bracket");
@@ -376,7 +380,7 @@ function describeType(token) {
 		token = "";
 	} 
 	else if (token.match(parens)) {
-		if (!openParen) {
+		if (token.match(openParen)) {
 			//console.log("Token " + token + " is an open paren");
 			
 			if (_Verbose && _JustLexVerbose) {
@@ -385,7 +389,7 @@ function describeType(token) {
 			
 			_TokenArray.push(new tokenObject("T_OpenParen", token));
 			token = "";
-			openParen = true;
+			//openParen = true;
 		} 
 		else {
 			//console.log("Token " + token + " is a closing paren");
