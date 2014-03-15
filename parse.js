@@ -46,7 +46,7 @@ function parseStatement() {
 	console.log("Token in parseStatement is: " + tokenToParse.type);
 	if (tokenToParse.type === "T_Print") {
 		match("T_Print");
-		//parsePrintStatement();	
+		parsePrintStatement();	
 	}
 	else if (tokenToParse.type === "T_Id") {
 		match("T_Id");
@@ -64,14 +64,16 @@ function parseStatement() {
 		match("T_If");
 		//parseIfStatement();
 	}
-	else if (tokenToParse.type === "T_") {
-		match("T_If");
-		//parseIfStatement();
+	else if (tokenToParse.type === "T_OpenBracket") {
+		//parseBlock();
 	}
 	
 }
 
 function parsePrintStatement() {
+	match("T_OpenParen");
+	//parseExpr();
+	match("T_CloseParen");
 	
 }
 
@@ -193,7 +195,18 @@ function match(expectedToken) {
 			if (tokenToParse.value === "if") {
 				document.getElementById("taOutput").value += "\n\t\tParsing If Statement\n";
 			}
-			break;						
+			break;	
+			
+		case "T_OpenParen": document.getElementById("taOutput").value += "\n\t\tExpecting an Open Paren\n";
+			if (tokenToParse.value === "(") {
+				document.getElementById("taOutput").value += "\n\t\tFound Open Paren\n";
+			}
+			break;
+		case "T_CloseParen": document.getElementById("taOutput").value += "\n\t\tExpecting a Closing Paren\n";
+			if (tokenToParse.value === ")") {
+				document.getElementById("taOutput").value += "\n\t\tFound a Closing Paren\n";
+			}
+			break;					
 			
 		case "T_EOF": document.getElementById("taOutput").value += "\n\tExpecting an EOF marker\n";
 			if (tokenToParse.value === "$") {
