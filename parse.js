@@ -50,7 +50,7 @@ function parseStatement() {
 	}
 	else if (tokenToParse.type === "T_Id") {
 		match("T_Id");
-		//parseAssignmentStatement();	
+		parseAssignmentStatement();	
 	}
 	else if (tokenToParse.type === "T_Int" || tokenToParse.type === "T_String" || tokenToParse.type === "T_Boolean") {
 		match("T_VarDeclType");
@@ -78,7 +78,8 @@ function parsePrintStatement() {
 }
 
 function parseAssignmentStatement() {
-	
+	match("T_Equal");
+	//parseExpr();
 }
 
 function parseVarDecl() {
@@ -205,6 +206,11 @@ function match(expectedToken) {
 		case "T_CloseParen": document.getElementById("taOutput").value += "\n\t\tExpecting a Closing Paren\n";
 			if (tokenToParse.value === ")") {
 				document.getElementById("taOutput").value += "\n\t\tFound a Closing Paren\n";
+			}
+			break;
+		case "T_Equal": document.getElementById("taOutput").value += "\n\t\tExpecting an Equal Sign\n";
+			if (tokenToParse.value === "=") {
+				document.getElementById("taOutput").value += "\n\t\tFound an Equal Sign\n";
 			}
 			break;					
 			
