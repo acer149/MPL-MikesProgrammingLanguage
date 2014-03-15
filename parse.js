@@ -74,7 +74,7 @@ function parseStatement() {
 function parsePrintStatement() {
 	document.getElementById("taOutput").value += "\n\t\tParsing Print Statement\n";
 	match("T_OpenParen");
-	//parseExpr();
+	parseExpr();
 	match("T_CloseParen");
 	
 }
@@ -93,7 +93,7 @@ function parseVarDecl() {
 function parseWhileStatement() {
 	document.getElementById("taOutput").value += "\n\t\tParsing While Statement\n";
 	//parseBooleanExpr();
-	//parseBlock();
+	parseBlock();
 }
 
 function parseIfStatement() {
@@ -103,7 +103,22 @@ function parseIfStatement() {
 }
 
 function parseExpr() {
-	
+	if (tokenToParse.type === "T_Digit") {
+		//match() here?
+		//parseIntExpr();
+	}
+	//Would be T_Quote, but I used a holistic approach. Also, why is 'holistic spelled without a 'w'??
+	else if (tokenToParse.type === "T_StringExpr") {  
+		//match() here?
+		//parseStringExpr();
+	}
+	else if (tokenToParse.type === "(") {  
+		//match() here?
+		//parseBooleanExpr();
+	}
+	else if (tokenToParse.type === "T_Id") {  
+		match("T_Id");
+	}
 }
 
 function parseIntExpr() {
@@ -115,6 +130,9 @@ function parseStringExpr() {
 }
 
 function parseBooleanExpr() {
+	match("T_OpenParen");
+	//Something here
+	match("T_CloseParen");
 	
 }
 
