@@ -35,7 +35,7 @@ var openParen = /[\(]/;
 var closeParen = /[\)]/;
 var equalsSign = /[\=]/;
 var quote = /[\"]/;
-var stringExpr = /[\"alphaNumeric\"]/;
+var stringExpr = /[\"character*\"]/;
 var notEqual = /[\!]/;
 var plusSign = /[\+]/;
 

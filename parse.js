@@ -92,13 +92,13 @@ function parseVarDecl() {
 
 function parseWhileStatement() {
 	document.getElementById("taOutput").value += "\n\t\tParsing While Statement\n";
-	//parseBooleanExpr();
+	parseBooleanExpr();
 	parseBlock();
 }
 
 function parseIfStatement() {
 	document.getElementById("taOutput").value += "\n\t\tParsing If Statement\n";
-	//parseBooleanExpr();
+	parseBooleanExpr();
 	parseBlock();	
 }
 
@@ -110,11 +110,11 @@ function parseExpr() {
 	//Would be T_Quote, but I used a holistic approach. Also, why is 'holistic spelled without a 'w'??
 	else if (tokenToParse.type === "T_StringExpr") {  
 		//match() here?
-		//parseStringExpr();
+		parseStringExpr();
 	}
 	else if (tokenToParse.type === "(") {  
 		//match() here?
-		//parseBooleanExpr();
+		parseBooleanExpr();
 	}
 	else if (tokenToParse.type === "T_Id") {  
 		match("T_Id");
@@ -124,28 +124,35 @@ function parseExpr() {
 function parseIntExpr() {
 	if (tokenToParse.type === "T_Plus") {
 		match("T_Plus");
-		//parseIntOp();
+		parseIntOp();
 	}
 	else if (tokenToParse.type === "T_Digit") {
 		match("T_Digit");
-		//parseDigit();
+		parseDigit();
 	}	
 	
 }
 
 function parseStringExpr() {
+	match("T_StringExpr");
 	
 }
 
 function parseBooleanExpr() {
-	match("T_OpenParen");
-	//Something here
-	match("T_CloseParen");
+	if (tokenToParse.value === "(") {
+		match("T_OpenParen");
+		parseExpr();
+		parseBoolOp();
+		match("T_CloseParen");	
+	}
+	else {
+		parseBoolval();
+	}
 	
 }
 
 function parseId() {
-	
+	match(T_Id);
 }
 
 function parseCharList() {
@@ -165,19 +172,29 @@ function parseSpace() {
 }
 
 function parseDigit() {
+	if (tokenToParse.value.match(digit)) {
+		match("T_Digit");
+	}
 	
 }
 
 function parseBoolop() {
+	if (tokenToParse.value === "==" || tokenToParse.value === "!=") {
+		match("T_BoolOp");
+	}
 	
 }
 
 function parseBoolval() {
-	
+	if (tokenToParse.value === "true" || tokenToParse.value === "false") {
+		match("T_Boolval");
+	}	
 }
 
 function parseIntop() {
-	
+	if (tokenToParse.value === "+") {
+		match("T_IntOp");
+	}	
 }
 
 
@@ -254,7 +271,31 @@ function match(expectedToken) {
 			if (tokenToParse.value.match(digit)) {
 				document.getElementById("taOutput").value += "\n\t\tFound a Digit\n";
 			}
-			break;			
+			break;
+		
+		case "T_StringExpr": document.getElementById("taOutput").value += "\n\t\tExpecting a String Expression\n";
+			if (tokenToParse.value.match(stringExpr)) {
+				document.getElementById("taOutput").value += "\n\t\tFound a String Expression\n";
+			}			
+			break;
+			
+		case "T_BoolOp": document.getElementById("taOutput").value += "\n\t\tExpecting a Boolean Op\n";
+			if (tokenToParse.value === "==" || tokenToParse.value === "!=") {
+				document.getElementById("taOutput").value += "\n\t\tFound a Boolean Op\n";
+			}			
+			break;
+			
+		case "T_Boolval": document.getElementById("taOutput").value += "\n\t\tExpecting a Boolean Val\n";
+			if (tokenToParse.value === "true" || tokenToParse.value === "false") {
+				document.getElementById("taOutput").value += "\n\t\tFound a Boolean Val\n";
+			}			
+			break;
+			
+		case "T_IntOp": document.getElementById("taOutput").value += "\n\t\tExpecting an Int Op\n";
+			if (tokenToParse.value === "+") {
+				document.getElementById("taOutput").value += "\n\t\tFound an Int Op\n";
+			}			
+			break;
 			
 		case "T_EOF": document.getElementById("taOutput").value += "\n\tExpecting an EOF marker\n";
 			if (tokenToParse.value === "$") {
