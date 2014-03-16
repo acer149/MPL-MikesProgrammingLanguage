@@ -13,8 +13,8 @@ var unrecognizedSymbol = false;
 var endOfFileReached = false;
 var thereIsStuffAfterEOF = false;
 var openQuote = false;
-var openParen = false;
-var openBracket = false;
+//var openParen = false;
+//var openBracket = false;
 var isEqualityOperator = false;
 var duplicateToken = false;
 var whiteSpacesInARowCount = 0; //Keeps track of extra spaces that are in a row
@@ -29,9 +29,13 @@ var newLine = /[\n]/;
 var endOfFile = /[\$]/;
 var brackets = /[\{\}]/;
 var parens = /[\(\)]/;
+var openBracket = /[\{]/;
+var closeBracket = /[\}]/;
+var openParen = /[\(]/;
+var closeParen = /[\)]/;
 var equalsSign = /[\=]/;
 var quote = /[\"]/;
-var stringExpr = /[\"alphaNumeric\"]/;
+var stringExpr = /[\"character*\"]/;
 var notEqual = /[\!]/;
 var plusSign = /[\+]/;
 
@@ -120,6 +124,11 @@ function lexer() {
 			while (!_Code[_Index].match(quote) && !(_Index === sourceCodeLengthMinusOne)) {
 				if (_Verbose && _JustLexVerbose) {
 					document.getElementById("taOutput").value += "\tProcessing Symbol " + _Code[_Index] + "\n\n";
+				}
+				//Checks for digit in string error
+				if (_Code[_Index].match(digit)) {
+					document.getElementById("taOutput").value += "\tERROR: Strings cannot contain digits \n\n";
+					_Index += _Code.length;//Kills lexer
 				}
 				token += _Code[_Index++];
 				//console.log("Building token " + token);
@@ -341,7 +350,7 @@ function describeType(token) {
 	}
 	//Check for bracket
 	else if (token.match(brackets)) {
-		if (!openBracket) {
+		if (token.match(openBracket)) {
 			//console.log("Token " + token + " is an open bracket");
 			
 			if (_Verbose && _JustLexVerbose) {
@@ -350,7 +359,7 @@ function describeType(token) {
 			
 			_TokenArray.push(new tokenObject("T_OpenBracket", token));
 			token = "";
-			openBracket = true;
+			//openBracket = true;
 		} 
 		else {
 			//console.log("Token " + token + " is a closing bracket");
@@ -376,7 +385,7 @@ function describeType(token) {
 		token = "";
 	} 
 	else if (token.match(parens)) {
-		if (!openParen) {
+		if (token.match(openParen)) {
 			//console.log("Token " + token + " is an open paren");
 			
 			if (_Verbose && _JustLexVerbose) {
@@ -385,7 +394,7 @@ function describeType(token) {
 			
 			_TokenArray.push(new tokenObject("T_OpenParen", token));
 			token = "";
-			openParen = true;
+			//openParen = true;
 		} 
 		else {
 			//console.log("Token " + token + " is a closing paren");
@@ -431,7 +440,7 @@ function describeType(token) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 		}
 		
-		_TokenArray.push(new tokenObject("T_StrExpr", token));
+		_TokenArray.push(new tokenObject("T_StringExpr", token));
 	} 
 	else if (token.match(notEqual)) {
 		//console.log("Token " + token + " is a not equal sign");
