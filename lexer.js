@@ -440,7 +440,7 @@ function describeType(token) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 		}
 		
-		_TokenArray.push(new tokenObject("T_StrExpr", token));
+		_TokenArray.push(new tokenObject("T_StringExpr", token));
 	} 
 	else if (token.match(notEqual)) {
 		//console.log("Token " + token + " is a not equal sign");

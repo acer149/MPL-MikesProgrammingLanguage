@@ -274,7 +274,7 @@ function match(expectedToken) {
 			break;
 		
 		case "T_StringExpr": document.getElementById("taOutput").value += "\n\t\tExpecting a String Expression\n";
-			if (tokenToParse.value.match(stringExpr)) {
+			if (tokenToParse.type === "T_StringExpr") {
 				document.getElementById("taOutput").value += "\n\t\tFound a String Expression\n";
 			}			
 			break;
