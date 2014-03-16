@@ -14,7 +14,7 @@ var endOfFileReached = false;
 var thereIsStuffAfterEOF = false;
 var openQuote = false;
 //var openParen = false;
-//var openBracket = false;
+var unmatchedOpenBracket = false;
 var isEqualityOperator = false;
 var duplicateToken = false;
 var whiteSpacesInARowCount = 0; //Keeps track of extra spaces that are in a row
@@ -340,11 +340,17 @@ function describeType(token) {
 	if (token.match(character) && !token.match(quote)) {//add \g ?
 		//console.log("Token " + token + " is an identifier");
 		
-		if (_Verbose && _JustLexVerbose) {
-			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
+		checkForExisitingIdentifier(token);
+		//If the identifier exists do not create a new token for it
+		if (!_IdentifierExists) {
+			if (_Verbose && _JustLexVerbose) {
+				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
+			}
+			_TokenArray.push(new tokenObject("T_Id", token));
 		}
-			
-		_TokenArray.push(new tokenObject("T_Id", token));
+		
+		_IdentifierExists = false;
+
 		token = "";
 		//console.log("Index: " + _Index);
 	}
@@ -359,7 +365,7 @@ function describeType(token) {
 			
 			_TokenArray.push(new tokenObject("T_OpenBracket", token));
 			token = "";
-			//openBracket = true;
+			unmatchedOpenBracket = true;
 		} 
 		else {
 			//console.log("Token " + token + " is a closing bracket");
@@ -370,7 +376,7 @@ function describeType(token) {
 			
 			_TokenArray.push(new tokenObject("T_CloseBracket" ,token));
 			token = "";
-			openBracket = false;
+			unmatchedOpenBracket = false;
 		}
 
 	} 

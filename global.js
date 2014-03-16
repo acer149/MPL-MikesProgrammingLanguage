@@ -9,3 +9,4 @@ var _Index = 0;
 var _Verbose = true;
 var _JustLexVerbose = false;
 var _JustParseVerbose = true;
+var _IdentifierExists = false;

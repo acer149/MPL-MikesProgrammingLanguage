@@ -100,6 +100,15 @@ function tokenObject (type, value, index) {
 	this.index = _TokenArray.length + 1;
 }
 
+// function checkForExisitingIdentifier() {
+	// for (var i = 0; i < _TokenArray.length; i++) {
+		// if ($.inArray(token, _TokenArray[i].value) != -1) {
+			// console.log("Identifier- " + token + " -already in array");
+			// _IdentifierExists = true;
+		// }
+	// }
+// }
+
 function printTokenArray () {
 	console.log("Token Array: " + _TokenArray);
 	
