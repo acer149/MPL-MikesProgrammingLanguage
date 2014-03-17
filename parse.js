@@ -113,7 +113,7 @@ function parseExpr() {
 		//match() here?
 		parseStringExpr();
 	}
-	else if (tokenToParse.type === "T_True" || tokenToParse.type === "T_False") {  
+	else if (tokenToParse.type === "T_True" || tokenToParse.type === "T_False" || tokenToParse.value === "(") {  
 		//match() here?
 		parseBooleanExpr();
 	}
