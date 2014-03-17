@@ -7,6 +7,6 @@ var _TokenIndex = 0;
 var _LineNumber = 1;;
 var _Index = 0;
 var _Verbose = true;
-var _JustLexVerbose = false;
+var _JustLexVerbose = true;
 var _JustParseVerbose = true;
 var _IdentifierExists = false;

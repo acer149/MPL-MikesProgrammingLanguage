@@ -39,7 +39,7 @@ function parseStatementList() {
 	}
 	else {
 		parseStatement();
-		//parseStatementList();
+		parseStatementList();
 	}
 }
 
@@ -122,14 +122,36 @@ function parseExpr() {
 }
 
 function parseIntExpr() {
-	if (tokenToParse.type === "T_Plus") {
-		match("T_Plus");
-		parseIntOp();
-	}
-	else if (tokenToParse.type === "T_Digit") {
+	
+	
+	
+	if (tokenToParse.type === "T_Digit") {
 		match("T_Digit");
 		parseDigit();
-	}	
+		
+		if (tokenToParse.type === "T_Plus") {
+			match("T_Plus");
+			parseIntop();
+		
+			if (tokenToParse.type === "T_Id") {
+				match("T_Id");
+			}					
+		}
+	}
+	
+	// if (tokenToParse.type === "T_Plus") {
+		// match("T_Plus");
+		// parseIntop();
+	// }
+	// else if (tokenToParse.type === "T_Digit") {
+		// match("T_Digit");
+		// parseDigit();
+// 		
+	// }
+	// else if (tokenToParse.type === "T_Id") {
+		// match("T_Id");
+	// }
+
 	
 }
 

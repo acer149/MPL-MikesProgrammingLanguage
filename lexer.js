@@ -340,7 +340,8 @@ function describeType(token) {
 	if (token.match(character) && !token.match(quote)) {//add \g ?
 		//console.log("Token " + token + " is an identifier");
 		
-		checkForExisitingIdentifier(token);
+		//checkForExisitingIdentifier(token);
+		
 		//If the identifier exists do not create a new token for it
 		if (!_IdentifierExists) {
 			if (_Verbose && _JustLexVerbose) {
