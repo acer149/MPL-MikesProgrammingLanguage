@@ -242,8 +242,8 @@ function checkTokenType(token) {
 	var charLookAhead = 0;
 
 	//If token matches the first letter of any keywords, look ahead based on length of the keyword
-	//to determine if it is one
-	if ($.inArray(token.toString(), firstLetterOfkeywordsArray) != -1) {
+	//to determine if it is one. If there are no other characters after the first letter, process as an identifier
+	if ($.inArray(token.toString(), firstLetterOfkeywordsArray) != -1 && _Code[_Index + 1].match(character)) {
 		if (token === "p" || token === "w" || token === "f") {
 			charLookAhead = 4;
 		} 
@@ -266,11 +266,13 @@ function checkTokenType(token) {
 		}
 
 		for (var y = 1; y <= charLookAhead; y++) {
+			console.log ("HERE " +_Code[_Index + y]);
 			if (_Verbose && _JustLexVerbose) {
 				document.getElementById("taOutput").value += "\tProcessing Symbol " + _Code[_Index + y] + "\n\n";
 			}
 			token += _Code[_Index + y];
-			//console.log("Building potential keyword: " + token);
+			//console.log("Building potential keyword: " + token);				
+			
 		}
 		
 		var keywordType = token;

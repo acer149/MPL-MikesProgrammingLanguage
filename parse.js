@@ -158,7 +158,7 @@ function parseBooleanExpr() {
 }
 
 function parseId() {
-	match(T_Id);
+	match("T_Id");
 }
 
 function parseCharList() {
@@ -247,13 +247,19 @@ function match(expectedToken) {
 			}
 			break;
 		
-		case "T_VarDeclType":
-			if (tokenToParse.value.match(character)) {
+		case "T_VarDeclType": document.getElementById("taOutput").value += "\n\t\t\tExpecting int, string, or boolean keyword\n";
+			if (tokenToParse.type === "T_Int") {
+				//document.getElementById("taOutput").value += "\n\t\t\tParsing\n";
+			}
+			else if (tokenToParse.type === "T_String") {
+				//document.getElementById("taOutput").value += "\n\t\t\tParsing\n";
+			}
+			else if (tokenToParse.type === "T_Boolean") {
 				//document.getElementById("taOutput").value += "\n\t\t\tParsing\n";
 			}
 			else {
-				//document.getElementById("taOutput").value += "\n\tDid NOT find \n";
-				//_ErrorCount+=1;
+				document.getElementById("taOutput").value += "\n\t\t\tDid NOT find int, string, or boolean keyword\n";
+				_ErrorCount+=1;
 			}
 			break;
 		
