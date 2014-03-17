@@ -36,7 +36,7 @@ function parseStatementList() {
 	console.log("Token in parseStatementList is: " + tokenToParse.value);
 	//Check ahead for a closing bracket. If found, the block is empty
 	if (tokenToParse.value === "}") {
-		document.getElementById("taOutput").value += "\n\t\tFound Empty Block\n";
+		//document.getElementById("taOutput").value += "\n\t\tFound Empty Block\n";
 	}
 	else {
 		parseStatement();
@@ -105,7 +105,7 @@ function parseIfStatement() {
 
 function parseExpr() {
 	if (tokenToParse.type === "T_Digit") {
-		//match() here?
+		match("T_Digit");
 		parseIntExpr();
 	}
 	//Would be T_Quote, but I used a holistic approach. Also, why is 'holistic spelled without a 'w'??
@@ -113,7 +113,7 @@ function parseExpr() {
 		//match() here?
 		parseStringExpr();
 	}
-	else if (tokenToParse.type === "(") {  
+	else if (tokenToParse.type === "T_True" || tokenToParse.type === "T_False") {  
 		//match() here?
 		parseBooleanExpr();
 	}
@@ -123,37 +123,20 @@ function parseExpr() {
 }
 
 function parseIntExpr() {
-	
-	
-	
-	if (tokenToParse.type === "T_Digit") {
-		match("T_Digit");
-		parseDigit();
 		
-		if (tokenToParse.type === "T_Plus") {
-			match("T_Plus");
-			parseIntop();
-		
-			if (tokenToParse.type === "T_Id") {
-				match("T_Id");
-			}					
-		}
-	}
-	
-	// if (tokenToParse.type === "T_Plus") {
-		// match("T_Plus");
-		// parseIntop();
-	// }
-	// else if (tokenToParse.type === "T_Digit") {
-		// match("T_Digit");
-		// parseDigit();
-// 		
-	// }
-	// else if (tokenToParse.type === "T_Id") {
-		// match("T_Id");
-	// }
-
-	
+	 if (tokenToParse.type === "T_Plus") {
+		 match("T_Plus");
+		 parseIntop();
+		 parseExpr();
+	 }
+	 else if (tokenToParse.type === "T_Digit") {
+		 match("T_Digit");
+		 parseDigit();
+ 		
+	 }
+	 else if (tokenToParse.type === "T_Id") {
+		 match("T_Id");
+	 }	
 }
 
 function parseStringExpr() {
