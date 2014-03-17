@@ -148,7 +148,8 @@ function parseBooleanExpr() {
 	if (tokenToParse.value === "(") {
 		match("T_OpenParen");
 		parseExpr();
-		parseBoolOp();
+		parseBoolop();
+		parseExpr();
 		match("T_CloseParen");	
 	}
 	else {
