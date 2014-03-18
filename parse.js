@@ -123,20 +123,25 @@ function parseExpr() {
 }
 
 function parseIntExpr() {
-		
-	 if (tokenToParse.type === "T_Plus") {
-		 match("T_Plus");
-		 parseIntop();
-		 parseExpr();
-	 }
-	 else if (tokenToParse.type === "T_Digit") {
-		 match("T_Digit");
-		 parseDigit();
+	if (tokenToParse.value === ")") {
+		//match close paren in parseBoolExpr
+	}
+	else {
+	 	if (tokenToParse.type === "T_Plus") {
+			 match("T_Plus");
+			 parseIntop();
+			 parseExpr();
+		 }
+		 else if (tokenToParse.type === "T_Digit") {
+			 match("T_Digit");
+			 parseDigit();
  		
-	 }
-	 else if (tokenToParse.type === "T_Id") {
-		 match("T_Id");
-	 }	
+		 }
+		 else if (tokenToParse.type === "T_Id") {
+			 match("T_Id");
+		 }		
+	}
+	
 }
 
 function parseStringExpr() {

@@ -151,8 +151,9 @@ function lexer() {
 		else if (_Code[_Index].match(notEqual)) {
 			//peek ahead to check for equal sign
 			if (_Code[_Index + 1].match(equalsSign)) {
-				checkTokenType(token);
 				token = _Code[_Index] + _Code[_Index + 1];
+				checkTokenType(token);
+				//token = _Code[_Index] + _Code[_Index + 1];
 				_Index++; //prevents processing the equal sign a second time
 			} 
 			//Throw a syntax error if a ! is processed without a trailing = 
