@@ -476,8 +476,7 @@ function describeType(token) {
 		if (_Verbose && _JustLexVerbose) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 		}
-		document.getElementById("taOutput").value += "Lexing Complete \n\n";
-		document.getElementById("taOutput").value += "*****END LEXER*****\n\n";
+
 		_TokenArray.push(new tokenObject("T_EOF", token));
 		token = "";
 		endOfFileReached = true;
@@ -487,6 +486,8 @@ function describeType(token) {
 			thereIsStuffAfterEOF = true;
 			warnings();
 		}
+		document.getElementById("taOutput").value += "Lexing Complete \n\n";
+		document.getElementById("taOutput").value += "*****END LEXER*****\n\n";
 		
 		_Index += _Code.length; //Kills while loop if $ is reached 
 	}
@@ -498,7 +499,7 @@ function warnings() {
 	//Warns of excess code after EOF marker
 	if (endOfFileReached && thereIsStuffAfterEOF) {
 		//console.log("WARNING: There is stuff after the EOF marker, this will be ignored.");
-		document.getElementById("taOutput").value += "\n\n\tWARNING: There is/are symbol(s) after the EOF marker, this/they will be ignored.";
+		document.getElementById("taOutput").value += "\n\tWARNING: There is/are symbol(s) after the EOF marker, this/they will be ignored.\n\n";
 	}
 
 	//Warns if EOF was reached without reading a $. Inserts $
@@ -509,6 +510,9 @@ function warnings() {
 		var code2 = document.getElementById("taSourceCode").value;
 		code2 += "\n$";
 		document.getElementById("taSourceCode").value = code2;
+		
+		document.getElementById("taOutput").value += "\n\nLexing Complete \n\n";
+		document.getElementById("taOutput").value += "*****END LEXER*****\n\n";
 	}
 }
 
