@@ -17,6 +17,9 @@ function parseProgram() {
 	}
 	
 	parseBlock();
+	if (_Verbose && _JustParseVerbose) {
+		document.getElementById("taOutput").value += "\n\tParsing token " + tokenToParse.index + " Value: " + tokenToParse.value + "\n";
+	}
 	match("T_EOF");
 	
 	document.getElementById("taOutput").value += "\nParsing Complete \n";
@@ -31,13 +34,16 @@ function parseBlock() {
 	//console.log("Token in parseBlock is: " + tokenToParse.value);
 	match("T_OpenBracket");
 	parseStatementList();
+	if (_Verbose && _JustParseVerbose) {
+		document.getElementById("taOutput").value += "\n\tParsing token " + tokenToParse.index + " Value: " + tokenToParse.value + "\n";
+	}
 	match("T_CloseBracket");
 }
 
 function parseStatementList() {
 	if (_Verbose && _JustParseVerbose) {
 		document.getElementById("taOutput").value += "\n\tParsing StatementList";
-		document.getElementById("taOutput").value += "\n\tParsing token " + tokenToParse.index + " Value: " + tokenToParse.value + "\n";
+		//document.getElementById("taOutput").value += "\n\n\tParsing token " + tokenToParse.index + " Value: " + tokenToParse.value + "\n";
 	}
 	
 	//console.log("Token in parseStatementList is: " + tokenToParse.value);
@@ -80,9 +86,18 @@ function parseStatement() {
 }
 
 function parsePrintStatement() {
-	document.getElementById("taOutput").value += "\n\t\tParsing Print Statement\n";
+	if (_Verbose && _JustParseVerbose) {
+		document.getElementById("taOutput").value += "\n\tParsing Print Statement\n";
+		document.getElementById("taOutput").value += "\n\tParsing token " + tokenToParse.index + " Value: " + tokenToParse.value + "\n";
+	}
+	
 	match("T_OpenParen");
 	parseExpr();
+	
+	if (_Verbose && _JustParseVerbose) {
+		document.getElementById("taOutput").value += "\n\tParsing token " + tokenToParse.index + " Value: " + tokenToParse.value + "\n";
+	}
+	
 	match("T_CloseParen");
 	
 }
@@ -111,6 +126,11 @@ function parseIfStatement() {
 }
 
 function parseExpr() {
+	if (_Verbose && _JustParseVerbose) {
+		document.getElementById("taOutput").value += "\n\tParsing Expr\n";
+		document.getElementById("taOutput").value += "\n\tParsing token " + tokenToParse.index + " Value: " + tokenToParse.value + "\n";
+	}
+	
 	if (tokenToParse.type === "T_Digit") {
 		match("T_Digit");
 		parseIntExpr();
@@ -219,33 +239,33 @@ function parseIntop() {
 
 function match(expectedToken) {
 	switch(expectedToken) {
-		case "T_OpenBracket": document.getElementById("taOutput").value += "\n\tExpecting an open bracket\n";
+		case "T_OpenBracket": document.getElementById("taOutput").value += "\n\t\tExpecting an open bracket\n";
 			//console.log("Current Token is: " + tokenToParse);
 			if (tokenToParse.value === "{") {
-				document.getElementById("taOutput").value += "\n\tFound an open bracket\n";
+				document.getElementById("taOutput").value += "\n\t\tFound an open bracket\n";
 			}
 			else {
-				document.getElementById("taOutput").value += "\n\tDid NOT find an open bracket\n";
+				document.getElementById("taOutput").value += "\n\t\tDid NOT find an open bracket\n";
 				_ErrorCount+=1;
 			}
 			break;
 			
-		case "T_CloseBracket": document.getElementById("taOutput").value += "\n\tExpecting a closing bracket\n";
+		case "T_CloseBracket": document.getElementById("taOutput").value += "\n\t\tExpecting a closing bracket\n";
 			if (tokenToParse.value === "}") {
-				document.getElementById("taOutput").value += "\n\tFound a closing bracket\n";
+				document.getElementById("taOutput").value += "\n\t\tFound a closing bracket\n";
 			}
 			else {
-				document.getElementById("taOutput").value += "\n\tDid NOT find a closing bracket\n";
+				document.getElementById("taOutput").value += "\n\t\tDid NOT find a closing bracket\n";
 				_ErrorCount+=1;
 			}
 			break;
 		
-		case "T_Print": document.getElementById("taOutput").value += "\n\tExpecting a print keyword\n"; 
+		case "T_Print": document.getElementById("taOutput").value += "\n\t\tExpecting a print keyword\n"; 
 			if (tokenToParse.value === "print") {
-				document.getElementById("taOutput").value += "\n\tFound a print keyword\n";
+				document.getElementById("taOutput").value += "\n\t\tFound a print keyword\n";
 			}
 			else {
-				document.getElementById("taOutput").value += "\n\tDid NOT find a print keyword\n";
+				document.getElementById("taOutput").value += "\n\t\tDid NOT find a print keyword\n";
 				_ErrorCount+=1;
 			}
 			break;
@@ -370,17 +390,17 @@ function match(expectedToken) {
 				document.getElementById("taOutput").value += "\n\t\tFound an Int Op\n";
 			}
 			else {
-				document.getElementById("taOutput").value += "\n\tDid NOT find an Int Op\n";
+				document.getElementById("taOutput").value += "\n\t\tDid NOT find an Int Op\n";
 				_ErrorCount+=1;
 			}			
 			break;
 			
-		case "T_EOF": document.getElementById("taOutput").value += "\n\tExpecting an EOF marker\n";
+		case "T_EOF": document.getElementById("taOutput").value += "\n\t\tExpecting an EOF marker\n";
 			if (tokenToParse.value === "$") {
-				document.getElementById("taOutput").value += "\n\tFound an EOF marker\n";
+				document.getElementById("taOutput").value += "\n\t\tFound an EOF marker\n";
 			}
 			else {
-				document.getElementById("taOutput").value += "\n\tDid NOT find an EOF marker\n\n";
+				document.getElementById("taOutput").value += "\n\t\tDid NOT find an EOF marker\n\n";
 				_ErrorCount+=1;
 			}
 			break;
