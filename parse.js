@@ -25,15 +25,22 @@ function parseProgram() {
 }
 
 function parseBlock() {
-	document.getElementById("taOutput").value += "\n\tParsing token " + tokenToParse.index + " Value: " + tokenToParse.value + "\n";
-	console.log("Token in parseBlock is: " + tokenToParse.value);
+	if (_Verbose && _JustParseVerbose) {
+		document.getElementById("taOutput").value += "\n\tParsing token " + tokenToParse.index + " Value: " + tokenToParse.value + "\n";
+	}
+	//console.log("Token in parseBlock is: " + tokenToParse.value);
 	match("T_OpenBracket");
 	parseStatementList();
 	match("T_CloseBracket");
 }
 
 function parseStatementList() {
-	console.log("Token in parseStatementList is: " + tokenToParse.value);
+	if (_Verbose && _JustParseVerbose) {
+		document.getElementById("taOutput").value += "\n\tParsing StatementList";
+		document.getElementById("taOutput").value += "\n\tParsing token " + tokenToParse.index + " Value: " + tokenToParse.value + "\n";
+	}
+	
+	//console.log("Token in parseStatementList is: " + tokenToParse.value);
 	//Check ahead for a closing bracket. If found, the block is empty
 	if (tokenToParse.value === "}") {
 		//document.getElementById("taOutput").value += "\n\t\tFound Empty Block\n";

@@ -54,33 +54,39 @@ function getNextChar() {
 	}
 }
 
-//JQuery for toggles
-//Overall verbose on and off
-$( "#toggleVerbose" ).change(function() {
-  if (_Verbose) {
-  	_Verbose = false;
-  	_JustLexVerbose = false;
-  	_JustParseVerbose = false;
-  	$("#toggleLexVerbose").prop('checked', false);
-  	$("#toggleParseVerbose").prop('checked', false);
-  }
-  else if (!_Verbose) {
-  	_Verbose = true;
-  	_JustLexVerbose = true;
-  	_JustParseVerbose = true;
-  	$("#toggleLexVerbose").prop('checked', true);
-  	$("#toggleParseVerbose").prop('checked', true);
-  }
-});
+$(document).ready(function() {
 
-//Toggle Lex Verbose Output
-$( "#toggleLexVerbose" ).change(function() {
-  if (_JustLexVerbose) {
-  	_JustLexVerbose = false;
-  }
-  else if (!_JustLexVerbose) {
-  	_JustLexVerbose = true;
-  }
+	//JQuery for toggles
+	//Overall verbose on and off
+	$( "#toggleVerbose" ).change(function() {
+		console.log("Hello1");
+	  if (_Verbose) {
+	  	console.log("Hello");
+	  	_Verbose = false;
+	  	_JustLexVerbose = false;
+	  	_JustParseVerbose = false;
+	  	$("#toggleLexVerbose").prop('checked', false);
+	  	$("#toggleParseVerbose").prop('checked', false);
+	  }
+	  else if (!_Verbose) {
+	  	_Verbose = true;
+	  	_JustLexVerbose = true;
+	  	_JustParseVerbose = true;
+	  	$("#toggleLexVerbose").prop('checked', true);
+	  	$("#toggleParseVerbose").prop('checked', true);
+	  }
+	});
+	
+	//Toggle Lex Verbose Output
+	$( "#toggleLexVerbose" ).change(function() {
+	  if (_JustLexVerbose) {
+	  	_JustLexVerbose = false;
+	  }
+	  else if (!_JustLexVerbose) {
+	  	_JustLexVerbose = true;
+	  }
+	});
+
 });
 
 //Toggle Parse Verbose Output
