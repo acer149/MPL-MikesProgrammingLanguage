@@ -100,9 +100,10 @@ $( "#toggleParseVerbose" ).change(function() {
 });
 
 //Creates a new token
-function tokenObject (type, value, index) {
+function tokenObject (type, value, lineNumber) {
 	this.type = type;
 	this.value = value;
+	this.lineNumber = lineNumber - 1;
 	this.index = _TokenArray.length + 1;
 }
 

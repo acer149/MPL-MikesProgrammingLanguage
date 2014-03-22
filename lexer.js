@@ -218,7 +218,7 @@ function lexer() {
 	}
 	
 	if (!endOfFileReached) {
-		_TokenArray.push(new tokenObject("T_EOF", "$"));
+		_TokenArray.push(new tokenObject("T_EOF", "$", _LineNumber));
 	}
 	
 	printTokenArray();
@@ -287,35 +287,35 @@ function checkTokenType(token) {
 			//Switch assigns a specific type to each keyword
 			switch(keywordType) {
 				case "print": {
-					_TokenArray.push(new tokenObject("T_Print", token));
+					_TokenArray.push(new tokenObject("T_Print", token, _LineNumber));
 					break;
 				}
 				case "while": {
-					_TokenArray.push(new tokenObject("T_While", token));
+					_TokenArray.push(new tokenObject("T_While", token, _LineNumber));
 					break;
 				}
 				case "if": {
-					_TokenArray.push(new tokenObject("T_If", token));
+					_TokenArray.push(new tokenObject("T_If", token, _LineNumber));
 					break;
 				}
 				case "int": {
-					_TokenArray.push(new tokenObject("T_Int", token));
+					_TokenArray.push(new tokenObject("T_Int", token, _LineNumber));
 					break;
 				}
 				case "string": {
-					_TokenArray.push(new tokenObject("T_String", token));
+					_TokenArray.push(new tokenObject("T_String", token, _LineNumber));
 					break;
 				}
 				case "boolean": {
-					_TokenArray.push(new tokenObject("T_Boolean", token));
+					_TokenArray.push(new tokenObject("T_Boolean", token, _LineNumber));
 					break;
 				}
 				case "true": {
-					_TokenArray.push(new tokenObject("T_True", token));
+					_TokenArray.push(new tokenObject("T_True", token, _LineNumber));
 					break;
 				}
 				case "false": {
-					_TokenArray.push(new tokenObject("T_False", token));
+					_TokenArray.push(new tokenObject("T_False", token, _LineNumber));
 					break;
 				}
 				default: {
@@ -350,7 +350,7 @@ function describeType(token) {
 			if (_Verbose && _JustLexVerbose) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
-			_TokenArray.push(new tokenObject("T_Id", token));
+			_TokenArray.push(new tokenObject("T_Id", token, _LineNumber));
 		}
 		
 		_IdentifierExists = false;
@@ -367,7 +367,7 @@ function describeType(token) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
 			
-			_TokenArray.push(new tokenObject("T_OpenBracket", token));
+			_TokenArray.push(new tokenObject("T_OpenBracket", token, _LineNumber));
 			token = "";
 			unmatchedOpenBracket = true;
 		} 
@@ -378,7 +378,7 @@ function describeType(token) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
 			
-			_TokenArray.push(new tokenObject("T_CloseBracket" ,token));
+			_TokenArray.push(new tokenObject("T_CloseBracket" ,token, _LineNumber));
 			token = "";
 			unmatchedOpenBracket = false;
 		}
@@ -391,7 +391,7 @@ function describeType(token) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 		}
 		
-		_TokenArray.push(new tokenObject("T_Digit", token));
+		_TokenArray.push(new tokenObject("T_Digit", token, _LineNumber));
 		token = "";
 	} 
 	else if (token.match(parens)) {
@@ -402,7 +402,7 @@ function describeType(token) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
 			
-			_TokenArray.push(new tokenObject("T_OpenParen", token));
+			_TokenArray.push(new tokenObject("T_OpenParen", token, _LineNumber));
 			token = "";
 			//openParen = true;
 		} 
@@ -413,7 +413,7 @@ function describeType(token) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
 			
-			_TokenArray.push(new tokenObject("T_CloseParen", token));
+			_TokenArray.push(new tokenObject("T_CloseParen", token, _LineNumber));
 			token = "";
 			openParen = false;
 		}
@@ -427,7 +427,7 @@ function describeType(token) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
 			
-			_TokenArray.push(new tokenObject("T_Assign", token));
+			_TokenArray.push(new tokenObject("T_Assign", token, _LineNumber));
 			token = "";
 		} 
 		else {
@@ -437,7 +437,7 @@ function describeType(token) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
 			
-			_TokenArray.push(new tokenObject("T_Equality", token));
+			_TokenArray.push(new tokenObject("T_Equality", token, _LineNumber));
 			token = "";
 			isEqualityOperator = false;
 		}
@@ -450,7 +450,7 @@ function describeType(token) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 		}
 		
-		_TokenArray.push(new tokenObject("T_StringExpr", token));
+		_TokenArray.push(new tokenObject("T_StringExpr", token, _LineNumber));
 	} 
 	else if (token.match(notEqual)) {
 		//console.log("Token " + token + " is a not equal sign");
@@ -459,7 +459,7 @@ function describeType(token) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 		}
 		
-		_TokenArray.push(new tokenObject("T_NotEqual", token));
+		_TokenArray.push(new tokenObject("T_NotEqual", token, _LineNumber));
 	} 
 	else if (token.match(plusSign)) {
 		//console.log("Token " + token + " is a plus sign");
@@ -468,7 +468,7 @@ function describeType(token) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 		}
 		
-		_TokenArray.push(new tokenObject("T_Plus", token));
+		_TokenArray.push(new tokenObject("T_Plus", token, _LineNumber));
 	} 
 	else if (token.match(endOfFile)) {
 		//console.log("Token " + token + " is the EOF marker");
@@ -477,7 +477,7 @@ function describeType(token) {
 			document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 		}
 
-		_TokenArray.push(new tokenObject("T_EOF", token));
+		_TokenArray.push(new tokenObject("T_EOF", token, _LineNumber));
 		token = "";
 		endOfFileReached = true;
 		
