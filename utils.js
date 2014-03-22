@@ -7,6 +7,7 @@
 function startCompiler() {
 	lexer();
 	beginParse();
+	createAndDisplayConcreteSyntaxTree();
 }
 
 function trim(str)      // Use a regular expression to remove leading and trailing spaces.
@@ -86,17 +87,15 @@ $(document).ready(function() {
 	  	_JustLexVerbose = true;
 	  }
 	});
-
-});
-
-//Toggle Parse Verbose Output
-$( "#toggleParseVerbose" ).change(function() {
-  if (_JustParseVerbose) {
-  	_JustParseVerbose = false;
-  }
-  else if (!_JustParseVerbose) {
-  	_JustParseVerbose = true;
-  }
+	//Toggle Parse Verbose Output
+	$( "#toggleParseVerbose" ).change(function() {
+	  if (_JustParseVerbose) {
+	  	_JustParseVerbose = false;
+	  }
+	  else if (!_JustParseVerbose) {
+	  	_JustParseVerbose = true;
+	  }
+	});
 });
 
 //Creates a new token
@@ -105,6 +104,7 @@ function tokenObject (type, value, lineNumber) {
 	this.value = value;
 	this.lineNumber = lineNumber;
 	this.index = _TokenArray.length + 1;
+	this.cstType = "";
 }
 
 // function checkForExisitingIdentifier() {
