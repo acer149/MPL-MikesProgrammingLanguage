@@ -366,7 +366,6 @@ function describeType(token) {
 			if (_Verbose && _JustLexVerbose) {
 				document.getElementById("taOutput").value += "\t\tToken created: " + token + "\n\n";
 			}
-			
 			_TokenArray.push(new tokenObject("T_OpenBracket", token, _LineNumber));
 			token = "";
 			unmatchedOpenBracket = true;

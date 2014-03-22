@@ -103,7 +103,7 @@ $( "#toggleParseVerbose" ).change(function() {
 function tokenObject (type, value, lineNumber) {
 	this.type = type;
 	this.value = value;
-	this.lineNumber = lineNumber - 1;
+	this.lineNumber = lineNumber;
 	this.index = _TokenArray.length + 1;
 }
 

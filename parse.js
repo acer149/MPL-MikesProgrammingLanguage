@@ -27,9 +27,12 @@ function parseProgram() {
 		document.getElementById("taOutput").value += "\nParsing Completed with " + _ErrorCount + " errors\n";
 		document.getElementById("taOutput").value += "\n\n*****END PARSE*****\n\n";		
 	}
-	else {
+	else if(_ErrorCount > 0 && tokenToParse.lineNumber != undefined) {
 		console.log("LIneNum: " + _LineNumber);
-		document.getElementById("taOutput").value += "\n\nPARSING FAILED with an error on line " + tokenToParse.lineNumber + "\n";	
+		document.getElementById("taOutput").value += "\n\nPARSING FAILED2 with an error on line " + tokenToParse.lineNumber + "\n";	
+	}
+	else {
+		document.getElementById("taOutput").value += "\n\nPARSING FAILEDDD with an error on line " + _LineNumber + "\n";
 	}
 
 }
@@ -52,7 +55,7 @@ function parseBlock() {
 }
 
 function parseStatementList() {
-	if (_Verbose && _JustParseVerbose) {
+	if (_Verbose && _JustParseVerbose && _ErrorCount === 0) {
 		document.getElementById("taOutput").value += "\n\tParsing StatementList";
 		//document.getElementById("taOutput").value += "\n\n\tParsing token " + tokenToParse.index + " Value: " + tokenToParse.value + "\n";
 	}
