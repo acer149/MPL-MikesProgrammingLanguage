@@ -139,6 +139,20 @@ function getNextToken() {
 	return nextTokenToParse;
 }
 
+//To avoid if statements around the document.write functions is parse.match ()
+function matchVerboseOutput(expectOrFoundOrError, aOrAn, type) {
+	if (_Verbose && _JustParseVerbose) {
+		//Will print Expecting/Found/Did NOT Find a/an type
+		if (type != "identifier" && type != "int, string, or boolean keyword") {
+			document.getElementById("taOutput").value += "\n\t\t" + expectOrFoundOrError + " " + aOrAn + " " + type +"\n";
+		}
+		else {
+			document.getElementById("taOutput").value += "\n\t\t\t" + expectOrFoundOrError + " " + aOrAn + " " + type +"\n";
+		}
+		
+	}
+}
+
 function test1 () {
 	
 		document.getElementById("taSourceCode").value = "{\nprint (" + " \"hello\" " + ")\n}" + "\n$";	

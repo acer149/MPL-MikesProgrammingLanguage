@@ -305,66 +305,69 @@ function parseIntop() {
 function match(expectedToken) {
 	if (_ErrorCount === 0) {
 		switch(expectedToken) {
-			case "T_OpenBracket": document.getElementById("taOutput").value += "\n\t\tExpecting an open bracket\n";
+			case "T_OpenBracket": matchVerboseOutput("Expecting", "an", "Open Bracket");
 				//console.log("Current Token is: " + tokenToParse);
 				if (tokenToParse.value === "{") {
 					tokenToParse.cstType = "Block";
-					document.getElementById("taOutput").value += "\n\t\tFound an open bracket\n";
+					matchVerboseOutput("Found", "an", "Open Bracket");
 				}
 				else {
-					document.getElementById("taOutput").value += "\n\t\tDid NOT find an open bracket\n";
+					matchVerboseOutput("Did NOT find", "an", "Open Bracket");
 					_ErrorCount+=1;
 				}
 				break;
 				
-			case "T_CloseBracket": document.getElementById("taOutput").value += "\n\t\tExpecting a closing bracket\n";
+			case "T_CloseBracket": matchVerboseOutput("Expecting", "a", "Closing Bracket");
 				if (tokenToParse.value === "}") {
 					tokenToParse.cstType = "CloseBrace";
-					document.getElementById("taOutput").value += "\n\t\tFound a closing bracket\n";
+					matchVerboseOutput("Found", "a", "Closing Bracket");
 				}
 				else {
-					document.getElementById("taOutput").value += "\n\t\tDid NOT find a closing bracket\n";
+					matchVerboseOutput("Did NOT find", "a", "Closing Bracket");
 					_ErrorCount+=1;
 				}
 				break;
 			
-			case "T_Print": document.getElementById("taOutput").value += "\n\t\tExpecting a print keyword\n"; 
+			case "T_Print": matchVerboseOutput("Expecting", "a", "Print Keyword");
 				if (tokenToParse.value === "print") {
 					tokenToParse.cstType = "Statement";
-					document.getElementById("taOutput").value += "\n\t\tFound a print keyword\n";
+					matchVerboseOutput("Found", "a", "Print Keyword");
 				}
 				else {
-					document.getElementById("taOutput").value += "\n\t\tDid NOT find a print keyword\n";
+					matchVerboseOutput("Did NOT find", "a", "Print Keyword");
 					_ErrorCount+=1;
 				}
 				break;
 				
-			case "T_Id": document.getElementById("taOutput").value += "\n\t\t\tExpecting an identifier\n";
+			case "T_Id": matchVerboseOutput("Expecting", "an", "Identifier");
 				if (tokenToParse.value.match(character)) {
 					tokenToParse.cstType = "ID";
-					document.getElementById("taOutput").value += "\n\t\tFound an identifier\n";
+					matchVerboseOutput("Found", "an", "Identifier");
 				}
 				else {
-					document.getElementById("taOutput").value += "\n\tDid NOT find an identifier\n";
+					matchVerboseOutput("Did NOT find", "an", "Identifier");
 					_ErrorCount+=1;
 				}
 				break;
 			
-			case "T_VarDeclType": document.getElementById("taOutput").value += "\n\t\t\tExpecting int, string, or boolean keyword\n";
+			case "T_VarDeclType": matchVerboseOutput("Expecting", "an", "int, string, or boolean keyword");
 				if (tokenToParse.type === "T_Int") {
 					tokenToParse.cstType = "VarDecl";
+					matchVerboseOutput("Found", "an", "int keyword");
 					//document.getElementById("taOutput").value += "\n\t\t\tParsing\n";
 				}
 				else if (tokenToParse.type === "T_String") {
 					tokenToParse.cstType = "VarDecl";
+					matchVerboseOutput("Found", "a", "string keyword");
 					//document.getElementById("taOutput").value += "\n\t\t\tParsing\n";
 				}
 				else if (tokenToParse.type === "T_Boolean") {
 					tokenToParse.cstType = "VarDecl";
+					matchVerboseOutput("Found", "a", "boolean keyword");
 					//document.getElementById("taOutput").value += "\n\t\t\tParsing\n";
 				}
 				else {
-					document.getElementById("taOutput").value += "\n\t\t\tDid NOT find int, string, or boolean keyword\n";
+					matchVerboseOutput("Did NOT find", "an", "int, string, or boolean keyword");
 					_ErrorCount+=1;
 				}
 				break;
@@ -380,111 +383,111 @@ function match(expectedToken) {
 				}
 				break;	
 				
-			case "T_OpenParen": document.getElementById("taOutput").value += "\n\t\tExpecting an Open Paren\n";
+			case "T_OpenParen": matchVerboseOutput("Expecting", "an", "Open Paren");
 				if (tokenToParse.value === "(") {
 					tokenToParse.cstType = "OpenParen";
-					document.getElementById("taOutput").value += "\n\t\tFound an Open Paren\n";
+					matchVerboseOutput("Found", "an", "Open Paren");
 				}
 				else {
-					document.getElementById("taOutput").value += "\n\tDid NOT find an Open Paren\n";
+					matchVerboseOutput("Did NOT find", "an", "Open Paren");
 					_ErrorCount+=1;
 				}
 				break;
 				
-			case "T_CloseParen": document.getElementById("taOutput").value += "\n\t\tExpecting a Closing Paren\n";
+			case "T_CloseParen": matchVerboseOutput("Expecting", "a", "Closing Paren");
 				if (tokenToParse.value === ")") {
 					tokenToParse.cstType = "CloseParen";
-					document.getElementById("taOutput").value += "\n\t\tFound a Closing Paren\n";
+					matchVerboseOutput("Found", "a", "Closing Paren");
 				}
 				else {
-					document.getElementById("taOutput").value += "\n\tDid NOT find a Closing Paren\n";
+					matchVerboseOutput("Did NOT find", "a", "Closing Paren");
 					_ErrorCount+=1;
 				}
 				break;
 				
-			case "T_Equal": document.getElementById("taOutput").value += "\n\t\tExpecting an Equal Sign\n";
+			case "T_Equal": matchVerboseOutput("Expecting", "an", "Equal Sign");
 				if (tokenToParse.value === "=") {
 					tokenToParse.cstType = "Assign";
-					document.getElementById("taOutput").value += "\n\t\tFound an Equal Sign\n";
+					matchVerboseOutput("Found", "an", "Equal Sign");
 				}
 				else {
-					document.getElementById("taOutput").value += "\n\tDid NOT find an Equal Sign\n";
+					matchVerboseOutput("Did NOT find", "an", "Equal Sign");
 					_ErrorCount+=1;
 				}
 				break;	
 				
-			case "T_Plus": document.getElementById("taOutput").value += "\n\t\tExpecting an Plus Sign\n";
+			case "T_Plus": matchVerboseOutput("Expecting", "a", "Plus Sign");
 				if (tokenToParse.value === "+") {
 					tokenToParse.cstType = "Plus";
-					document.getElementById("taOutput").value += "\n\t\tFound an Plus Sign\n";
+					matchVerboseOutput("Found", "a", "Plus Sign");
 				}
 				else {
-					document.getElementById("taOutput").value += "\n\tDid NOT find a Plus Sign\n";
+					matchVerboseOutput("Did NOT find", "a", "Plus Sign");
 					_ErrorCount+=1;
 				}
 				break;	
 				
-			case "T_Digit": document.getElementById("taOutput").value += "\n\t\tExpecting a Digit\n";
+			case "T_Digit": matchVerboseOutput("Expecting", "a", "Digit");
 				if (tokenToParse.value.match(digit)) {
 					tokenToParse.cstType = "Digit";
-					document.getElementById("taOutput").value += "\n\t\tFound a Digit\n";
+					matchVerboseOutput("Found", "a", "Digit");
 				}
 				else {
-					document.getElementById("taOutput").value += "\n\tDid NOT find a Digit\n";
+					matchVerboseOutput("Did NOT find", "a", "Digit");
 					_ErrorCount+=1;
 				}
 				break;
 			
-			case "T_StringExpr": document.getElementById("taOutput").value += "\n\t\tExpecting a String Expression\n";
+			case "T_StringExpr": matchVerboseOutput("Expecting", "a", "String Expression");
 				if (tokenToParse.type === "T_StringExpr") {
 					tokenToParse.cstType = "StringExpr";
-					document.getElementById("taOutput").value += "\n\t\tFound a String Expression\n";
+					matchVerboseOutput("Found", "a", "String Expression");
 				}
 				else {
-					document.getElementById("taOutput").value += "\n\tDid NOT find a String Expression\n";
+					matchVerboseOutput("Did NOT find", "a", "String Expression");
 					_ErrorCount+=1;
 				}			
 				break;
 				
-			case "T_BoolOp": document.getElementById("taOutput").value += "\n\t\tExpecting a Boolean Op\n";
+			case "T_BoolOp": matchVerboseOutput("Expecting", "a", "Boolean Op");
 				if (tokenToParse.value === "==" || tokenToParse.value === "!=") {
 					tokenToParse.cstType = "EqualityOp";
-					document.getElementById("taOutput").value += "\n\t\tFound a Boolean Op\n";
+					matchVerboseOutput("Found", "a", "Boolean Op");
 				}			
 				else {
-					document.getElementById("taOutput").value += "\n\tDid NOT find a Boolean Op\n";
+					matchVerboseOutput("Did NOT find", "a", "Boolean Op");
 					_ErrorCount+=1;
 				}
 				break;
 				
-			case "T_Boolval": document.getElementById("taOutput").value += "\n\t\tExpecting a Boolean Val\n";
+			case "T_Boolval": matchVerboseOutput("Expecting", "a", "Boolean Val");
 				if (tokenToParse.value === "true" || tokenToParse.value === "false") {
 					tokenToParse.cstType = "BooleanVal";
-					document.getElementById("taOutput").value += "\n\t\tFound a Boolean Val\n";
+					matchVerboseOutput("Found", "a", "Boolean Val");
 				}	
 				else {
-					document.getElementById("taOutput").value += "\n\tDid NOT find a Boolean Val\n";
+					matchVerboseOutput("Did NOT find", "a", "Boolean Val");
 					_ErrorCount+=1;
 				}		
 				break;
 				
-			case "T_IntOp": document.getElementById("taOutput").value += "\n\t\tExpecting an Int Op\n";
+			case "T_IntOp": matchVerboseOutput("Expecting", "an", "Int Op");
 				if (tokenToParse.value === "+") {
-					document.getElementById("taOutput").value += "\n\t\tFound an Int Op\n";
+					matchVerboseOutput("Found", "an", "Int Op");
 				}
 				else {
-					document.getElementById("taOutput").value += "\n\t\tDid NOT find an Int Op\n";
+					matchVerboseOutput("Did NOT find", "an", "Int Op");
 					_ErrorCount+=1;
 				}			
 				break;
 				
-			case "T_EOF": document.getElementById("taOutput").value += "\n\t\tExpecting an EOF marker\n";
+			case "T_EOF": matchVerboseOutput("Expecting", "an", "EOF Marker");
 				if (tokenToParse.value === "$") {
 					tokenToParse.cstType = "EOF";
-					document.getElementById("taOutput").value += "\n\t\tFound an EOF marker\n";
+					matchVerboseOutput("Found", "an", "EOF Marker");
 				}
 				else {
-					document.getElementById("taOutput").value += "\n\t\tDid NOT find an EOF marker\n\n";
+					matchVerboseOutput("Did NOT find", "an", "EOF Marker");
 					_ErrorCount+=1;
 				}
 				break;
