@@ -13,6 +13,7 @@ function createAndDisplayConcreteSyntaxTree() {
 var children = [];
 
 function Node(type, parent, children) {
+
 	this.type = type;
 	this.parent = parent;
 	this.children = [];

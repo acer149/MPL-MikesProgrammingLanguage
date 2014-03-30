@@ -15,12 +15,14 @@ function parseProgram() {
 	if (!_Verbose || !_JustParseVerbose) {
 		document.getElementById("taOutput").value += "\tParse Output Hidden \n";	
 	}
-	
+	addBranchNode("program");
 	parseBlock();
 	if (_Verbose && _JustParseVerbose && tokenToParse.type === "T_EOF") {
 		document.getElementById("taOutput").value += "\n\tParsing token " + tokenToParse.index + " Value: " + tokenToParse.value + "\n";
 	}
 	match("T_EOF");
+	
+	movePointerUpTree();
 	
 	if (_ErrorCount === 0) {
 		document.getElementById("taOutput").value += "\nParsing Complete \n";
@@ -41,6 +43,9 @@ function parseBlock() {
 	if (_Verbose && _JustParseVerbose) {
 		document.getElementById("taOutput").value += "\n\tParsing token " + tokenToParse.index + " Value: " + tokenToParse.value + "\n";
 	}
+	
+	addBranchNode("block");
+	
 	//console.log("Token in parseBlock is: " + tokenToParse.value);
 	match("T_OpenBracket");
 	if (_ErrorCount === 0) {
@@ -50,7 +55,9 @@ function parseBlock() {
 	if (_Verbose && _JustParseVerbose && _ErrorCount === 0) {
 		document.getElementById("taOutput").value += "\n\tParsing token " + tokenToParse.index + " Value: " + tokenToParse.value + "\n";
 	}
-	match("T_CloseBracket");	
+	match("T_CloseBracket");
+	
+	movePointerUpTree();	
 	
 }
 
@@ -59,6 +66,8 @@ function parseStatementList() {
 		document.getElementById("taOutput").value += "\n\tParsing StatementList";
 		//document.getElementById("taOutput").value += "\n\n\tParsing token " + tokenToParse.index + " Value: " + tokenToParse.value + "\n";
 	}
+		
+	addBranchNode("statementList");
 		
 	//console.log("Token in parseStatementList is: " + tokenToParse.value);
 	//Check ahead for a closing bracket. If found, the block is empty
@@ -75,10 +84,13 @@ function parseStatementList() {
 		
 
 	}	
-	
+	movePointerUpTree();
 }
 
 function parseStatement() {
+	
+	addBranchNode("statement");
+	
 	//console.log("Token in parseStatement is: " + tokenToParse.type);
 	if (tokenToParse.type === "T_Print") {
 		match("T_Print");
@@ -115,10 +127,13 @@ function parseStatement() {
 			parseBlock();	
 		}
 	}
-	
+	movePointerUpTree();
 }
 
 function parsePrintStatement() {
+	
+	addBranchNode("print statement");
+	
 	if (_Verbose && _JustParseVerbose) {
 		document.getElementById("taOutput").value += "\n\tParsing Print Statement\n";
 		document.getElementById("taOutput").value += "\n\tParsing token " + tokenToParse.index + " Value: " + tokenToParse.value + "\n";
@@ -134,23 +149,33 @@ function parsePrintStatement() {
 	}
 	
 	match("T_CloseParen");
-	
+	movePointerUpTree();
 }
 
 function parseAssignmentStatement() {
+	
+	addBranchNode("assignment statement");
+	
 	document.getElementById("taOutput").value += "\n\t\tParsing Assignment Statement\n";
 	match("T_Equal");
 	if (_ErrorCount === 0) {
 		parseExpr();	
 	}
+	movePointerUpTree();
 }
 
 function parseVarDecl() {
+	
+	addBranchNode("varDecl");
+	
 	document.getElementById("taOutput").value += "\n\t\tParsing VarDecl\n";
 	match("T_Id");	
 }
 
 function parseWhileStatement() {
+	
+	addBranchNode("while statement");
+	
 	document.getElementById("taOutput").value += "\n\t\tParsing While Statement\n";
 	if (_ErrorCount === 0) {
 		parseBooleanExpr();	
@@ -158,9 +183,13 @@ function parseWhileStatement() {
 	if (_ErrorCount === 0) {
 		parseBlock();	
 	}
+	movePointerUpTree();
 }
 
 function parseIfStatement() {
+	
+	addBranchNode("if statement");
+	
 	document.getElementById("taOutput").value += "\n\t\tParsing If Statement\n";
 	if (_ErrorCount === 0) {
 		parseBooleanExpr();	
@@ -168,9 +197,13 @@ function parseIfStatement() {
 	if (_ErrorCount === 0) {
 		parseBlock();	
 	}	
+	movePointerUpTree();
 }
 
 function parseExpr() {
+	
+	addBranchNode("expr");
+	
 	if (_Verbose && _JustParseVerbose) {
 		document.getElementById("taOutput").value += "\n\tParsing Expr\n";
 		document.getElementById("taOutput").value += "\n\tParsing token " + tokenToParse.index + " Value: " + tokenToParse.value + "\n";
@@ -198,9 +231,13 @@ function parseExpr() {
 	else if (tokenToParse.type === "T_Id") {  
 		match("T_Id");
 	}
+	movePointerUpTree();
 }
 
 function parseIntExpr() {
+	
+	addBranchNode("intExpr");
+	
 	if (tokenToParse.value === ")") {
 		//match close paren in parseBoolExpr
 	}
@@ -225,15 +262,21 @@ function parseIntExpr() {
 			 match("T_Id");
 		 }		
 	}
-	
+	movePointerUpTree();
 }
 
 function parseStringExpr() {
-	match("T_StringExpr");
 	
+	addBranchNode("stringExpr");
+	
+	match("T_StringExpr");
+	movePointerUpTree();
 }
 
 function parseBooleanExpr() {
+	
+	addBranchNode("booleanExpr");
+	
 	if (tokenToParse.value === "(") {
 		match("T_OpenParen");
 		if (_ErrorCount === 0) {
@@ -252,11 +295,15 @@ function parseBooleanExpr() {
 			parseBoolval();
 		}
 	}
-	
+	movePointerUpTree();
 }
 
 function parseId() {
+	
+	addBranchNode("id");
+	
 	match("T_Id");
+	movePointerUpTree();
 }
 
 function parseCharList() {
@@ -276,29 +323,43 @@ function parseSpace() {
 }
 
 function parseDigit() {
+	
+	addBranchNode("digit");
+	
 	if (tokenToParse.value.match(digit)) {
 		match("T_Digit");
 	}
-	
+	movePointerUpTree();
 }
 
 function parseBoolop() {
+	
+	addBranchNode("boolOp");
+	
 	if (tokenToParse.value === "==" || tokenToParse.value === "!=") {
 		match("T_BoolOp");
 	}
-	
+	movePointerUpTree();
 }
 
 function parseBoolval() {
+	
+	addBranchNode("boolVal");
+	
 	if (tokenToParse.value === "true" || tokenToParse.value === "false") {
 		match("T_Boolval");
-	}	
+	}
+	movePointerUpTree();	
 }
 
 function parseIntop() {
+	
+	addBranchNode("intOp");
+	
 	if (tokenToParse.value === "+") {
 		match("T_IntOp");
 	}	
+	movePointerUpTree();
 }
 
 
