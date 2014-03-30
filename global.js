@@ -11,3 +11,7 @@ var _Verbose = true;
 var _JustLexVerbose = true;
 var _JustParseVerbose = true;
 var _IdentifierExists = false;
+
+//CST Pointers
+var _CSTRoot = null;
+var _CurrentCstPointer = null;

@@ -2,12 +2,11 @@
    Utils.js
 
    Utility functions.
-   -------- */
-  
+   -------- */ 
 function startCompiler() {
 	lexer();
 	beginParse();
-	createAndDisplayConcreteSyntaxTree();
+	//createAndDisplayConcreteSyntaxTree();
 }
 
 function trim(str)      // Use a regular expression to remove leading and trailing spaces.
