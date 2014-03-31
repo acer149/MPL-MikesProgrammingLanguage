@@ -6,10 +6,7 @@
 function startCompiler() {
 	lexer();
 	beginParse();
-	//createAndDisplayConcreteSyntaxTree();
-
-	//console.dir("The tree: " + _CSTRoot.children[0].children[0].children[0].children[0].type);	
-	console.log(_CSTRoot);
+	displayConcreteSyntaxTree();
 }
 
 function trim(str)      // Use a regular expression to remove leading and trailing spaces.

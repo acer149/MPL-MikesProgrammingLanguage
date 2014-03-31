@@ -369,6 +369,7 @@ function match(expectedToken) {
 			case "T_OpenBracket": matchVerboseOutput("Expecting", "an", "Open Bracket");
 				//console.log("Current Token is: " + tokenToParse);
 				if (tokenToParse.value === "{") {
+					addLeafNode("{");
 					tokenToParse.cstType = "Block";
 					matchVerboseOutput("Found", "an", "Open Bracket");
 				}
@@ -380,6 +381,7 @@ function match(expectedToken) {
 				
 			case "T_CloseBracket": matchVerboseOutput("Expecting", "a", "Closing Bracket");
 				if (tokenToParse.value === "}") {
+					addLeafNode("}");
 					tokenToParse.cstType = "CloseBrace";
 					matchVerboseOutput("Found", "a", "Closing Bracket");
 				}
@@ -391,6 +393,7 @@ function match(expectedToken) {
 			
 			case "T_Print": matchVerboseOutput("Expecting", "a", "Print Keyword");
 				if (tokenToParse.value === "print") {
+					addLeafNode("print");
 					tokenToParse.cstType = "Statement";
 					matchVerboseOutput("Found", "a", "Print Keyword");
 				}
@@ -402,6 +405,7 @@ function match(expectedToken) {
 				
 			case "T_Id": matchVerboseOutput("Expecting", "an", "Identifier");
 				if (tokenToParse.value.match(character)) {
+					addLeafNode(tokenToParse.value);
 					tokenToParse.cstType = "ID";
 					matchVerboseOutput("Found", "an", "Identifier");
 				}
@@ -413,16 +417,19 @@ function match(expectedToken) {
 			
 			case "T_VarDeclType": matchVerboseOutput("Expecting", "an", "int, string, or boolean keyword");
 				if (tokenToParse.type === "T_Int") {
+					addLeafNode("int");
 					tokenToParse.cstType = "VarDecl";
 					matchVerboseOutput("Found", "an", "int keyword");
 					//document.getElementById("taOutput").value += "\n\t\t\tParsing\n";
 				}
 				else if (tokenToParse.type === "T_String") {
+					addLeafNode("string");
 					tokenToParse.cstType = "VarDecl";
 					matchVerboseOutput("Found", "a", "string keyword");
 					//document.getElementById("taOutput").value += "\n\t\t\tParsing\n";
 				}
 				else if (tokenToParse.type === "T_Boolean") {
+					addLeafNode("boolean");
 					tokenToParse.cstType = "VarDecl";
 					matchVerboseOutput("Found", "a", "boolean keyword");
 					//document.getElementById("taOutput").value += "\n\t\t\tParsing\n";
@@ -435,17 +442,20 @@ function match(expectedToken) {
 			
 			case "T_While":
 				if (tokenToParse.value === "while") {
+					addLeafNode("while");
 					tokenToParse.cstType = "Statement";
 				}
 				break;
 			case "T_If":
 				if (tokenToParse.value === "if") {
+					addLeafNode("while");
 					tokenToParse.cstType = "Statement";
 				}
 				break;	
 				
 			case "T_OpenParen": matchVerboseOutput("Expecting", "an", "Open Paren");
 				if (tokenToParse.value === "(") {
+					addLeafNode("(");
 					tokenToParse.cstType = "OpenParen";
 					matchVerboseOutput("Found", "an", "Open Paren");
 				}
@@ -457,6 +467,7 @@ function match(expectedToken) {
 				
 			case "T_CloseParen": matchVerboseOutput("Expecting", "a", "Closing Paren");
 				if (tokenToParse.value === ")") {
+					addLeafNode(")");
 					tokenToParse.cstType = "CloseParen";
 					matchVerboseOutput("Found", "a", "Closing Paren");
 				}
@@ -468,6 +479,7 @@ function match(expectedToken) {
 				
 			case "T_Equal": matchVerboseOutput("Expecting", "an", "Equal Sign");
 				if (tokenToParse.value === "=") {
+					addLeafNode("=");
 					tokenToParse.cstType = "Assign";
 					matchVerboseOutput("Found", "an", "Equal Sign");
 				}
@@ -479,6 +491,7 @@ function match(expectedToken) {
 				
 			case "T_Plus": matchVerboseOutput("Expecting", "a", "Plus Sign");
 				if (tokenToParse.value === "+") {
+					addLeafNode("+");
 					tokenToParse.cstType = "Plus";
 					matchVerboseOutput("Found", "a", "Plus Sign");
 				}
@@ -490,6 +503,7 @@ function match(expectedToken) {
 				
 			case "T_Digit": matchVerboseOutput("Expecting", "a", "Digit");
 				if (tokenToParse.value.match(digit)) {
+					addLeafNode(tokenToParse.value);
 					tokenToParse.cstType = "Digit";
 					matchVerboseOutput("Found", "a", "Digit");
 				}
@@ -501,6 +515,7 @@ function match(expectedToken) {
 			
 			case "T_StringExpr": matchVerboseOutput("Expecting", "a", "String Expression");
 				if (tokenToParse.type === "T_StringExpr") {
+					addLeafNode(tokenToParse.value);
 					tokenToParse.cstType = "StringExpr";
 					matchVerboseOutput("Found", "a", "String Expression");
 				}
@@ -512,6 +527,7 @@ function match(expectedToken) {
 				
 			case "T_BoolOp": matchVerboseOutput("Expecting", "a", "Boolean Op");
 				if (tokenToParse.value === "==" || tokenToParse.value === "!=") {
+					addLeafNode(tokenToParse.value);
 					tokenToParse.cstType = "EqualityOp";
 					matchVerboseOutput("Found", "a", "Boolean Op");
 				}			
@@ -523,6 +539,7 @@ function match(expectedToken) {
 				
 			case "T_Boolval": matchVerboseOutput("Expecting", "a", "Boolean Val");
 				if (tokenToParse.value === "true" || tokenToParse.value === "false") {
+					addLeafNode(tokenToParse.value);
 					tokenToParse.cstType = "BooleanVal";
 					matchVerboseOutput("Found", "a", "Boolean Val");
 				}	
@@ -534,6 +551,7 @@ function match(expectedToken) {
 				
 			case "T_IntOp": matchVerboseOutput("Expecting", "an", "Int Op");
 				if (tokenToParse.value === "+") {
+					addLeafNode("+");
 					matchVerboseOutput("Found", "an", "Int Op");
 				}
 				else {
@@ -544,6 +562,7 @@ function match(expectedToken) {
 				
 			case "T_EOF": matchVerboseOutput("Expecting", "an", "EOF Marker");
 				if (tokenToParse.value === "$") {
+					addLeafNode("$");
 					tokenToParse.cstType = "EOF";
 					matchVerboseOutput("Found", "an", "EOF Marker");
 				}
