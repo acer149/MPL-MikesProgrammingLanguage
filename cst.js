@@ -16,13 +16,28 @@ function displayConcreteSyntaxTree() {
 
 }
 
-
+var level = "-";
 function expandNode(tempNode) {
+	
 	for (var i = 0; i < tempNode.children.length; i++) {
+		
+		level = level + "-";
 		console.log(tempNode.children[i].type);
+		document.getElementById("taOutput").value += level + tempNode.children[i].type + "\n";			
+		
+
+						
 		expandNode(tempNode.children[i]);
 	}
 }
+
+
+
+function expandBlockNode() {
+	
+}
+
+
 
 var children = [];
 
