@@ -10,40 +10,18 @@ function displayConcreteSyntaxTree() {
 	// document.getElementById("taOutput").value += "\nStatementList\n";
 	
 	//console.dir("The tree: " + _CSTRoot.children[0].children[2].type);
-	var tempPointer = _CSTRoot;
-		if (tempPointer.children.length > 0) {
-			printNextLevelOfTree(tempPointer);	
-		}	
-	for (var i = 0; i < 20; i++) {
+	 var tempPointer = _CSTRoot;
+	 
+	 expandNode(tempPointer);
 
-		
-		for (var j = 0; j < tempPointer.children.length; j++) {
-			tempPointer = tempPointer.children[j];	
-			printNextLevelOfTree(tempPointer);
-		}
-			
-	}
-	//assign temppointer to next child and run printNextLevel
-	//If there are no children jump back and run on next child and so forth	
-	
-
-	// for (var i = 0; i < tempPointer.children.length; i++) {
-		// console.log(tempPointer.children[i].type);
-		// tempPointer = tempPointer.children[i];
-		// for (var i = 0; i < tempPointer.children.length; i++ ) {
-			// console.log(tempPointer.children[i].type);
-		// }
-	// }
-	//console.log(_CSTRoot);
 }
 
-function printNextLevelOfTree(tempPointer) {
-	if (tempPointer.children.length > 0) {
-		for (var i = 0; i < tempPointer.children.length; i++) {
-			console.log(tempPointer.children[i].type);
-		}
-		printNextLevelOfTree(tempPointer);
-	}	
+
+function expandNode(tempNode) {
+	for (var i = 0; i < tempNode.children.length; i++) {
+		console.log(tempNode.children[i].type);
+		expandNode(tempNode.children[i]);
+	}
 }
 
 var children = [];
