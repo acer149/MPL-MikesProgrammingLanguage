@@ -93,31 +93,31 @@ function parseStatement() {
 	
 	//console.log("Token in parseStatement is: " + tokenToParse.type);
 	if (tokenToParse.type === "T_Print") {
-		match("T_Print");
+		//match("T_Print");
 		if (_ErrorCount === 0) {
 			parsePrintStatement();	
 		}	
 	}
 	else if (tokenToParse.type === "T_Id") {
-		match("T_Id");
+		//match("T_Id");
 		if (_ErrorCount === 0) {
 			parseAssignmentStatement();	
 		}	
 	}
 	else if (tokenToParse.type === "T_Int" || tokenToParse.type === "T_String" || tokenToParse.type === "T_Boolean") {
-		match("T_VarDeclType");
+		//match("T_VarDeclType");
 		if (_ErrorCount === 0) {
 			parseVarDecl();	
 		}
 	}
 	else if (tokenToParse.type === "T_While") {
-		match("T_While");
+		//match("T_While");
 		if (_ErrorCount === 0) {
 			parseWhileStatement();	
 		}
 	}
 	else if (tokenToParse.type === "T_If") {
-		match("T_If");
+		//match("T_If");
 		if (_ErrorCount === 0) {
 			parseIfStatement();	
 		}
@@ -133,7 +133,7 @@ function parseStatement() {
 function parsePrintStatement() {
 	
 	addBranchNode("print statement");
-	
+	match("T_Print");
 	if (_Verbose && _JustParseVerbose) {
 		document.getElementById("taOutput").value += "\n\tParsing Print Statement\n";
 		document.getElementById("taOutput").value += "\n\tParsing token " + tokenToParse.index + " Value: " + tokenToParse.value + "\n";
@@ -155,7 +155,7 @@ function parsePrintStatement() {
 function parseAssignmentStatement() {
 	
 	addBranchNode("assignment statement");
-	
+	match("T_Id");
 	document.getElementById("taOutput").value += "\n\t\tParsing Assignment Statement\n";
 	match("T_Equal");
 	if (_ErrorCount === 0) {
@@ -167,7 +167,7 @@ function parseAssignmentStatement() {
 function parseVarDecl() {
 	
 	addBranchNode("varDecl");
-	
+	match("T_VarDeclType");
 	document.getElementById("taOutput").value += "\n\t\tParsing VarDecl\n";
 	match("T_Id");	
 }
@@ -175,7 +175,7 @@ function parseVarDecl() {
 function parseWhileStatement() {
 	
 	addBranchNode("while statement");
-	
+	match("T_While");
 	document.getElementById("taOutput").value += "\n\t\tParsing While Statement\n";
 	if (_ErrorCount === 0) {
 		parseBooleanExpr();	
@@ -189,7 +189,7 @@ function parseWhileStatement() {
 function parseIfStatement() {
 	
 	addBranchNode("if statement");
-	
+	match("T_If");
 	document.getElementById("taOutput").value += "\n\t\tParsing If Statement\n";
 	if (_ErrorCount === 0) {
 		parseBooleanExpr();	
