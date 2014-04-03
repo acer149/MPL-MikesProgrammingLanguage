@@ -4,7 +4,7 @@ var tokenToParse = "";
 
 function beginParse() {
 	tokenToParse = getNextToken();
-	console.log("Current Token is: " + tokenToParse);
+	//console.log("Current Token is: " + tokenToParse);
 	parseProgram();
 }
 
@@ -30,7 +30,7 @@ function parseProgram() {
 		document.getElementById("taOutput").value += "\n\n*****END PARSE*****\n\n";		
 	}
 	else if(_ErrorCount > 0 && tokenToParse.lineNumber != undefined) {
-		console.log("LIneNum: " + _LineNumber);
+		//console.log("LIneNum: " + _LineNumber);
 		document.getElementById("taOutput").value += "\n\nPARSING FAILED with an error on line " + tokenToParse.lineNumber + "\n";	
 	}
 	else {
@@ -577,6 +577,6 @@ function match(expectedToken) {
 		}
 		tokenToParse = getNextToken();		
 	}
-	console.log("Error Count is: " + _ErrorCount);
+	//console.log("Error Count is: " + _ErrorCount);
 
 }

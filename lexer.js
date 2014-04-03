@@ -220,8 +220,9 @@ function lexer() {
 	if (!endOfFileReached) {
 		_TokenArray.push(new tokenObject("T_EOF", "$", _LineNumber));
 	}
-	
-	printTokenArray();
+	if (_ErrorCount === 0) {
+		printTokenArray();
+	}
 	token = "";
 	//warnings();
 
@@ -267,7 +268,7 @@ function checkTokenType(token) {
 		}
 
 		for (var y = 1; y <= charLookAhead; y++) {
-			console.log ("HERE " +_Code[_Index + y]);
+			//console.log ("HERE " +_Code[_Index + y]);
 			if (_Verbose && _JustLexVerbose) {
 				document.getElementById("taOutput").value += "\tProcessing Symbol " + _Code[_Index + y] + "\n\n";
 			}
@@ -523,17 +524,20 @@ function errors() {
 		document.getElementById("taOutput").value += "\n\tSyntax error on line " + _LineNumber + " There was an unrecognized symbol  " + token;
 
 		_Index = _Code.length + 1;
+		_ErrorCount += 1;
 		//Stops loop
 	}
 
 	if (openQuote) {
 		//console.log("Unended String");
 		document.getElementById("taOutput").value += "\n\tERROR: Unended String";
+		_ErrorCount += 1;
 	}
 
 	if (openParen) {
 		//console.log("Unended expression");
 		document.getElementById("taOutput").value += "\n\tERROR: Unended expression";
+		_ErrorCount += 1;
 	}
 }
         //**************

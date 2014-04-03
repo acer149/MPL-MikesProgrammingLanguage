@@ -5,8 +5,12 @@
    -------- */ 
 function startCompiler() {
 	lexer();
-	beginParse();
-	displayConcreteSyntaxTree();
+	if (_ErrorCount === 0) {
+		beginParse();	
+	}
+	if (_ErrorCount === 0) {
+		displayConcreteSyntaxTree();	
+	}
 }
 
 function trim(str)      // Use a regular expression to remove leading and trailing spaces.
@@ -120,7 +124,7 @@ function printTokenArray () {
 	
 	document.getElementById("taOutput").value += "\tAll Tokens:\n";
 	_TokenCount = _TokenArray.length; //Sets token count
-	console.log("Token Count = " + _TokenCount);
+	//console.log("Token Count = " + _TokenCount);
 	for (var i = 0; i < _TokenArray.length; i++) {
 		document.getElementById("taOutput").value += "\n\tType: " + _TokenArray[i].type + ",  Value: " + _TokenArray[i].value +  "\n";	
 	}
@@ -134,7 +138,7 @@ function getNextToken() {
 		nextTokenToParse = _TokenArray[_TokenIndex];
 		_TokenIndex++;
 	}
-	console.log("getNextToken is returning: " + nextTokenToParse.value);
+	//console.log("getNextToken is returning: " + nextTokenToParse.value);
 	return nextTokenToParse;
 }
 
