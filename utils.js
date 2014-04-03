@@ -163,5 +163,10 @@ function test1 () {
 
 function test2 () {
 	 
-		document.getElementById("taSourceCode").value = "{\nprint (" + " \"hello\" " + ")\n}" + "\n$";	
+		document.getElementById("taSourceCode").value = "{\n\tprint (a)\n\tint a\n\t if (a){\n\t\tprint(\"a\")\n\t}\n}" + "\n$";	
+}
+
+function test3 () {
+	 
+		document.getElementById("taSourceCode").value = "{\n\tboolean b\n\twhile (b) {\n\t\t b = false\n\t}\n\tprint (b)\n}" + "\n$";	
 }
