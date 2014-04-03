@@ -13,7 +13,9 @@ function displayConcreteSyntaxTree() {
 	//Assigns the tree to a temporary pointer and maintains a reference to the root
 	 var tempPointer = _CSTRoot;
 	 
+	 document.getElementById("taOutput").value += "\n\n*****CONCRETE SYNTAX TREE*****\n\n";
 	 expandNode(tempPointer);
+	 document.getElementById("taOutput").value += "\n\n*****END CONCRETE SYNTAX TREE*****\n\n";
 
 }
 
