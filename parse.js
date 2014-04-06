@@ -448,7 +448,7 @@ function match(expectedToken) {
 				break;
 			case "T_If":
 				if (tokenToParse.value === "if") {
-					addLeafNode("while");
+					addLeafNode("if");
 					tokenToParse.cstType = "Statement";
 				}
 				break;	
