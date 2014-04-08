@@ -22,7 +22,7 @@ function displayConcreteSyntaxTree() {
 var level = "-";
 function expandNode(tempNode) {
 	
-	//Goes through the tree (IODF Traversal) and prints out the nodes 
+	//Goes through the tree (DFIO Traversal) and prints out the nodes 
 	for (var i = 0; i < tempNode.children.length; i++) {
 		
 		level = level + "-";
