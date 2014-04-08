@@ -1,6 +1,6 @@
 /*global.js*/
 
-var _Code;
+var _Code = "";
 var _TokenArray = [];
 var _TokenCount = 0;
 var _TokenIndex = 0;
@@ -15,3 +15,7 @@ var _IdentifierExists = false;
 //CST Pointers
 var _CSTRoot = null;
 var _CurrentCstPointer = null;
+
+
+//AST Pointers
+var _CurrentAstPointer = null;

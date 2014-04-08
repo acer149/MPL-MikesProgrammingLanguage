@@ -11,6 +11,9 @@ function startCompiler() {
 	if (_ErrorCount === 0) {
 		displayConcreteSyntaxTree();	
 	}
+	if (_ErrorCount === 0) {
+		buildAst();
+	}
 }
 
 function trim(str)      // Use a regular expression to remove leading and trailing spaces.
