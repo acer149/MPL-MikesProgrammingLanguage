@@ -61,11 +61,11 @@ function addAstBranchNode(type, parent, children) {
 
 
 function findLeavesOfCurrentSubTree(currentSubTree) {
-	console.log("Looking for leaves ");
+	console.log("Looking for leaves under " + currentSubTree.type);
 	for (var j = 0; j < currentSubTree.children.length; j++) {
-		console.log("Is this a leaf: " + currentSubTree.children[j].children[j]);
-		if (currentSubTree.children[j].children[j] === undefined) {
-			console.log("Found Leaf");
+		console.log("Is this a leaf: " + currentSubTree.children[j].type + " It has children: " + currentSubTree.children[j].children );
+		if (currentSubTree.children[j].children < 1) {
+			console.log("Found Leaf: " + currentSubTree.children[j].type);
 			addAstLeafNode(currentSubTree.children[j].type);
 		}
 	findLeavesOfCurrentSubTree(currentSubTree.children[j]);
