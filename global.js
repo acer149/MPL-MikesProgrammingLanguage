@@ -18,4 +18,5 @@ var _CurrentCstPointer = null;
 
 
 //AST Pointers
+var _ASTRoot = null;
 var _CurrentAstPointer = null;

@@ -13,6 +13,7 @@ function startCompiler() {
 	}
 	if (_ErrorCount === 0) {
 		buildAst();
+		displayAbstractSyntaxTree();
 	}
 }
 
