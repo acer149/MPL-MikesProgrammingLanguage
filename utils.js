@@ -12,7 +12,7 @@ function startCompiler() {
 		displayConcreteSyntaxTree();	
 	}
 	if (_ErrorCount === 0) {
-		buildAst();
+		//buildAst();
 		displayAbstractSyntaxTree();
 	}
 }

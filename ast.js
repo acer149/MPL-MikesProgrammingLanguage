@@ -1,36 +1,41 @@
 /* ast.js */
 
 var patternArray = ["block", "print statement", "if statement", "while statement", "assignment statement", "varDecl"];
+var exclude = /[\(\)\{\}statementList]/;
 
 function buildAst() {
 	//Assigns the tree to a temporary pointer and maintains a reference to the root
-	var tempPointer = _CSTRoot;
+	var tempPointerToCSTRoot = _CSTRoot;
 	
-	traverseConcreteSyntaxTree(tempPointer);
+	traverseConcreteSyntaxTree(tempPointerToCSTRoot);
 }
 
-function traverseConcreteSyntaxTree(tempNode) {
+function traverseConcreteSyntaxTree(tempPointerToCST) {
 	
-	//Goes through the CST (DFIO Traversal) and searches for patterns to include in the AST 
-	for (var i = 0; i < tempNode.children.length; i++) {
+	//Goes through the CST (DFIO) and searches for patterns to include in the AST 
+	for (var i = 0; i < tempPointerToCST.children.length; i++) {
 		
-		//console.log(tempNode.children[i].type);
-		//document.getElementById("taOutput").value += level + tempNode.children[i].type + "\n";			
+		console.log("CHECK THIS: " + tempPointerToCST.type);
+		//document.getElementById("taOutput").value += level + tempNode.children[i].type + "\n";
 		
-		if ($.inArray(tempNode.children[i].type.toString(), patternArray) === 1) {
-			//TODO: Add if statement here to check for patterns
-			addAstBranchNode(tempNode.children[i].type);	
+					
+		if ($.inArray(tempPointerToCST.children[i].type.toString(), patternArray) != -1) {
+		
+			console.log("Found Pattern: " + tempPointerToCST.children[i].type);
 			
-			console.log("Found Pattern");
-			findLeavesOfCurrentSubTree(tempNode.children[i]);	
-			movePointerUpAST();	
+			addAstBranchNode(tempPointerToCST.children[i].type.toString());	
 				
 		}
 				
-		traverseConcreteSyntaxTree(tempNode.children[i]);
+		//traverseConcreteSyntaxTree(tempPointerToCST.children[i]);
+		//traverseConcreteSyntaxTree();
 		//console.log(_ASTRoot);
 	}
+	tempPointerToCST = tempPointerToCST.children[0].children[0];
+	traverseConcreteSyntaxTree(tempPointerToCST);
 }
+
+
 
 function astNode(type, parent, children) {
 
@@ -43,7 +48,7 @@ function astNode(type, parent, children) {
 function addAstBranchNode(type, parent, children) {
 
 	//Creates a new node object with properties: type, parent(the node _CurrentAstPointer points to), and a children array
-	var node = new astNode(type, _CurrentCstPointer, children);
+	var node = new astNode(type, _CurrentAstPointer, children);
 	
 	if (_CurrentAstPointer === null) {
 		//First node is root
@@ -66,7 +71,9 @@ function findLeavesOfCurrentSubTree(currentSubTree) {
 		console.log("Is this a leaf: " + currentSubTree.children[j].type + " It has children: " + currentSubTree.children[j].children );
 		if (currentSubTree.children[j].children < 1) {
 			console.log("Found Leaf: " + currentSubTree.children[j].type);
-			addAstLeafNode(currentSubTree.children[j].type);
+			if (!currentSubTree.children[j].type.match(exclude)) {
+				addAstLeafNode(currentSubTree.children[j].type);
+			}
 		}
 	findLeavesOfCurrentSubTree(currentSubTree.children[j]);
 	}
@@ -97,19 +104,29 @@ function displayAbstractSyntaxTree() {
 	 var tempPointer = _ASTRoot;
 	 console.log(_ASTRoot);
 	 document.getElementById("taOutput").value += "\n\n*****ABSTRACT SYNTAX TREE*****\n\n";
+	 
+	 document.getElementById("taOutput").value += astLevel + tempPointer.type + "\n";
 	 expandAstNode(tempPointer);
 	 document.getElementById("taOutput").value += "\n\n*****END ABSTRACT SYNTAX TREE*****\n\n";
 }
-var level = "-";
+var astLevel = "--";
+var treeLevel = 1;
 function expandAstNode(tempNode) {
-	
-	//Goes through the AST (DFIO Traversal) and prints out the nodes 
+	astLevel = "--";
+	treeLevel += 1; 
+	//Goes through the AST (DFIO) and prints out the nodes 
 	for (var i = 0; i < tempNode.children.length; i++) {
-		console.log("Hello");
-		level = level + "-";
+		console.log("In expandAstNode"); 
 		console.log(tempNode.children[i].type);
-		document.getElementById("taOutput").value += level + tempNode.children[i].type + "\n";			
-						
+		
+		for (var j = 0; j < treeLevel; j++) {
+			astLevel += "----";	
+		}
+		
+		document.getElementById("taOutput").value += astLevel + tempNode.children[i].type + "\n"; // " at tree level " + treeLevel + "\n";			
+				
 		expandAstNode(tempNode.children[i]);
 	}
+	//astLevel -= "-";
+	treeLevel -= 1;
 }

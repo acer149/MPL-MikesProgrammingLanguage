@@ -45,6 +45,7 @@ function parseBlock() {
 	}
 	
 	addBranchNode("block");
+	addAstBranchNode("block");
 	
 	//console.log("Token in parseBlock is: " + tokenToParse.value);
 	match("T_OpenBracket");
@@ -57,7 +58,8 @@ function parseBlock() {
 	}
 	match("T_CloseBracket");
 	
-	movePointerUpTree();	
+	movePointerUpTree();
+	movePointerUpAST();	
 	
 }
 
@@ -133,6 +135,7 @@ function parseStatement() {
 function parsePrintStatement() {
 	
 	addBranchNode("print statement");
+	addAstBranchNode("print");
 	match("T_Print");
 	if (_Verbose && _JustParseVerbose) {
 		document.getElementById("taOutput").value += "\n\tParsing Print Statement\n";
@@ -150,11 +153,13 @@ function parsePrintStatement() {
 	
 	match("T_CloseParen");
 	movePointerUpTree();
+	movePointerUpAST();
 }
 
 function parseAssignmentStatement() {
 	
 	addBranchNode("assignment statement");
+	addAstBranchNode("assign");
 	match("T_Id");
 	document.getElementById("taOutput").value += "\n\t\tParsing Assignment Statement\n";
 	match("T_Equal");
@@ -162,19 +167,25 @@ function parseAssignmentStatement() {
 		parseExpr();	
 	}
 	movePointerUpTree();
+	movePointerUpAST();
 }
 
 function parseVarDecl() {
 	
 	addBranchNode("varDecl");
+	addAstBranchNode("varDecl");
 	match("T_VarDeclType");
 	document.getElementById("taOutput").value += "\n\t\tParsing VarDecl\n";
-	match("T_Id");	
+	match("T_Id");
+	//TODO:move up cst????
+	movePointerUpTree();
+	movePointerUpAST();	
 }
 
 function parseWhileStatement() {
 	
 	addBranchNode("while statement");
+	addAstBranchNode("while");
 	match("T_While");
 	document.getElementById("taOutput").value += "\n\t\tParsing While Statement\n";
 	if (_ErrorCount === 0) {
@@ -184,11 +195,13 @@ function parseWhileStatement() {
 		parseBlock();	
 	}
 	movePointerUpTree();
+	movePointerUpAST();
 }
 
 function parseIfStatement() {
 	
 	addBranchNode("if statement");
+	addAstBranchNode("if");
 	match("T_If");
 	document.getElementById("taOutput").value += "\n\t\tParsing If Statement\n";
 	if (_ErrorCount === 0) {
@@ -198,6 +211,7 @@ function parseIfStatement() {
 		parseBlock();	
 	}	
 	movePointerUpTree();
+	movePointerUpAST();
 }
 
 function parseExpr() {
@@ -406,6 +420,7 @@ function match(expectedToken) {
 			case "T_Id": matchVerboseOutput("Expecting", "an", "Identifier");
 				if (tokenToParse.value.match(character)) {
 					addLeafNode(tokenToParse.value);
+					addAstLeafNode(tokenToParse.value);
 					tokenToParse.cstType = "ID";
 					matchVerboseOutput("Found", "an", "Identifier");
 				}
@@ -418,18 +433,21 @@ function match(expectedToken) {
 			case "T_VarDeclType": matchVerboseOutput("Expecting", "an", "int, string, or boolean keyword");
 				if (tokenToParse.type === "T_Int") {
 					addLeafNode("int");
+					addAstLeafNode("int");
 					tokenToParse.cstType = "VarDecl";
 					matchVerboseOutput("Found", "an", "int keyword");
 					//document.getElementById("taOutput").value += "\n\t\t\tParsing\n";
 				}
 				else if (tokenToParse.type === "T_String") {
 					addLeafNode("string");
+					addAstLeafNode("string");
 					tokenToParse.cstType = "VarDecl";
 					matchVerboseOutput("Found", "a", "string keyword");
 					//document.getElementById("taOutput").value += "\n\t\t\tParsing\n";
 				}
 				else if (tokenToParse.type === "T_Boolean") {
 					addLeafNode("boolean");
+					addAstLeafNode("boolean");
 					tokenToParse.cstType = "VarDecl";
 					matchVerboseOutput("Found", "a", "boolean keyword");
 					//document.getElementById("taOutput").value += "\n\t\t\tParsing\n";
@@ -492,6 +510,7 @@ function match(expectedToken) {
 			case "T_Plus": matchVerboseOutput("Expecting", "a", "Plus Sign");
 				if (tokenToParse.value === "+") {
 					addLeafNode("+");
+					addAstLeafNode("+");
 					tokenToParse.cstType = "Plus";
 					matchVerboseOutput("Found", "a", "Plus Sign");
 				}
@@ -504,6 +523,7 @@ function match(expectedToken) {
 			case "T_Digit": matchVerboseOutput("Expecting", "a", "Digit");
 				if (tokenToParse.value.match(digit)) {
 					addLeafNode(tokenToParse.value);
+					addAstLeafNode(tokenToParse.value);
 					tokenToParse.cstType = "Digit";
 					matchVerboseOutput("Found", "a", "Digit");
 				}
@@ -516,6 +536,7 @@ function match(expectedToken) {
 			case "T_StringExpr": matchVerboseOutput("Expecting", "a", "String Expression");
 				if (tokenToParse.type === "T_StringExpr") {
 					addLeafNode(tokenToParse.value);
+					addAstLeafNode(tokenToParse.value);
 					tokenToParse.cstType = "StringExpr";
 					matchVerboseOutput("Found", "a", "String Expression");
 				}
@@ -528,6 +549,7 @@ function match(expectedToken) {
 			case "T_BoolOp": matchVerboseOutput("Expecting", "a", "Boolean Op");
 				if (tokenToParse.value === "==" || tokenToParse.value === "!=") {
 					addLeafNode(tokenToParse.value);
+					addAstLeafNode(tokenToParse.value);
 					tokenToParse.cstType = "EqualityOp";
 					matchVerboseOutput("Found", "a", "Boolean Op");
 				}			
@@ -540,6 +562,7 @@ function match(expectedToken) {
 			case "T_Boolval": matchVerboseOutput("Expecting", "a", "Boolean Val");
 				if (tokenToParse.value === "true" || tokenToParse.value === "false") {
 					addLeafNode(tokenToParse.value);
+					addAstLeafNode(tokenToParse.value);
 					tokenToParse.cstType = "BooleanVal";
 					matchVerboseOutput("Found", "a", "Boolean Val");
 				}	
@@ -552,6 +575,7 @@ function match(expectedToken) {
 			case "T_IntOp": matchVerboseOutput("Expecting", "an", "Int Op");
 				if (tokenToParse.value === "+") {
 					addLeafNode("+");
+					addAstLeafNode(tokenToParse.value);
 					matchVerboseOutput("Found", "an", "Int Op");
 				}
 				else {
