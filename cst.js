@@ -14,23 +14,30 @@ function displayConcreteSyntaxTree() {
 	 var tempPointer = _CSTRoot;
 	 console.log(_CSTRoot);
 	 document.getElementById("taOutput").value += "\n\n*****CONCRETE SYNTAX TREE*****\n\n";
-	 expandNode(tempPointer);
+	 expandCstNode(tempPointer);
 	 document.getElementById("taOutput").value += "\n\n*****END CONCRETE SYNTAX TREE*****\n\n";
 
 }
 
-var level = "-";
-function expandNode(tempNode) {
-	
-	//Goes through the tree (DFIO) and prints out the nodes 
+var cstLevel = "--";
+var cstTreeLevel = 1;
+function expandCstNode(tempNode) {
+	cstLevel = "--";
+	cstTreeLevel += 1; 
+	//Goes through the AST (DFIO) and prints out the nodes 
 	for (var i = 0; i < tempNode.children.length; i++) {
+		//sconsole.log("In expandAstNode"); 
+		//console.log(tempNode.children[i].type);
 		
-		level = level + "-";
-		console.log(tempNode.children[i].type);
-		document.getElementById("taOutput").value += level + tempNode.children[i].type + "\n";			
-						
-		expandNode(tempNode.children[i]);
+		for (var j = 0; j < cstTreeLevel; j++) {
+			cstLevel += "----";	
+		}
+		
+		document.getElementById("taOutput").value += cstLevel + tempNode.children[i].type + "\n"; // " at tree level " + cstTreeLevel + "\n";			
+				
+		expandCstNode(tempNode.children[i]);
 	}
+	cstTreeLevel -= 1;
 }
 
 
