@@ -1,42 +1,5 @@
 /* ast.js */
 
-var patternArray = ["block", "print statement", "if statement", "while statement", "assignment statement", "varDecl"];
-var exclude = /[\(\)\{\}statementList]/;
-
-function buildAst() {
-	//Assigns the tree to a temporary pointer and maintains a reference to the root
-	var tempPointerToCSTRoot = _CSTRoot;
-	
-	traverseConcreteSyntaxTree(tempPointerToCSTRoot);
-}
-
-function traverseConcreteSyntaxTree(tempPointerToCST) {
-	
-	//Goes through the CST (DFIO) and searches for patterns to include in the AST 
-	for (var i = 0; i < tempPointerToCST.children.length; i++) {
-		
-		console.log("CHECK THIS: " + tempPointerToCST.type);
-		//document.getElementById("taOutput").value += level + tempNode.children[i].type + "\n";
-		
-					
-		if ($.inArray(tempPointerToCST.children[i].type.toString(), patternArray) != -1) {
-		
-			console.log("Found Pattern: " + tempPointerToCST.children[i].type);
-			
-			addAstBranchNode(tempPointerToCST.children[i].type.toString());	
-				
-		}
-				
-		//traverseConcreteSyntaxTree(tempPointerToCST.children[i]);
-		//traverseConcreteSyntaxTree();
-		//console.log(_ASTRoot);
-	}
-	tempPointerToCST = tempPointerToCST.children[0].children[0];
-	traverseConcreteSyntaxTree(tempPointerToCST);
-}
-
-
-
 function astNode(type, parent, children) {
 
 	this.type = type;
@@ -130,3 +93,40 @@ function expandAstNode(tempNode) {
 	//astLevel -= "-";
 	treeLevel -= 1;
 }
+
+
+
+// var patternArray = ["block", "print statement", "if statement", "while statement", "assignment statement", "varDecl"];
+// var exclude = /[\(\)\{\}statementList]/;
+// 
+// function buildAst() {
+	// //Assigns the tree to a temporary pointer and maintains a reference to the root
+	// var tempPointerToCSTRoot = _CSTRoot;
+// 	
+	// traverseConcreteSyntaxTree(tempPointerToCSTRoot);
+// }
+// 
+// function traverseConcreteSyntaxTree(tempPointerToCST) {
+// 	
+	// //Goes through the CST (DFIO) and searches for patterns to include in the AST 
+	// for (var i = 0; i < tempPointerToCST.children.length; i++) {
+// 		
+		// console.log("CHECK THIS: " + tempPointerToCST.type);
+		// //document.getElementById("taOutput").value += level + tempNode.children[i].type + "\n";
+// 		
+// 					
+		// if ($.inArray(tempPointerToCST.children[i].type.toString(), patternArray) != -1) {
+// 		
+			// console.log("Found Pattern: " + tempPointerToCST.children[i].type);
+// 			
+			// addAstBranchNode(tempPointerToCST.children[i].type.toString());	
+// 				
+		// }
+// 				
+		// //traverseConcreteSyntaxTree(tempPointerToCST.children[i]);
+		// //traverseConcreteSyntaxTree();
+		// //console.log(_ASTRoot);
+	// }
+	// tempPointerToCST = tempPointerToCST.children[0].children[0];
+	// traverseConcreteSyntaxTree(tempPointerToCST);
+// }
