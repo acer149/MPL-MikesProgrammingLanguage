@@ -72,19 +72,30 @@ function displayAbstractSyntaxTree() {
 	 expandAstNode(tempPointer);
 	 document.getElementById("taOutput").value += "\n\n*****END ABSTRACT SYNTAX TREE*****\n\n";
 }
-var astLevel = "--";
+
+var astLevel = "";
 var treeLevel = 1;
 function expandAstNode(tempNode) {
-	astLevel = "--";
+	astLevel = "";
 	treeLevel += 1; 
 	//Goes through the AST (DFIO) and prints out the nodes 
 	for (var i = 0; i < tempNode.children.length; i++) {
 		console.log("In expandAstNode"); 
 		console.log(tempNode.children[i].type);
 		
-		for (var j = 0; j < treeLevel; j++) {
-			astLevel += "----";	
-		}
+//		for (var j = 0; j < treeLevel; j++) {
+//			if (j === 1) {
+//				astLevel += "----";
+//			}
+//			else {
+//				astLevel += "|----";
+//			}
+				
+//		}
+		
+		 for (var j = 1; j < treeLevel; j++) {
+			 astLevel += "|----";	
+		 }
 		
 		document.getElementById("taOutput").value += astLevel + tempNode.children[i].type + "\n"; // " at tree level " + treeLevel + "\n";			
 				

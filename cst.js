@@ -19,19 +19,30 @@ function displayConcreteSyntaxTree() {
 
 }
 
-var cstLevel = "--";
+var cstLevel = "";
 var cstTreeLevel = 1;
 function expandCstNode(tempNode) {
-	cstLevel = "--";
+	cstLevel = "";
 	cstTreeLevel += 1; 
 	//Goes through the AST (DFIO) and prints out the nodes 
 	for (var i = 0; i < tempNode.children.length; i++) {
 		//sconsole.log("In expandAstNode"); 
 		//console.log(tempNode.children[i].type);
 		
-		for (var j = 0; j < cstTreeLevel; j++) {
-			cstLevel += "----";	
-		}
+		// for (var j = 0; j < cstTreeLevel; j++) {
+			// cstLevel += "----";	
+		// }
+		
+		for (var j = 1; j < cstTreeLevel; j++) {
+			
+			if (j === 1) {
+				cstLevel += "";
+			}
+			else {
+				cstLevel += "|----";
+			}
+			 	
+		 }
 		
 		document.getElementById("taOutput").value += cstLevel + tempNode.children[i].type + "\n"; // " at tree level " + cstTreeLevel + "\n";			
 				
