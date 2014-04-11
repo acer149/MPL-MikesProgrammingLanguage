@@ -224,7 +224,7 @@ function parseExpr() {
 	}
 	
 	if (tokenToParse.type === "T_Digit") {
-		match("T_Digit");
+		//match("T_Digit");
 		if (_ErrorCount === 0) {
 			parseIntExpr();	
 		}
@@ -266,7 +266,7 @@ function parseIntExpr() {
 			}			 
 		 }
 		 else if (tokenToParse.type === "T_Digit") {
-			 match("T_Digit");
+			 //match("T_Digit");
 			if (_ErrorCount === 0) {
 				parseDigit();
 			}
@@ -339,7 +339,7 @@ function parseSpace() {
 function parseDigit() {
 	
 	addBranchNode("digit");
-	
+	console.log("Should have added a digit node");
 	if (tokenToParse.value.match(digit)) {
 		match("T_Digit");
 	}

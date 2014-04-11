@@ -26,7 +26,7 @@ function expandCstNode(tempNode) {
 	cstTreeLevel += 1; 
 	//Goes through the AST (DFIO) and prints out the nodes 
 	for (var i = 0; i < tempNode.children.length; i++) {
-		//sconsole.log("In expandAstNode"); 
+		//console.log("In expandAstNode"); 
 		//console.log(tempNode.children[i].type);
 		
 		// for (var j = 0; j < cstTreeLevel; j++) {

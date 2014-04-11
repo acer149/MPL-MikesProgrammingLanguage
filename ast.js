@@ -31,9 +31,9 @@ function addAstBranchNode(type, parent, children) {
 function findLeavesOfCurrentSubTree(currentSubTree) {
 	console.log("Looking for leaves under " + currentSubTree.type);
 	for (var j = 0; j < currentSubTree.children.length; j++) {
-		console.log("Is this a leaf: " + currentSubTree.children[j].type + " It has children: " + currentSubTree.children[j].children );
+		//console.log("Is this a leaf: " + currentSubTree.children[j].type + " It has children: " + currentSubTree.children[j].children );
 		if (currentSubTree.children[j].children < 1) {
-			console.log("Found Leaf: " + currentSubTree.children[j].type);
+			//console.log("Found Leaf: " + currentSubTree.children[j].type);
 			if (!currentSubTree.children[j].type.match(exclude)) {
 				addAstLeafNode(currentSubTree.children[j].type);
 			}
@@ -80,8 +80,8 @@ function expandAstNode(tempNode) {
 	treeLevel += 1; 
 	//Goes through the AST (DFIO) and prints out the nodes 
 	for (var i = 0; i < tempNode.children.length; i++) {
-		console.log("In expandAstNode"); 
-		console.log(tempNode.children[i].type);
+		//console.log("In expandAstNode"); 
+		//console.log(tempNode.children[i].type);
 		
 //		for (var j = 0; j < treeLevel; j++) {
 //			if (j === 1) {
