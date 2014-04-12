@@ -67,9 +67,7 @@ $(document).ready(function() {
 	//JQuery for toggles
 	//Overall verbose on and off
 	$( "#toggleVerbose" ).change(function() {
-		console.log("Hello1");
 	  if (_Verbose) {
-	  	console.log("Hello");
 	  	_Verbose = false;
 	  	_JustLexVerbose = false;
 	  	_JustParseVerbose = false;
