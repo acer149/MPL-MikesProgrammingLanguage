@@ -73,8 +73,14 @@ $(document).ready(function() {
 	  	_Verbose = false;
 	  	_JustLexVerbose = false;
 	  	_JustParseVerbose = false;
+	  	_JustCSTVerbose = false;
+	  	_JustASTVerbose = false;
+	  	
 	  	$("#toggleLexVerbose").prop('checked', false);
 	  	$("#toggleParseVerbose").prop('checked', false);
+	  	$("#toggleParseVerbose").prop('checked', false);
+	  	$("#toggleCSTVerbose").prop('checked', false);
+	  	$("#toggleASTVerbose").prop('checked', false);
 	  }
 	  else if (!_Verbose) {
 	  	_Verbose = true;
@@ -82,6 +88,8 @@ $(document).ready(function() {
 	  	_JustParseVerbose = true;
 	  	$("#toggleLexVerbose").prop('checked', true);
 	  	$("#toggleParseVerbose").prop('checked', true);
+	  	$("#toggleCSTVerbose").prop('checked', true);
+	  	$("#toggleASTVerbose").prop('checked', true);
 	  }
 	});
 	
@@ -101,6 +109,24 @@ $(document).ready(function() {
 	  }
 	  else if (!_JustParseVerbose) {
 	  	_JustParseVerbose = true;
+	  }
+	});
+	//Toggle CST Verbose Output
+	$( "#toggleCSTVerbose" ).change(function() {
+	  if (_JustCSTVerbose) {
+	  	_JustCSTVerbose = false;
+	  }
+	  else if (!_JustCSTVerbose) {
+	  	_JustCSTVerbose = true;
+	  }
+	});	
+	//Toggle AST Verbose Output
+	$( "#toggleASTVerbose" ).change(function() {
+	  if (_JustASTVerbose) {
+	  	_JustASTVerbose = false;
+	  }
+	  else if (!_JustASTVerbose) {
+	  	_JustASTVerbose = true;
 	  }
 	});
 });
@@ -157,6 +183,12 @@ function matchVerboseOutput(expectOrFoundOrError, aOrAn, type) {
 			document.getElementById("taOutput").value += "\n\t\t\t" + expectOrFoundOrError + " " + aOrAn + " " + type +"\n";
 		}
 		
+	}
+}
+
+function printCSTVerboseOutput(cstLevel, node) {
+	if (_Verbose && _JustCSTVerbose) {
+		document.getElementById("taOutput").value += cstLevel + node + "\n"; // " at tree level " + cstTreeLevel + "\n";
 	}
 }
 

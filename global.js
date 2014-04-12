@@ -7,9 +7,13 @@ var _TokenIndex = 0;
 var _LineNumber = 1;
 var _ErrorCount = 0;
 var _Index = 0;
+
 var _Verbose = true;
 var _JustLexVerbose = true;
 var _JustParseVerbose = true;
+var _JustCSTVerbose = true;
+var _JustASTVerbose = true;
+
 var _IdentifierExists = false;
 
 //CST Pointers

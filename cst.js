@@ -15,6 +15,11 @@ function displayConcreteSyntaxTree() {
 	 console.log(_CSTRoot);
 	 document.getElementById("taOutput").value += "\n\n*****CONCRETE SYNTAX TREE*****\n\n";
 	 expandCstNode(tempPointer);
+	 
+	 if (!_Verbose || !_JustCSTVerbose) {
+	 	document.getElementById("taOutput").value += "\tCST Hidden\n";
+	 }
+	 
 	 document.getElementById("taOutput").value += "\n\n*****END CONCRETE SYNTAX TREE*****\n\n";
 
 }
@@ -44,7 +49,8 @@ function expandCstNode(tempNode) {
 			 	
 		 }
 		
-		document.getElementById("taOutput").value += cstLevel + tempNode.children[i].type + "\n"; // " at tree level " + cstTreeLevel + "\n";			
+		//document.getElementById("taOutput").value += cstLevel + tempNode.children[i].type + "\n"; // " at tree level " + cstTreeLevel + "\n";			
+		printCSTVerboseOutput(cstLevel, tempNode.children[i].type);
 				
 		expandCstNode(tempNode.children[i]);
 	}
