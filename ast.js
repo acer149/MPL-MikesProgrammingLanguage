@@ -27,22 +27,6 @@ function addAstBranchNode(type, parent, children) {
 	}
 }
 
-
-function findLeavesOfCurrentSubTree(currentSubTree) {
-	console.log("Looking for leaves under " + currentSubTree.type);
-	for (var j = 0; j < currentSubTree.children.length; j++) {
-		//console.log("Is this a leaf: " + currentSubTree.children[j].type + " It has children: " + currentSubTree.children[j].children );
-		if (currentSubTree.children[j].children < 1) {
-			//console.log("Found Leaf: " + currentSubTree.children[j].type);
-			if (!currentSubTree.children[j].type.match(exclude)) {
-				addAstLeafNode(currentSubTree.children[j].type);
-			}
-		}
-	findLeavesOfCurrentSubTree(currentSubTree.children[j]);
-	}
-}
-
-
 function addAstLeafNode(type, parent) {
 	//Creates a new node object with properties: type, parent(the node _CurrentAstPointer points to). No child array because it is a leaf node
 	var node = new astNode(type, _CurrentAstPointer);
@@ -68,11 +52,13 @@ function displayAbstractSyntaxTree() {
 	 console.log(_ASTRoot);
 	 document.getElementById("taOutput").value += "\n\n*****ABSTRACT SYNTAX TREE*****\n\n";
 	 
+	 //Manage verbose output
 	 if(_Verbose && _JustASTVerbose) {
 	 	document.getElementById("taOutput").value += astLevel + tempPointer.type + "\n";	
 	 }
 	 expandAstNode(tempPointer);
 	 
+	 //Manage verbose output
 	 if (!_Verbose || !_JustASTVerbose) {
 	 	document.getElementById("taOutput").value += "\tAST Hidden\n";
 	 }
@@ -115,6 +101,7 @@ function expandAstNode(tempNode) {
 }
 
 
+//Previous implementation that "sort of worked"
 
 // var patternArray = ["block", "print statement", "if statement", "while statement", "assignment statement", "varDecl"];
 // var exclude = /[\(\)\{\}statementList]/;
@@ -149,4 +136,21 @@ function expandAstNode(tempNode) {
 	// }
 	// tempPointerToCST = tempPointerToCST.children[0].children[0];
 	// traverseConcreteSyntaxTree(tempPointerToCST);
+// }
+
+
+
+//******
+// function findLeavesOfCurrentSubTree(currentSubTree) {
+	// console.log("Looking for leaves under " + currentSubTree.type);
+	// for (var j = 0; j < currentSubTree.children.length; j++) {
+		// //console.log("Is this a leaf: " + currentSubTree.children[j].type + " It has children: " + currentSubTree.children[j].children );
+		// if (currentSubTree.children[j].children < 1) {
+			// //console.log("Found Leaf: " + currentSubTree.children[j].type);
+			// if (!currentSubTree.children[j].type.match(exclude)) {
+				// addAstLeafNode(currentSubTree.children[j].type);
+			// }
+		// }
+	// findLeavesOfCurrentSubTree(currentSubTree.children[j]);
+	// }
 // }

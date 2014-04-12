@@ -5,17 +5,14 @@ function displayConcreteSyntaxTree() {
 	// for (var i = 0; i < _TokenArray.length; i++) {
 		// document.getElementById("taOutput").value += "\n\t" + _TokenArray[i].cstType + "\n";	
 	// }	
-	// document.getElementById("taOutput").value += "\n\t\t Program\n";
-	// document.getElementById("taOutput").value += "\n\t\t Block\n";
-	// document.getElementById("taOutput").value += "\nStatementList\n";
-	
-	//console.dir("The tree: " + _CSTRoot.children[0].children[2].type);
+
 	//Assigns the tree to a temporary pointer and maintains a reference to the root
 	 var tempPointer = _CSTRoot;
 	 console.log(_CSTRoot);
 	 document.getElementById("taOutput").value += "\n\n*****CONCRETE SYNTAX TREE*****\n\n";
 	 expandCstNode(tempPointer);
 	 
+	 //Manage verbose output
 	 if (!_Verbose || !_JustCSTVerbose) {
 	 	document.getElementById("taOutput").value += "\tCST Hidden\n";
 	 }
