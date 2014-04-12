@@ -68,8 +68,16 @@ function displayAbstractSyntaxTree() {
 	 console.log(_ASTRoot);
 	 document.getElementById("taOutput").value += "\n\n*****ABSTRACT SYNTAX TREE*****\n\n";
 	 
-	 document.getElementById("taOutput").value += astLevel + tempPointer.type + "\n";
+	 if(_Verbose && _JustASTVerbose) {
+	 	document.getElementById("taOutput").value += astLevel + tempPointer.type + "\n";	
+	 }
 	 expandAstNode(tempPointer);
+	 
+	 if (!_Verbose || !_JustASTVerbose) {
+	 	document.getElementById("taOutput").value += "\tAST Hidden\n";
+	 }
+	 
+	 
 	 document.getElementById("taOutput").value += "\n\n*****END ABSTRACT SYNTAX TREE*****\n\n";
 }
 
@@ -97,7 +105,8 @@ function expandAstNode(tempNode) {
 			 astLevel += "|----";	
 		 }
 		
-		document.getElementById("taOutput").value += astLevel + tempNode.children[i].type + "\n"; // " at tree level " + treeLevel + "\n";			
+		//document.getElementById("taOutput").value += astLevel + tempNode.children[i].type + "\n"; // " at tree level " + treeLevel + "\n";			
+		printASTVerboseOutput(astLevel, tempNode.children[i].type);	
 				
 		expandAstNode(tempNode.children[i]);
 	}

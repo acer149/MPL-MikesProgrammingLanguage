@@ -192,6 +192,12 @@ function printCSTVerboseOutput(cstLevel, node) {
 	}
 }
 
+function printASTVerboseOutput(astLevel, node) {
+	if (_Verbose && _JustASTVerbose) {
+		document.getElementById("taOutput").value += astLevel + node + "\n"; // " at tree level " + astTreeLevel + "\n";
+	}	
+}
+
 function test1 () {
 	
 		document.getElementById("taSourceCode").value = "{\nprint (" + " \"hello\" " + ")\n}" + "\n$";	
