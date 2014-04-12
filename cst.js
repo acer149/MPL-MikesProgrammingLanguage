@@ -39,7 +39,7 @@ function expandCstNode(tempNode) {
 				cstLevel += "";
 			}
 			else {
-				cstLevel += "|    ";
+				cstLevel += "|----";
 			}
 			 	
 		 }
