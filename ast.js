@@ -52,10 +52,6 @@ function displayAbstractSyntaxTree() {
 	 console.log(_ASTRoot);
 	 document.getElementById("taOutput").value += "\n\n*****ABSTRACT SYNTAX TREE*****\n\n";
 	 
-	 //Manage verbose output
-	 if(_Verbose && _JustASTVerbose) {
-	 	document.getElementById("taOutput").value += astLevel + tempPointer.type + "\n";	
-	 }
 	 expandAstNode(tempPointer);
 	 
 	 //Manage verbose output
@@ -69,6 +65,7 @@ function displayAbstractSyntaxTree() {
 
 var astLevel = "";
 var treeLevel = 1;
+var q = 0;
 function expandAstNode(tempNode) {
 	astLevel = "";
 	treeLevel += 1; 
@@ -90,6 +87,12 @@ function expandAstNode(tempNode) {
 		 for (var j = 1; j < treeLevel; j++) {
 			 astLevel += "|----";	
 		 }
+		 
+		//Manage verbose output, prints root node of ast
+	 	if(_Verbose && _JustASTVerbose && q === 0) {
+	 		document.getElementById("taOutput").value += tempNode.type + "\n";
+	 		q++;	
+	 	}
 		
 		//document.getElementById("taOutput").value += astLevel + tempNode.children[i].type + "\n"; // " at tree level " + treeLevel + "\n";			
 		printASTVerboseOutput(astLevel, tempNode.children[i].type);	
