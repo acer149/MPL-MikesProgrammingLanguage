@@ -293,6 +293,7 @@ function parseBooleanExpr() {
 	
 	if (tokenToParse.value === "(") {
 		match("T_OpenParen");
+			
 		if (_ErrorCount === 0) {
 			parseExpr();
 		}
@@ -351,9 +352,11 @@ function parseBoolop() {
 	addBranchNode("boolOp");
 	
 	if (tokenToParse.value === "==" || tokenToParse.value === "!=") {
+		addAstBranchNode(tokenToParse.value);
 		match("T_BoolOp");
 	}
 	movePointerUpTree();
+	movePointerUpAST();
 }
 
 function parseBoolval() {
@@ -549,7 +552,7 @@ function match(expectedToken) {
 			case "T_BoolOp": matchVerboseOutput("Expecting", "a", "Boolean Op");
 				if (tokenToParse.value === "==" || tokenToParse.value === "!=") {
 					addLeafNode(tokenToParse.value);
-					addAstLeafNode(tokenToParse.value);
+					//addAstLeafNode(tokenToParse.value);
 					tokenToParse.cstType = "EqualityOp";
 					matchVerboseOutput("Found", "a", "Boolean Op");
 				}			

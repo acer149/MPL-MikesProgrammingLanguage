@@ -93,6 +93,33 @@ function expandAstNode(tempNode) {
 	 		document.getElementById("taOutput").value += tempNode.type + "\n";
 	 		q++;	
 	 	}
+	 	
+	 	//Assign correct children to while and if
+	 	//Checks for a while or if statement and if the condition contains more than one value.  I did this inorder to correct the 
+	 	//ast when a boolean expression is used as a condition. ie. while(a==b)
+	 	if ((tempNode.children[i].type === "while" || tempNode.children[i].type === "if") && tempNode.children[i].children.length > 1 ) {
+	 		
+	 		var whileOrIfNode = tempNode.children[i];
+	 		
+	 		//While and if nodes have 4 children, but should only have 2: the boolop (!= or ==) and a block
+	 		//The other two nodes should be children of the boolop
+	 		//Below rearranges the tree to correctly implement the above comment
+	 		var firstConditional = whileOrIfNode.children[0]; //Should be child if booleanOperand
+	 		var booleanOperand = whileOrIfNode.children[1];
+	 		var secondConditional = whileOrIfNode.children[2]; //Should be child if booleanOperand
+	 		var block = whileOrIfNode.children[3];
+	 		
+	 		//Sets boolean op children
+			booleanOperand.children[0] = firstConditional;
+			booleanOperand.children[1] = secondConditional;
+			
+			//Corrects the while or if node to only have 2 children
+			whileOrIfNode.children[0] = booleanOperand;
+	 		whileOrIfNode.children[1] = block;
+			whileOrIfNode.children.splice(2,2);
+			
+	 		
+	 	}
 		
 		//document.getElementById("taOutput").value += astLevel + tempNode.children[i].type + "\n"; // " at tree level " + treeLevel + "\n";			
 		printASTVerboseOutput(astLevel, tempNode.children[i].type);	
