@@ -12,8 +12,10 @@ function startCompiler() {
 		displayConcreteSyntaxTree();	
 	}
 	if (_ErrorCount === 0) {
-		//buildAst();
 		displayAbstractSyntaxTree();
+	}
+	if (_ErrorCount === 0) {
+		traverseAST();
 	}
 }
 
