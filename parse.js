@@ -216,7 +216,7 @@ function parseIfStatement() {
 
 function parseExpr() {
 	
-	addBranchNode("expr");
+	//addBranchNode("expr");
 	
 	if (_Verbose && _JustParseVerbose) {
 		document.getElementById("taOutput").value += "\n\tParsing Expr\n";
@@ -225,27 +225,35 @@ function parseExpr() {
 	
 	if (tokenToParse.type === "T_Digit") {
 		//match("T_Digit");
+		addBranchNode("expr");
 		if (_ErrorCount === 0) {
-			parseIntExpr();	
+			parseIntExpr();
+			movePointerUpTree();	
 		}
 	}
 	//Would be T_Quote, but I used a holistic approach. Also, why is 'holistic spelled without a 'w'??
 	else if (tokenToParse.type === "T_StringExpr") {  
 		//match() here?
+		addBranchNode("expr");
 		if (_ErrorCount === 0) {
-			parseStringExpr();	
+			parseStringExpr();
+			movePointerUpTree();	
 		}
 	}
 	else if (tokenToParse.type === "T_True" || tokenToParse.type === "T_False" || tokenToParse.value === "(") {  
 		//match() here?
+		addBranchNode("expr");
 		if (_ErrorCount === 0) {
 			parseBooleanExpr();	
+			movePointerUpTree();
 		}
 	}
-	else if (tokenToParse.type === "T_Id") {  
+	else if (tokenToParse.type === "T_Id") {
+		addBranchNode("expr");  
 		match("T_Id");
+		movePointerUpTree();
 	}
-	movePointerUpTree();
+	//movePointerUpTree();
 }
 
 function parseIntExpr() {
@@ -349,14 +357,16 @@ function parseDigit() {
 
 function parseBoolop() {
 	
-	addBranchNode("boolOp");
+	//addBranchNode("boolOp");
 	
 	if (tokenToParse.value === "==" || tokenToParse.value === "!=") {
+		addBranchNode("boolOp");
 		addAstBranchNode(tokenToParse.value);
 		match("T_BoolOp");
+		movePointerUpTree();
+		movePointerUpAST();
 	}
-	movePointerUpTree();
-	movePointerUpAST();
+	//movePointerUpTree();
 }
 
 function parseBoolval() {
@@ -552,7 +562,7 @@ function match(expectedToken) {
 			case "T_BoolOp": matchVerboseOutput("Expecting", "a", "Boolean Op");
 				if (tokenToParse.value === "==" || tokenToParse.value === "!=") {
 					addLeafNode(tokenToParse.value);
-					//addAstLeafNode(tokenToParse.value);
+					addAstLeafNode(tokenToParse.value);
 					tokenToParse.cstType = "EqualityOp";
 					matchVerboseOutput("Found", "a", "Boolean Op");
 				}			

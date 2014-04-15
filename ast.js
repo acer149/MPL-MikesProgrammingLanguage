@@ -9,7 +9,7 @@ function astNode(type, parent, children) {
 }
 
 function addAstBranchNode(type, parent, children) {
-
+	console.log("Adding branch Node: " + type);
 	//Creates a new node object with properties: type, parent(the node _CurrentAstPointer points to), and a children array
 	var node = new astNode(type, _CurrentAstPointer, children);
 	
@@ -30,8 +30,8 @@ function addAstBranchNode(type, parent, children) {
 function addAstLeafNode(type, parent) {
 	//Creates a new node object with properties: type, parent(the node _CurrentAstPointer points to). No child array because it is a leaf node
 	var node = new astNode(type, _CurrentAstPointer);
-	
-	if (_CurrentAstPointer === _CSTRoot) {
+	console.log("Adding leaf Node: " + type);
+	if (_CurrentAstPointer === _ASTRoot) {
 		//error
 	}
 	else {
@@ -43,6 +43,7 @@ function addAstLeafNode(type, parent) {
 
 function movePointerUpAST() {
 	//Steps back up the tree
+	//console.log("Moving pointer up from: " + _CurrentAstPointer.type + " to: " + _CurrentAstPointer.parent.type);
 	_CurrentAstPointer = _CurrentAstPointer.parent;
 }
 
@@ -97,7 +98,7 @@ function expandAstNode(tempNode) {
 	 	//Assign correct children to while and if
 	 	//Checks for a while or if statement and if the condition contains more than one value.  I did this inorder to correct the 
 	 	//ast when a boolean expression is used as a condition. ie. while(a==b)
-	 	if ((tempNode.children[i].type === "while" || tempNode.children[i].type === "if") && tempNode.children[i].children.length > 1 ) {
+	 	if ((tempNode.children[i].type === "while" || tempNode.children[i].type === "if") && tempNode.children[i].children.length != 2 ) {
 	 		
 	 		var whileOrIfNode = tempNode.children[i];
 	 		
