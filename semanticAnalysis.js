@@ -20,7 +20,7 @@ function expandAst(tempNode) {
 						 
 		//Manage verbose output, shows root node of ast
 	 	if(_Verbose && _JustASTVerbose && b === 0) {
-	 		document.getElementById("taOutput").value += tempNode.type + "\n";
+	 		//document.getElementById("taOutput").value += tempNode.type + "\n";
 	 		b++;
 	 			
 	 		scopeBlock = new Scope(scopeCounter, null, array, null);
@@ -39,16 +39,40 @@ function expandAst(tempNode) {
 	 		var varDeclNode = tempNode.children[i];
 	 		var varDeclNodeLC = varDeclNode.children[0];
 	 		var varDeclNodeRC = varDeclNode.children[1];
-	 		id = new Id(varDeclNodeRC, varDeclNodeLC, varDeclNodeLC.lineNumber, "no", scopeCounter);
+	 		id = new Id(varDeclNodeRC.type, varDeclNodeLC.type, varDeclNodeLC.lineNumber, "no", scopeCounter);
 	 		_CurrentScopePointer.scopeSymbolTable.push(id);
+	 		console.log( _CurrentScopePointer.scopeSymbolTable);
 	 	}
+	 	else if (tempNode.children[i].type === "print") {
+	 		var printNode = tempNode.children[i];
+	 		var printChild = printNode.children[0];
+	 		console.log("Print child: " + printChild.type);
+	 		//console.log( _CurrentScopePointer.scopeSymbolTable);
+	 		
+	 		console.log("ST len: " + _CurrentScopePointer.scopeSymbolTable.length);
+	 		//Searches current scope for the identifier
+	 		for (var j = 0; j < _CurrentScopePointer.scopeSymbolTable.length; j++) {
+				if ($.inArray(printChild.type.toString(), _CurrentScopePointer.scopeSymbolTable[j].type) != -1) {
+	 				console.log("Found " + printChild.type + " in ST");
+	 				document.getElementById("taOutput").value += "id " + printChild.type + " is in symbol table\n";
+	 			}
+	 			else {
+	 				document.getElementById("taOutput").value += "id " + printChild.type + " is NOT in symbol table. Please delcare and initialize this variable\n";
+	 				break;
+	 			}	 			
+	 		}
+
+	 	}	 		
 	 				
 		//printASTVerboseOutput(astLevel, tempNode.children[i].type);	
 				
 		expandAst(tempNode.children[i]);
 	}
 	//when a block ends move pointer to parent scope and continue
-	_CurrentScopePointer = _CurrentScopePointer.parent;
+	if (_CurrentScopePointer.parent != null) {
+		_CurrentScopePointer = _CurrentScopePointer.parent;
+		scopeCounter--;
+	}
 	treeLevel -= 1;
 }
 
