@@ -5,6 +5,7 @@ function astNode(type, parent, children) {
 	this.type = type;
 	this.parent = parent;
 	this.children = [];
+	this.pointerToSymbolTable;
 	
 }
 
