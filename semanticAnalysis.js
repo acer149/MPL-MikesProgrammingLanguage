@@ -12,6 +12,8 @@ function traverseAST() {
 	
 	var tempNode = _ASTRoot;
 	expandAst(tempNode);
+	
+	console.log(_SymbolTableRoot);
 }
 function expandAst(tempNode) {
 	treeLevel += 1; 
@@ -39,7 +41,7 @@ function expandAst(tempNode) {
 	 		var varDeclNode = tempNode.children[i];
 	 		var varDeclNodeLC = varDeclNode.children[0];
 	 		var varDeclNodeRC = varDeclNode.children[1];
-	 		id = new Id(varDeclNodeRC.type, varDeclNodeLC.type, varDeclNodeLC.lineNumber, "no", scopeCounter);
+	 		id = new Id(varDeclNodeRC.type, varDeclNodeLC.type, varDeclNodeLC.lineNumber, "no", _CurrentScopePointer.scopeNumber);
 	 		_CurrentScopePointer.scopeSymbolTable.push(id);
 	 		console.log( _CurrentScopePointer.scopeSymbolTable);
 	 	}
@@ -57,6 +59,7 @@ function expandAst(tempNode) {
 	 				document.getElementById("taOutput").value += "id " + printChild.type + " is in symbol table\n";
 	 			}
 	 			else {
+	 				console.log("Did not find " + printChild.type + " in ST. the current scope is " + _CurrentScopePointer.scopeNumber);
 	 				document.getElementById("taOutput").value += "id " + printChild.type + " is NOT in symbol table. Please delcare and initialize this variable\n";
 	 				break;
 	 			}	 			
@@ -70,8 +73,8 @@ function expandAst(tempNode) {
 	}
 	//when a block ends move pointer to parent scope and continue
 	if (_CurrentScopePointer.parent != null) {
+		console.log("Moving scope back to scope: " + _CurrentScopePointer.parent.scopeNumber + " from scope: " + _CurrentScopePointer.scopeNumber);
 		_CurrentScopePointer = _CurrentScopePointer.parent;
-		scopeCounter--;
 	}
 	treeLevel -= 1;
 }
