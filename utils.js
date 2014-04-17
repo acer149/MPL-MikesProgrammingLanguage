@@ -15,7 +15,7 @@ function startCompiler() {
 		displayAbstractSyntaxTree();
 	}
 	if (_ErrorCount === 0) {
-		traverseAST();
+		//traverseAST();
 	}
 }
 

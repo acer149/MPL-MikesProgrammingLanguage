@@ -122,6 +122,29 @@ function expandAstNode(tempNode) {
 			
 	 		
 	 	}
+	 	
+	 	//Assign correct children to assign statement
+	 	//Checks for an assign statement and checks the number of children it has.  I did this in order to correct the 
+	 	//ast when a int expression is used in an assign statement. ie. while(a==b)
+	 	if ((tempNode.children[i].type === "assign") && tempNode.children[i].children.length != 2 ) {
+	 		
+	 		var assignNode = tempNode.children[i];
+	 		
+	 		//Shift children around
+	 		var firstChild = assignNode.children[1]; //Should be child of intOperand
+	 		var intOperand = assignNode.children[2];
+	 		var secondChild = assignNode.children[3]; //Should be child of intOperand
+	 		
+	 		//Sets int op children
+			intOperand.children[0] = firstChild;
+			intOperand.children[1] = secondChild;
+			
+			//Corrects the assign node
+			assignNode.children[1] = intOperand;
+			assignNode.children.splice(2,2);
+			
+	 		
+	 	}
 		
 		//document.getElementById("taOutput").value += astLevel + tempNode.children[i].type + "\n"; // " at tree level " + treeLevel + "\n";			
 		printASTVerboseOutput(astLevel, tempNode.children[i].type);	

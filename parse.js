@@ -360,7 +360,7 @@ function parseSpace() {
 function parseDigit() {
 	
 	addBranchNode("digit");
-	console.log("Should have added a digit node");
+	//console.log("Should have added a digit node");
 	if (tokenToParse.type === "T_Digit") {//.value.match(digit)) {
 		match("T_Digit");
 	}
