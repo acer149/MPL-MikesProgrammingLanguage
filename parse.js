@@ -251,6 +251,10 @@ function parseExpr() {
 	else if (tokenToParse.type === "T_Id") {
 		addBranchNode("expr");  
 		match("T_Id");
+		if (tokenToParse.type === "T_Plus") { //Catches error where an IntExpr starts with an id
+			 console.log("Found a plus");
+			 _ErrorCount+=1;
+		}
 		movePointerUpTree();
 	}
 	//movePointerUpTree();
@@ -278,8 +282,12 @@ function parseIntExpr() {
 			if (_ErrorCount === 0) {
 				parseDigit();
 				if (tokenToParse.type === "T_Plus") {
-					parseIntop();
-					parseExpr();
+					if (_ErrorCount === 0) {
+						parseIntop();
+					}
+					if (_ErrorCount === 0) {
+						parseExpr();
+					}
 				}
 			}
  		
@@ -616,7 +624,8 @@ function match(expectedToken) {
 			default: document.getElementById("taOutput").value += "Parse Error, Invalid Token Type at position " + _TokenIndex;
 				break;
 		}
-		tokenToParse = getNextToken();		
+		tokenToParse = getNextToken();	
+		console.log("Next token to look at " + tokenToParse.type);	
 	}
 	//console.log("Error Count is: " + _ErrorCount);
 

@@ -10,7 +10,7 @@ function astNode(type, parent, children) {
 }
 
 function addAstBranchNode(type, parent, children) {
-	console.log("Adding branch Node: " + type);
+	console.log("Adding ast branch Node: " + type);
 	//Creates a new node object with properties: type, parent(the node _CurrentAstPointer points to), and a children array
 	var node = new astNode(type, _CurrentAstPointer, children);
 	
@@ -31,7 +31,7 @@ function addAstBranchNode(type, parent, children) {
 function addAstLeafNode(type, parent) {
 	//Creates a new node object with properties: type, parent(the node _CurrentAstPointer points to). No child array because it is a leaf node
 	var node = new astNode(type, _CurrentAstPointer);
-	console.log("Adding leaf Node: " + type);
+	console.log("Adding ast leaf Node: " + type);
 	if (_CurrentAstPointer === _ASTRoot) {
 		//error
 	}
