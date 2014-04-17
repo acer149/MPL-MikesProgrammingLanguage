@@ -277,6 +277,10 @@ function parseIntExpr() {
 			 //match("T_Digit");
 			if (_ErrorCount === 0) {
 				parseDigit();
+				if (tokenToParse.type === "T_Plus") {
+					parseIntop();
+					parseExpr();
+				}
 			}
  		
 		 }
@@ -349,7 +353,7 @@ function parseDigit() {
 	
 	addBranchNode("digit");
 	console.log("Should have added a digit node");
-	if (tokenToParse.value.match(digit)) {
+	if (tokenToParse.type === "T_Digit") {//.value.match(digit)) {
 		match("T_Digit");
 	}
 	movePointerUpTree();
