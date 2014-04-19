@@ -3,10 +3,10 @@
 var treeLevel = 1;
 var b = 0;
 var array = [];
-var scopeBlock = null;
+//var scopeBlock = null;
 var scopeCounter = 0;
 
-var id = null;
+//var id = null;
 
 function traverseAST() {
 	
@@ -15,8 +15,7 @@ function traverseAST() {
 	
 	console.log(_SymbolTableRoot);
 }
-function expandAst(tempNode) {
-	treeLevel += 1; 
+function expandAst(tempNode) { 
 	//Goes through the AST (DFIO) 
 	for (var i = 0; i < tempNode.children.length; i++) {
 						 
@@ -24,15 +23,17 @@ function expandAst(tempNode) {
 	 	if(_Verbose && _JustASTVerbose && b === 0) {
 	 		//document.getElementById("taOutput").value += tempNode.type + "\n";
 	 		b++;
-	 			
-	 		scopeBlock = new Scope(scopeCounter, null, array, null);
+	 		
+	 		console.log("Initializing scope " + scopeCounter);
+	 		var scopeBlock = new Scope(scopeCounter, null, array, null);
 	 		_SymbolTableRoot = scopeBlock;
 	 		_CurrentScopePointer = scopeBlock;
 	 		scopeCounter++;
 	 	}
 	 	
 	 	if (tempNode.children[i].type === "block") {
-	 		scopeBlock = new Scope(scopeCounter, _CurrentScopePointer, array, null);
+	 		console.log("Initializing scope " + scopeCounter);
+	 		var scopeBlock = new Scope(scopeCounter, _CurrentScopePointer, array, null);
 	 		_CurrentScopePointer.children.push(scopeBlock);
 	 		_CurrentScopePointer = scopeBlock;
 	 		scopeCounter++;
@@ -41,9 +42,9 @@ function expandAst(tempNode) {
 	 		var varDeclNode = tempNode.children[i];
 	 		var varDeclNodeLC = varDeclNode.children[0];
 	 		var varDeclNodeRC = varDeclNode.children[1];
-	 		id = new Id(varDeclNodeRC.type, varDeclNodeLC.type, varDeclNodeLC.lineNumber, "no", _CurrentScopePointer.scopeNumber);
+	 		var id = new Id(varDeclNodeRC.type, varDeclNodeLC.type, varDeclNodeLC.lineNumber, "no", _CurrentScopePointer.scopeNumber);
 	 		_CurrentScopePointer.scopeSymbolTable.push(id);
-	 		console.log( _CurrentScopePointer.scopeSymbolTable);
+	 		console.log(_CurrentScopePointer.scopeSymbolTable);
 	 	}
 	 	else if (tempNode.children[i].type === "print") {
 	 		var printNode = tempNode.children[i];
@@ -54,7 +55,8 @@ function expandAst(tempNode) {
 	 		console.log("ST len: " + _CurrentScopePointer.scopeSymbolTable.length);
 	 		//Searches current scope for the identifier
 	 		for (var j = 0; j < _CurrentScopePointer.scopeSymbolTable.length; j++) {
-				if ($.inArray(printChild.type.toString(), _CurrentScopePointer.scopeSymbolTable[j].type) != -1) {
+	 			console.log("Compare " + printChild.type.toString() + " with " + _CurrentScopePointer.scopeSymbolTable[j].id);
+				if ($.inArray(printChild.type.toString(), _CurrentScopePointer.scopeSymbolTable[j].id) != -1) {
 	 				console.log("Found " + printChild.type + " in ST");
 	 				document.getElementById("taOutput").value += "id " + printChild.type + " is in symbol table\n";
 	 			}
@@ -76,7 +78,6 @@ function expandAst(tempNode) {
 		console.log("Moving scope back to scope: " + _CurrentScopePointer.parent.scopeNumber + " from scope: " + _CurrentScopePointer.scopeNumber);
 		_CurrentScopePointer = _CurrentScopePointer.parent;
 	}
-	treeLevel -= 1;
 }
 
 function Scope(scopeNumber, parent, children, parrallelScope) {
