@@ -6,6 +6,8 @@ var array = [];
 //var scopeBlock = null;
 var scopeCounter = 0;
 
+var foundInST = false;
+
 //var id = null;
 
 function traverseAST() {
@@ -59,17 +61,18 @@ function expandAst(tempNode) {
 	 		//Searches current scope for the identifier
 	 		for (var j = 0; j < _CurrentScopePointer.scopeSymbolTable.length; j++) {
 	 			console.log("Compare " + printChild.type.toString() + " with " + _CurrentScopePointer.scopeSymbolTable[j].id);
-				if ($.inArray(printChild.type.toString(), _CurrentScopePointer.scopeSymbolTable[j].id) != -1) {
+				if ($.inArray(printChild.type.toString(), _CurrentScopePointer.scopeSymbolTable[j].id) != -1 && foundInST === false) {
 	 				console.log("Found " + printChild.type + " in ST");
 	 				document.getElementById("taOutput").value += "id " + printChild.type + " is in symbol table\n";
+	 				foundInST = true;
 	 			}
-	 			else {
+	 			else if(foundInST === false) {
 	 				console.log("Did not find " + printChild.type + " in ST. the current scope is " + _CurrentScopePointer.scopeNumber);
 	 				document.getElementById("taOutput").value += "id " + printChild.type + " is NOT in symbol table. Please delcare and initialize this variable\n";
 	 				break;
 	 			}	 			
 	 		}
-
+			foundInST = false;
 	 	}	 		
 	 				
 		//printASTVerboseOutput(astLevel, tempNode.children[i].type);			
