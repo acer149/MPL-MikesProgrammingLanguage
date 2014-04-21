@@ -15,7 +15,10 @@ function traverseAST() {
 	
 	console.log(_SymbolTableRoot);
 }
+var treeLevel = 0;
+
 function expandAst(tempNode) { 
+	treeLevel += 1;
 	//Goes through the AST (DFIO) 
 	for (var i = 0; i < tempNode.children.length; i++) {
 						 
@@ -69,15 +72,15 @@ function expandAst(tempNode) {
 
 	 	}	 		
 	 				
-		//printASTVerboseOutput(astLevel, tempNode.children[i].type);	
-				
+		//printASTVerboseOutput(astLevel, tempNode.children[i].type);			
 		expandAst(tempNode.children[i]);
 	}
 	//when a block ends move pointer to parent scope and continue
-	if (_CurrentScopePointer.parent != null) {
+	if (_CurrentScopePointer.parent != null && tempNode.type === "block") {
 		console.log("Moving scope back to scope: " + _CurrentScopePointer.parent.scopeNumber + " from scope: " + _CurrentScopePointer.scopeNumber);
 		_CurrentScopePointer = _CurrentScopePointer.parent;
 	}
+	treeLevel -= 1;
 }
 
 function Scope(scopeNumber, parent, children, parrallelScope) {
