@@ -69,7 +69,7 @@ var astLevel = "";
 var treeLevel = 1;
 var q = 0;
 function expandAstNode(tempNode) {
-	astLevel = "";
+	astLevel = "|----";
 	treeLevel += 1; 
 	//Goes through the AST (DFIO) and prints out the nodes 
 	for (var i = 0; i < tempNode.children.length; i++) {
@@ -126,7 +126,7 @@ function expandAstNode(tempNode) {
 	 	//Assign correct children to assign statement
 	 	//Checks for an assign statement and checks the number of children it has.  I did this in order to correct the 
 	 	//ast when a int expression is used in an assign statement. ie. while(a==b)
-	 	if ((tempNode.children[i].type === "assign") && tempNode.children[i].children.length != 2 ) {
+	 	if (tempNode.children[i].type === "assign" && tempNode.children[i].children.length != 2 ) {
 	 		
 	 		var assignNode = tempNode.children[i];
 	 		

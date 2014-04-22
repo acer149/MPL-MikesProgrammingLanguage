@@ -57,11 +57,11 @@ function expandAst(tempNode) {
 	 		console.log("Print child: " + printChild.type);
 	 		//console.log( _CurrentScopePointer.scopeSymbolTable);
 	 		
-	 		console.log("ST len: " + _CurrentScopePointer.scopeSymbolTable.length);
+	 		console.log("ST len: " + _CurrentScopePointer.scopeSymbolTable.length + " of current scope " + _CurrentScopePointer.scopeNumber);
 	 		//Searches current scope for the identifier
 	 		for (var j = 0; j < _CurrentScopePointer.scopeSymbolTable.length; j++) {
 	 			console.log("Compare " + printChild.type.toString() + " with " + _CurrentScopePointer.scopeSymbolTable[j].id);
-				if ($.inArray(printChild.type.toString(), _CurrentScopePointer.scopeSymbolTable[j].id) != -1 && foundInST === false) {
+				if (($.inArray(printChild.type.toString(), _CurrentScopePointer.scopeSymbolTable[j].id) != -1 )) {
 	 				console.log("Found " + printChild.type + " in ST");
 	 				document.getElementById("taOutput").value += "id " + printChild.type + " is in symbol table\n";
 	 				foundInST = true;
@@ -69,10 +69,14 @@ function expandAst(tempNode) {
 	 			else if(foundInST === false) {
 	 				console.log("Did not find " + printChild.type + " in ST. the current scope is " + _CurrentScopePointer.scopeNumber);
 	 				document.getElementById("taOutput").value += "id " + printChild.type + " is NOT in symbol table. Please delcare and initialize this variable\n";
-	 				break;
+	 				//break;
 	 			}	 			
 	 		}
 			foundInST = false;
+	 	}
+	 	else if (tempNode.children[i].type === "assign") {
+	 		console.log("Assign");
+	 	
 	 	}	 		
 	 				
 		//printASTVerboseOutput(astLevel, tempNode.children[i].type);			
