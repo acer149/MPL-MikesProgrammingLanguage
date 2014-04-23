@@ -61,7 +61,27 @@ function expandAst(tempNode) {
 	 		
 	 	}
 	 	else if (tempNode.children[i].type === "assign") {
-	 		console.log("Assign");
+	 		var assignNode = tempNode.children[i];
+	 		var childOfAssign = assignNode.children[0];
+	 		console.log("Assign child: " + childOfAssign.type);
+	 		
+	 		checkScopeForId(_CurrentScopePointer, childOfAssign);
+	 	
+	 	}
+	 	else if (tempNode.children[i].type === "while") {
+	 		var whileNode = tempNode.children[i];
+	 		var childOfwhile = whileNode.children[0];
+	 		console.log("While child: " + childOfwhile.type);
+	 		
+	 		checkScopeForId(_CurrentScopePointer, childOfwhile);
+	 	
+	 	}
+	 	else if (tempNode.children[i].type === "if") {
+	 		var ifNode = tempNode.children[i];
+	 		var childOfIf = ifNode.children[0];
+	 		console.log("If child: " + childOfIf.type);
+	 		
+	 		checkScopeForId(_CurrentScopePointer, childOfIf);
 	 	
 	 	}	 		
 	 				
@@ -87,13 +107,15 @@ function checkScopeForId(scope, identifier) {
 		 			console.log("Compare " + identifier.type.toString() + " with " + scope.scopeSymbolTable[j].id);
 					if (($.inArray(identifier.type.toString(), scope.scopeSymbolTable[j].id) != -1 )) {
 		 				console.log("Found " + identifier.type + " in ST");
-		 				document.getElementById("taOutput").value += "id " + identifier.type + " is in symbol table\n";
+		 				document.getElementById("taOutput").value += "id " + identifier.type + " on line " + identifier.lineNumber + " is in symbol table\n";
 		 				foundInST = true;
 		 			}	 			
 		 		}
 		 		//If the current scope did not contain the id, then move to the parent scope and check there
 		 		if (foundInST === false) {
-		 			console.log("Did not find " + identifier.type + " in ST. the current scope is " + scope.scopeNumber + " checking parent scope " + scope.scopeNumber -1);
+		 			console.log("Did not find " + identifier.type + " in ST. the current scope is " + scope.scopeNumber 
+		 				+ " checking parent scope " + scope.scopeNumber -1);
+		 				
 		 			//Did not find id in current scope, check parent scope...
 		 			scope = scope.parent;
 		 			scopeNumber--;
@@ -101,7 +123,10 @@ function checkScopeForId(scope, identifier) {
 	 		}
 	 		if (scopeNumber < 0 && foundInST === false) {
 		 		console.log("Did not find " + identifier.type + " in ST.");
-		 		document.getElementById("taOutput").value += "id " + identifier.type + " on line " + identifier.lineNumber + " is NOT in symbol table. Please delcare and initialize this variable\n";
+		 		document.getElementById("taOutput").value += "ERROR: id " + identifier.type + " on line " + identifier.lineNumber 
+		 			+ " is NOT in symbol table. Please delcare and initialize this variable\n";
+		 		
+		 		_ErrorCount++;
 		 		//break;	 			
 	 		}
 			//Reset to false
