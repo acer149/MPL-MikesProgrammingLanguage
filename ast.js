@@ -1,18 +1,19 @@
 /* ast.js */
 
-function astNode(type, parent, children) {
+function astNode(type, parent, children, pointerToSymbolTable, lineNumber) {
 
 	this.type = type;
 	this.parent = parent;
 	this.children = [];
-	this.pointerToSymbolTable;
+	this.pointerToSymbolTable = pointerToSymbolTable;
+	this.lineNumber = lineNumber;
 	
 }
 
-function addAstBranchNode(type, parent, children) {
+function addAstBranchNode(type, lineNumber) {
 	console.log("Adding ast branch Node: " + type);
 	//Creates a new node object with properties: type, parent(the node _CurrentAstPointer points to), and a children array
-	var node = new astNode(type, _CurrentAstPointer, children);
+	var node = new astNode(type, _CurrentAstPointer, children, null, lineNumber);
 	
 	if (_CurrentAstPointer === null) {
 		//First node is root
@@ -28,9 +29,9 @@ function addAstBranchNode(type, parent, children) {
 	}
 }
 
-function addAstLeafNode(type, parent) {
+function addAstLeafNode(type, lineNumber) {
 	//Creates a new node object with properties: type, parent(the node _CurrentAstPointer points to). No child array because it is a leaf node
-	var node = new astNode(type, _CurrentAstPointer);
+	var node = new astNode(type, _CurrentAstPointer, null, null, lineNumber);
 	console.log("Adding ast leaf Node: " + type);
 	if (_CurrentAstPointer === _ASTRoot) {
 		//error

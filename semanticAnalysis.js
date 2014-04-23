@@ -101,7 +101,7 @@ function checkScopeForId(scope, identifier) {
 	 		}
 	 		if (scopeNumber < 0 && foundInST === false) {
 		 		console.log("Did not find " + identifier.type + " in ST.");
-		 		document.getElementById("taOutput").value += "id " + identifier.type + " is NOT in symbol table. Please delcare and initialize this variable\n";
+		 		document.getElementById("taOutput").value += "id " + identifier.type + " on line " + identifier.lineNumber + " is NOT in symbol table. Please delcare and initialize this variable\n";
 		 		//break;	 			
 	 		}
 			//Reset to false
@@ -116,10 +116,10 @@ function Scope(scopeNumber, parent, children, parrallelScope) {
 	this.parrallelScope = parrallelScope;
 }
 
-function Id(id, type, line, initialized, scope) {
+function Id(id, type, lineNumber, initialized, scope) {
 	this.id = id;
 	this.type = type;
-	this.line = line;
+	this.lineNumber = lineNumber;
 	this.initialized = initialized;
 	this.scope = scope;
 }
