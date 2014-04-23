@@ -70,10 +70,27 @@ function expandAst(tempNode) {
 	 	}
 	 	else if (tempNode.children[i].type === "while") {
 	 		var whileNode = tempNode.children[i];
-	 		var childOfwhile = whileNode.children[0];
-	 		console.log("While child: " + childOfwhile.type);
-	 		
-	 		checkScopeForId(_CurrentScopePointer, childOfwhile);
+	 		if (whileNode.children[0].type != "==" && whileNode.children[0].type != "!=") {
+		 		var childOfwhile = whileNode.children[0];
+		 		console.log("While child: " + childOfwhile.type);
+		 		
+		 		checkScopeForId(_CurrentScopePointer, childOfwhile);	 			
+	 		}
+	 		else if (whileNode.children[0].type === "==" || whileNode.children[0].type === "!=") {
+		 		var boolOp = whileNode.children[0];
+		 		var leftChildOfBoolOp = boolOp.children[0];
+		 		var rightChildOfBoolOp = boolOp.children[1];
+		 		console.log("Left BoolOp Child: " + leftChildOfBoolOp.type);
+		 		console.log("Right BoolOp Child: " + rightChildOfBoolOp.type);
+		 		
+		 		checkScopeForId(_CurrentScopePointer, leftChildOfBoolOp);
+		 		//Allows for conditions containing digits and boolean values a==1 a==true, etc.
+		 		if (rightChildOfBoolOp.type.match(/[a-z]/) && rightChildOfBoolOp.type.length === 1) {
+		 			checkScopeForId(_CurrentScopePointer, rightChildOfBoolOp);
+		 		}
+		 			 			
+	 		}
+
 	 	
 	 	}
 	 	else if (tempNode.children[i].type === "if") {
