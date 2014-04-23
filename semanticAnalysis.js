@@ -59,22 +59,6 @@ function expandAst(tempNode) {
 	 		
 	 		checkScopeForId(_CurrentScopePointer, printChild);
 	 		
-	 		// console.log("ST len: " + _CurrentScopePointer.scopeSymbolTable.length + " of current scope " + _CurrentScopePointer.scopeNumber);
-	 		// //Searches current scope for the identifier
-	 		// for (var j = 0; j < _CurrentScopePointer.scopeSymbolTable.length; j++) {
-	 			// console.log("Compare " + printChild.type.toString() + " with " + _CurrentScopePointer.scopeSymbolTable[j].id);
-				// if (($.inArray(printChild.type.toString(), _CurrentScopePointer.scopeSymbolTable[j].id) != -1 )) {
-	 				// console.log("Found " + printChild.type + " in ST");
-	 				// document.getElementById("taOutput").value += "id " + printChild.type + " is in symbol table\n";
-	 				// foundInST = true;
-	 			// }
-	 			// else if(foundInST === false) {
-	 				// console.log("Did not find " + printChild.type + " in ST. the current scope is " + _CurrentScopePointer.scopeNumber);
-	 				// document.getElementById("taOutput").value += "id " + printChild.type + " is NOT in symbol table. Please delcare and initialize this variable\n";
-	 				// //break;
-	 			// }	 			
-	 		// }
-			// foundInST = false;
 	 	}
 	 	else if (tempNode.children[i].type === "assign") {
 	 		console.log("Assign");
@@ -94,20 +78,33 @@ function expandAst(tempNode) {
 
 function checkScopeForId(scope, identifier) {
 	 		console.log("ST len: " + scope.scopeSymbolTable.length + " of current scope " + scope.scopeNumber);
-	 		//Searches current scope for the identifier
-	 		for (var j = 0; j < scope.scopeSymbolTable.length; j++) {
-	 			console.log("Compare " + identifier.type.toString() + " with " + scope.scopeSymbolTable[j].id);
-				if (($.inArray(identifier.type.toString(), scope.scopeSymbolTable[j].id) != -1 )) {
-	 				console.log("Found " + identifier.type + " in ST");
-	 				document.getElementById("taOutput").value += "id " + identifier.type + " is in symbol table\n";
-	 				foundInST = true;
-	 			}
-	 			else if(foundInST === false) {
-	 				console.log("Did not find " + identifier.type + " in ST. the current scope is " + scope.scopeNumber);
-	 				document.getElementById("taOutput").value += "id " + identifier.type + " is NOT in symbol table. Please delcare and initialize this variable\n";
-	 				//break;
-	 			}	 			
+	 		var scopeNumber = scope.scopeNumber;
+	 		
+	 		//while the id has not be found in ST and while there are still scopes to check, continue searching
+	 		while (scopeNumber >= 0 && foundInST === false) {
+		 		//Searches current scope for the identifier
+		 		for (var j = 0; j < scope.scopeSymbolTable.length; j++) {
+		 			console.log("Compare " + identifier.type.toString() + " with " + scope.scopeSymbolTable[j].id);
+					if (($.inArray(identifier.type.toString(), scope.scopeSymbolTable[j].id) != -1 )) {
+		 				console.log("Found " + identifier.type + " in ST");
+		 				document.getElementById("taOutput").value += "id " + identifier.type + " is in symbol table\n";
+		 				foundInST = true;
+		 			}	 			
+		 		}
+		 		//If the current scope did not contain the id, then move to the parent scope and check there
+		 		if (foundInST === false) {
+		 			console.log("Did not find " + identifier.type + " in ST. the current scope is " + scope.scopeNumber + " checking parent scope " + scope.scopeNumber -1);
+		 			//Did not find id in current scope, check parent scope...
+		 			scope = scope.parent;
+		 			scopeNumber--;
+		 		}	 			
 	 		}
+	 		if (scopeNumber < 0 && foundInST === false) {
+		 		console.log("Did not find " + identifier.type + " in ST.");
+		 		document.getElementById("taOutput").value += "id " + identifier.type + " is NOT in symbol table. Please delcare and initialize this variable\n";
+		 		//break;	 			
+	 		}
+			//Reset to false
 			foundInST = false;	
 }
 
