@@ -24,6 +24,25 @@ function traverseAST() {
 }
 var treeLevel = 0;
 
+
+function Scope(scopeNumber, parent, children, parrallelScope) {
+	this.scopeNumber = scopeNumber;
+	this.parent = parent;
+	this.children = [];
+	this.scopeSymbolTable = [];
+	this.parrallelScope = parrallelScope;
+}
+
+function Id(id, type, lineNumber, initialized, scope, used) {
+	this.id = id;
+	this.type = type;
+	this.lineNumber = lineNumber;
+	this.initialized = initialized;
+	this.scope = scope;
+	this.used = used;
+}
+
+
 function expandAst(tempNode) { 
 	treeLevel += 1;
 	//Goes through the AST (DFIO) 
@@ -225,21 +244,4 @@ function checkForUnusedIdentifiers(symbolTableRoot) {
 			scope = scope.children[0];	
 			sentinal++;
 	}
-}
-
-function Scope(scopeNumber, parent, children, parrallelScope) {
-	this.scopeNumber = scopeNumber;
-	this.parent = parent;
-	this.children = [];
-	this.scopeSymbolTable = [];
-	this.parrallelScope = parrallelScope;
-}
-
-function Id(id, type, lineNumber, initialized, scope, used) {
-	this.id = id;
-	this.type = type;
-	this.lineNumber = lineNumber;
-	this.initialized = initialized;
-	this.scope = scope;
-	this.used = used;
 }
