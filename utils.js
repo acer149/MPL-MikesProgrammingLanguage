@@ -213,5 +213,6 @@ function test2 () {
 
 function test3 () {
 	 
-		document.getElementById("taSourceCode").value = "{\n\tboolean b\n\twhile (b) {\n\t\t b = false\n\t}\n\tprint (b)\n}" + "\n$";	
+		document.getElementById("taSourceCode").value = "{\n\tboolean b\n\twhile (b) {\n\t\t b = false\n\t}\n\tprint (b)\n}" + "\n$";
+		//document.getElementById("taSourceCode").value = "{\n\tboolean b\n\twhile (b == true) {\n\t\t b = false\n\t}\n\tprint (b)\n\t{\n\t\tint a\n\t\ta = 1\n\t}\n}" + "\n$";	
 }

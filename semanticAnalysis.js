@@ -6,6 +6,7 @@ var scopeCounter = 0;
 
 var foundInST = false;
 
+var declaringAnId = false;
 var initializingAnId = false;
 var idIsBeingUsed = false;
 
@@ -185,8 +186,15 @@ function checkScopeForId(scope, identifier) {
 		 		for (var j = 0; j < scope.scopeSymbolTable.length; j++) {
 		 			console.log("Compare " + identifier.type.toString() + " with " + scope.scopeSymbolTable[j].id);
 					if (($.inArray(identifier.type.toString(), scope.scopeSymbolTable[j].id) != -1 )) {
-		 				console.log("Found " + identifier.type + " in ST");
-		 				document.getElementById("taOutput").value += "\t\t\tFound id " + identifier.type + " in symbol table\n\n";
+						
+						if (scope.scopeSymbolTable[j].initialized == true) {
+		 					console.log("Found " + identifier.type + " in ST");
+		 					document.getElementById("taOutput").value += "\t\t\tFound id " + identifier.type + " in symbol table\n\n";							
+						}
+						else if (initializingAnId === false) {
+							document.getElementById("taOutput").value += "\t\t\tWARNING: Found id " + identifier.type + " in symbol table, but it has not been intialized yet\n\n";
+						}
+
 		 				foundInST = true;
 		 				
 		 				identifier.pointerToSymbolTable = scope.scopeSymbolTable[j]; //identifier in AST points to ST
@@ -194,7 +202,7 @@ function checkScopeForId(scope, identifier) {
 		 				//If we are assigning a value to an id, mark the id as initialized
 		 				if (initializingAnId === true) {
 		 					scope.scopeSymbolTable[j].initialized = true;
-		 					document.getElementById("taOutput").value += "\t\tInitializing identifier " + scope.scopeSymbolTable[j].id + " in scope " + scope.scopeNumber +"\n\n";
+		 					document.getElementById("taOutput").value += "\t\t\tInitializing identifier " + scope.scopeSymbolTable[j].id + " from scope " + scope.scopeNumber +"\n\n";
 		 				}
 		 				if (idIsBeingUsed === true) {
 		 					scope.scopeSymbolTable[j].used = true;
@@ -215,7 +223,7 @@ function checkScopeForId(scope, identifier) {
 	 		if (scopeNumber < 0 && foundInST === false) {
 		 		console.log("Did not find " + identifier.type + " in ST.");
 		 		document.getElementById("taOutput").value += "\n\tERROR: ID " + identifier.type + " on line " + identifier.lineNumber 
-		 			+ " is NOT in symbol table. Please delcare and initialize this variable before using it\n\n";
+		 			+ " is NOT in symbol table. Please declare and initialize this variable before using it\n\n";
 		 		
 		 		_ErrorCount++;
 		 		//break;	 			
