@@ -204,10 +204,22 @@ function checkForUnusedIdentifiers(symbolTableRoot) {
 	var sentinal = 0;
 	while (sentinal < scopeCounter) {
 		for (var j = 0; j < scope.scopeSymbolTable.length; j++) {
+		    //Throws a warning if an id is declared but never used
 			if (scope.scopeSymbolTable[j].used === false) {
 				document.getElementById("taOutput").value += "WARNING: id " + scope.scopeSymbolTable[j].id + " on line " + scope.scopeSymbolTable[j].lineNumber 
 					+ " is declared but never used\n";
-			} 			
+			}
+			//Throws a warning if an id is declared but never initialized 
+			if (scope.scopeSymbolTable[j].initialized === false) {
+				document.getElementById("taOutput").value += "WARNING: id " + scope.scopeSymbolTable[j].id + " on line " + scope.scopeSymbolTable[j].lineNumber 
+					+ " is declared but never initialized\n";
+			}
+			//Throws a error if an id is used but was never initialized
+			if (scope.scopeSymbolTable[j].initialized === false && scope.scopeSymbolTable[j].used === true) {
+				document.getElementById("taOutput").value += "ERROR: id " + scope.scopeSymbolTable[j].id + " on line " + scope.scopeSymbolTable[j].lineNumber 
+					+ " is used but was nexer initialized\n";
+				_ErrorCount++;
+			}			
 		}
 			//Move to next scope block
 			scope = scope.children[0];	
