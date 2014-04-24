@@ -11,10 +11,14 @@ var idIsBeingUsed = false;
 
 function traverseAST() { //Builds ST and does scope checking
 	
+	document.getElementById("taOutput").value += "\n\n*****SCOPE CHECKING*****\n\n";
+	
 	var tempNode = _ASTRoot;
 	expandAst(tempNode); 
 	
 	checkForUnusedIdentifiers(_SymbolTableRoot);
+	
+	document.getElementById("taOutput").value += "\n\n*****END SCOPE CHECKING*****\n\n";
 	
 	console.log(_SymbolTableRoot);
 	//console.log("Scope Counter: " + scopeCounter);
@@ -71,6 +75,7 @@ function expandAst(tempNode) {
 	 		var varDeclNodeRC = varDeclNode.children[1];
 	 		var id = new Id(varDeclNodeRC.type, varDeclNodeLC.type, varDeclNodeLC.lineNumber, false, _CurrentScopePointer.scopeNumber, false);
 	 		_CurrentScopePointer.scopeSymbolTable.push(id);
+	 		document.getElementById("taOutput").value += "\tAdded id " + id.id + " to the Symbol Table at scope level " + id.scope + "\n\n";
 	 		
 	 		varDeclNodeLC.pointerToSymbolTable = id; //Point to ST
 	 		
@@ -172,6 +177,8 @@ function checkScopeForId(scope, identifier) {
 	 		console.log("ST len: " + scope.scopeSymbolTable.length + " of current scope " + scope.scopeNumber);
 	 		var scopeNumber = scope.scopeNumber;
 	 		
+	 		document.getElementById("taOutput").value += "\t\tChecking Symbol Table for id " + identifier.type + " on line " + identifier.lineNumber + "\n\n";
+	 		
 	 		//while the id has not be found in ST and while there are still scopes to check, continue searching
 	 		while (scopeNumber >= 0 && foundInST === false) {
 		 		//Searches current scope for the identifier
@@ -179,7 +186,7 @@ function checkScopeForId(scope, identifier) {
 		 			console.log("Compare " + identifier.type.toString() + " with " + scope.scopeSymbolTable[j].id);
 					if (($.inArray(identifier.type.toString(), scope.scopeSymbolTable[j].id) != -1 )) {
 		 				console.log("Found " + identifier.type + " in ST");
-		 				document.getElementById("taOutput").value += "id " + identifier.type + " on line " + identifier.lineNumber + " is in symbol table\n";
+		 				document.getElementById("taOutput").value += "\t\t\tFound id " + identifier.type + " in symbol table\n\n";
 		 				foundInST = true;
 		 				
 		 				identifier.pointerToSymbolTable = scope.scopeSymbolTable[j]; //identifier in AST points to ST
@@ -187,7 +194,7 @@ function checkScopeForId(scope, identifier) {
 		 				//If we are assigning a value to an id, mark the id as initialized
 		 				if (initializingAnId === true) {
 		 					scope.scopeSymbolTable[j].initialized = true;
-		 					document.getElementById("taOutput").value += "Initializing identifier " + scope.scopeSymbolTable[j].id + " in scope " + scope.scopeNumber +"\n";
+		 					document.getElementById("taOutput").value += "\t\tInitializing identifier " + scope.scopeSymbolTable[j].id + " in scope " + scope.scopeNumber +"\n\n";
 		 				}
 		 				if (idIsBeingUsed === true) {
 		 					scope.scopeSymbolTable[j].used = true;
@@ -207,8 +214,8 @@ function checkScopeForId(scope, identifier) {
 	 		//Did not find id in ST
 	 		if (scopeNumber < 0 && foundInST === false) {
 		 		console.log("Did not find " + identifier.type + " in ST.");
-		 		document.getElementById("taOutput").value += "ERROR: id " + identifier.type + " on line " + identifier.lineNumber 
-		 			+ " is NOT in symbol table. Please delcare and initialize this variable\n";
+		 		document.getElementById("taOutput").value += "\n\tERROR: ID " + identifier.type + " on line " + identifier.lineNumber 
+		 			+ " is NOT in symbol table. Please delcare and initialize this variable before using it\n\n";
 		 		
 		 		_ErrorCount++;
 		 		//break;	 			
@@ -225,19 +232,18 @@ function checkForUnusedIdentifiers(symbolTableRoot) {
 		for (var j = 0; j < scope.scopeSymbolTable.length; j++) {
 		    //Throws a warning if an id is declared but never used
 			if (scope.scopeSymbolTable[j].used === false) {
-				document.getElementById("taOutput").value += "WARNING: id " + scope.scopeSymbolTable[j].id + " on line " + scope.scopeSymbolTable[j].lineNumber 
+				document.getElementById("taOutput").value += "\n\tWARNING: ID " + scope.scopeSymbolTable[j].id + " on line " + scope.scopeSymbolTable[j].lineNumber 
 					+ " is declared but never used\n";
 			}
 			//Throws a warning if an id is declared but never initialized 
 			if (scope.scopeSymbolTable[j].initialized === false) {
-				document.getElementById("taOutput").value += "WARNING: id " + scope.scopeSymbolTable[j].id + " on line " + scope.scopeSymbolTable[j].lineNumber 
+				document.getElementById("taOutput").value += "\n\tWARNING: ID " + scope.scopeSymbolTable[j].id + " on line " + scope.scopeSymbolTable[j].lineNumber 
 					+ " is declared but never initialized\n";
 			}
 			//Throws a error if an id is used but was never initialized
 			if (scope.scopeSymbolTable[j].initialized === false && scope.scopeSymbolTable[j].used === true) {
-				document.getElementById("taOutput").value += "ERROR: id " + scope.scopeSymbolTable[j].id + " on line " + scope.scopeSymbolTable[j].lineNumber 
-					+ " is used but was nexer initialized\n";
-				_ErrorCount++;
+				document.getElementById("taOutput").value += "\n\tWARNING: ID " + scope.scopeSymbolTable[j].id + " on line " + scope.scopeSymbolTable[j].lineNumber 
+					+ " is used but was never initialized\n";
 			}			
 		}
 			//Move to next scope block
