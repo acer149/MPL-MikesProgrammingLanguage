@@ -57,7 +57,10 @@ function expandAst(tempNode) {
 	 		console.log("Print child: " + printChild.type);
 	 		//console.log( _CurrentScopePointer.scopeSymbolTable);
 	 		
-	 		checkScopeForId(_CurrentScopePointer, printChild);
+	 		//Checks for String Expression
+	 		if (printChild.type[0] != "\"") {
+	 			checkScopeForId(_CurrentScopePointer, printChild);	
+	 		}
 	 		
 	 	}
 	 	else if (tempNode.children[i].type === "assign") {
@@ -87,19 +90,30 @@ function expandAst(tempNode) {
 		 		//Allows for conditions containing digits and boolean values a==1 a==true, etc.
 		 		if (rightChildOfBoolOp.type.match(/[a-z]/) && rightChildOfBoolOp.type.length === 1) {
 		 			checkScopeForId(_CurrentScopePointer, rightChildOfBoolOp);
-		 		}
-		 			 			
-	 		}
-
-	 	
+		 		}		 			
+	 		}	
 	 	}
 	 	else if (tempNode.children[i].type === "if") {
 	 		var ifNode = tempNode.children[i];
-	 		var childOfIf = ifNode.children[0];
-	 		console.log("If child: " + childOfIf.type);
-	 		
-	 		checkScopeForId(_CurrentScopePointer, childOfIf);
-	 	
+	 		if (ifNode.children[0].type != "==" && ifNode.children[0].type != "!=") {
+	 			var childOfIf = ifNode.children[0];
+	 			console.log("If child: " + childOfIf.type);
+		 		
+		 		checkScopeForId(_CurrentScopePointer, childOfIf);
+	 		}
+	 		else if (ifNode.children[0].type === "==" || ifNode.children[0].type === "!=") {
+		 		var boolOp = ifNode.children[0];
+		 		var leftChildOfBoolOp = boolOp.children[0];
+		 		var rightChildOfBoolOp = boolOp.children[1];
+		 		console.log("Left BoolOp Child: " + leftChildOfBoolOp.type);
+		 		console.log("Right BoolOp Child: " + rightChildOfBoolOp.type);
+		 		
+		 		checkScopeForId(_CurrentScopePointer, leftChildOfBoolOp);
+		 		//Allows for conditions containing digits and boolean values a==1 a==true, etc.
+		 		if (rightChildOfBoolOp.type.match(/[a-z]/) && rightChildOfBoolOp.type.length === 1) {
+		 			checkScopeForId(_CurrentScopePointer, rightChildOfBoolOp);
+		 		}	 			
+	 		}	 	
 	 	}	 		
 	 				
 		//printASTVerboseOutput(astLevel, tempNode.children[i].type);			
