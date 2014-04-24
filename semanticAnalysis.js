@@ -10,6 +10,7 @@ var foundInST = false;
 
 //var id = null;
 var initializingAnId = false;
+var idIsBeingUsed = false;
 
 function traverseAST() {
 	
@@ -64,7 +65,9 @@ function expandAst(tempNode) {
 	 		
 	 		//Checks for String Expression
 	 		if (printChild.type[0] != "\"") {
-	 			checkScopeForId(_CurrentScopePointer, printChild);	
+	 			idIsBeingUsed = true;
+	 			checkScopeForId(_CurrentScopePointer, printChild);
+	 			idIsBeingUsed = false;	
 	 		}
 	 		
 	 	}
@@ -84,7 +87,9 @@ function expandAst(tempNode) {
 		 		var childOfwhile = whileNode.children[0];
 		 		console.log("While child: " + childOfwhile.type);
 		 		
-		 		checkScopeForId(_CurrentScopePointer, childOfwhile);	 			
+		 		idIsBeingUsed = true;
+		 		checkScopeForId(_CurrentScopePointer, childOfwhile);
+		 		idIsBeingUsed = false;	 			
 	 		}
 	 		else if (whileNode.children[0].type === "==" || whileNode.children[0].type === "!=") {
 		 		var boolOp = whileNode.children[0];
@@ -93,10 +98,14 @@ function expandAst(tempNode) {
 		 		console.log("Left BoolOp Child: " + leftChildOfBoolOp.type);
 		 		console.log("Right BoolOp Child: " + rightChildOfBoolOp.type);
 		 		
+		 		idIsBeingUsed = true;
 		 		checkScopeForId(_CurrentScopePointer, leftChildOfBoolOp);
+		 		idIsBeingUsed = false;
 		 		//Allows for conditions containing digits and boolean values a==1 a==true, etc.
 		 		if (rightChildOfBoolOp.type.match(/[a-z]/) && rightChildOfBoolOp.type.length === 1) {
+		 			idIsBeingUsed = true;
 		 			checkScopeForId(_CurrentScopePointer, rightChildOfBoolOp);
+		 			idIsBeingUsed = false;
 		 		}		 			
 	 		}	
 	 	}
@@ -106,7 +115,9 @@ function expandAst(tempNode) {
 	 			var childOfIf = ifNode.children[0];
 	 			console.log("If child: " + childOfIf.type);
 		 		
+		 		idIsBeingUsed = true;
 		 		checkScopeForId(_CurrentScopePointer, childOfIf);
+		 		idIsBeingUsed = false;
 	 		}
 	 		else if (ifNode.children[0].type === "==" || ifNode.children[0].type === "!=") {
 		 		var boolOp = ifNode.children[0];
@@ -115,10 +126,16 @@ function expandAst(tempNode) {
 		 		console.log("Left BoolOp Child: " + leftChildOfBoolOp.type);
 		 		console.log("Right BoolOp Child: " + rightChildOfBoolOp.type);
 		 		
+		 		idIsBeingUsed = true;
 		 		checkScopeForId(_CurrentScopePointer, leftChildOfBoolOp);
+		 		idIsBeingUsed = false;
+		 		
 		 		//Allows for conditions containing digits and boolean values a==1 a==true, etc.
 		 		if (rightChildOfBoolOp.type.match(/[a-z]/) && rightChildOfBoolOp.type.length === 1) {
+		 			
+		 			idIsBeingUsed = true;
 		 			checkScopeForId(_CurrentScopePointer, rightChildOfBoolOp);
+		 			idIsBeingUsed = false;
 		 		}	 			
 	 		}	 	
 	 	}	 		
@@ -152,6 +169,9 @@ function checkScopeForId(scope, identifier) {
 		 				if (initializingAnId === true) {
 		 					scope.scopeSymbolTable[j].initialized = true;
 		 					document.getElementById("taOutput").value += "Initializing identifier " + scope.scopeSymbolTable[j].id + " in scope " + scope.scopeNumber +"\n";
+		 				}
+		 				if (idIsBeingUsed === true) {
+		 					scope.scopeSymbolTable[j].used = true;
 		 				}
 		 			}	 			
 		 		}
