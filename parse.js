@@ -129,6 +129,9 @@ function parseStatement() {
 			parseBlock();	
 		}
 	}
+	else {
+		_ErrorCount++;
+	}
 	movePointerUpTree();
 }
 

@@ -9,16 +9,16 @@ function startCompiler() {
 		beginParse();	
 	}
 	if (_ErrorCount === 0) {
-		displayConcreteSyntaxTree();	
+		//displayConcreteSyntaxTree();	
 	}
 	if (_ErrorCount === 0) {
-		displayAbstractSyntaxTree();
+		//displayAbstractSyntaxTree();
 	}
 	if (_ErrorCount === 0) {
-		traverseAST();//Builds ST and does scope checking
+	//	traverseAST();//Builds ST and does scope checking
 	}
 	if (_ErrorCount === 0) {
-		traverseASTForTypeChecking();
+		//traverseASTForTypeChecking();
 	}
 }
 
