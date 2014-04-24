@@ -84,17 +84,31 @@ function expandAst(tempNode) {
 	 	}
 	 	else if (tempNode.children[i].type === "print") {
 	 		var printNode = tempNode.children[i];
-	 		var printChild = printNode.children[0];
-	 		console.log("Print child: " + printChild.type);
-	 		//console.log( _CurrentScopePointer.scopeSymbolTable);
 	 		
-	 		//Checks for String Expression
-	 		if (printChild.type[0] != "\"") {
-	 			idIsBeingUsed = true;
-	 			checkScopeForId(_CurrentScopePointer, printChild);
-	 			idIsBeingUsed = false;	
+	 		if (printNode.children.length === 1) {
+		 		var printChild = printNode.children[0];
+		 		console.log("Print child: " + printChild.type);
+		 		//console.log( _CurrentScopePointer.scopeSymbolTable);
+		 		
+		 		//Checks for String Expression
+		 		if (printChild.type[0] != "\"") {
+		 			idIsBeingUsed = true;
+		 			checkScopeForId(_CurrentScopePointer, printChild);
+		 			idIsBeingUsed = false;	
+		 		}	 			
 	 		}
-	 		
+	 		else if(printNode.children.length > 1) { //If print has more than one child (1+a)...
+	 			console.log("Print has multiple children"); 
+	 			for (var q = 0; q < printNode.children.length; q++) {
+	 				var printChild = printNode.children[q];
+	 				console.log("Type of print's child " + printChild.type);
+	 				if (printChild.type.match(/['a-z']/)) {
+			 			idIsBeingUsed = true;
+			 			checkScopeForId(_CurrentScopePointer, printChild);
+			 			idIsBeingUsed = false;	 					
+	 				}
+	 			}
+	 		}	
 	 	}
 	 	else if (tempNode.children[i].type === "assign") {
 	 		var assignNode = tempNode.children[i];
