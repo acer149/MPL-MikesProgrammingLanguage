@@ -9,15 +9,15 @@ var foundInST = false;
 var initializingAnId = false;
 var idIsBeingUsed = false;
 
-function traverseAST() {
+function traverseAST() { //Builds ST and does scope checking
 	
 	var tempNode = _ASTRoot;
-	expandAst(tempNode);
+	expandAst(tempNode); 
 	
 	checkForUnusedIdentifiers(_SymbolTableRoot);
 	
 	console.log(_SymbolTableRoot);
-	console.log("Scope Counter: " + scopeCounter);
+	//console.log("Scope Counter: " + scopeCounter);
 }
 
 function Scope(scopeNumber, parent, children, parrallelScope) {
@@ -71,6 +71,9 @@ function expandAst(tempNode) {
 	 		var varDeclNodeRC = varDeclNode.children[1];
 	 		var id = new Id(varDeclNodeRC.type, varDeclNodeLC.type, varDeclNodeLC.lineNumber, false, _CurrentScopePointer.scopeNumber, false);
 	 		_CurrentScopePointer.scopeSymbolTable.push(id);
+	 		
+	 		varDeclNodeLC.pointerToSymbolTable = id; //Point to ST
+	 		
 	 		console.log(_CurrentScopePointer.scopeSymbolTable);
 	 	}
 	 	else if (tempNode.children[i].type === "print") {
@@ -91,7 +94,7 @@ function expandAst(tempNode) {
 	 		var assignNode = tempNode.children[i];
 	 		var childOfAssign = assignNode.children[0];
 	 		console.log("Assign child: " + childOfAssign.type);
-	 		
+	 		 
 	 		initializingAnId = true;
 	 		checkScopeForId(_CurrentScopePointer, childOfAssign);
 	 		initializingAnId = false;
@@ -179,6 +182,8 @@ function checkScopeForId(scope, identifier) {
 		 				document.getElementById("taOutput").value += "id " + identifier.type + " on line " + identifier.lineNumber + " is in symbol table\n";
 		 				foundInST = true;
 		 				
+		 				identifier.pointerToSymbolTable = scope.scopeSymbolTable[j]; //identifier in AST points to ST
+		 				
 		 				//If we are assigning a value to an id, mark the id as initialized
 		 				if (initializingAnId === true) {
 		 					scope.scopeSymbolTable[j].initialized = true;
@@ -244,3 +249,17 @@ function checkForUnusedIdentifiers(symbolTableRoot) {
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 //Type Checking Below
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Second pass over AST
+function traverseASTForTypeChecking() {
+	console.log("\n\nType Checking console messages are below \n\n");
+	
+	var tempNode = _ASTRoot;
+	secondExpandOfAST(tempNode);
+}
+
+function secondExpandOfAST(tempNode) {
+
+}
+
+

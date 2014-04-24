@@ -15,7 +15,10 @@ function startCompiler() {
 		displayAbstractSyntaxTree();
 	}
 	if (_ErrorCount === 0) {
-		traverseAST();
+		traverseAST();//Builds ST and does scope checking
+	}
+	if (_ErrorCount === 0) {
+		traverseASTForTypeChecking();
 	}
 }
 
