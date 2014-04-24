@@ -137,9 +137,12 @@ function expandAst(tempNode) {
 		 		console.log("Left BoolOp Child: " + leftChildOfBoolOp.type);
 		 		console.log("Right BoolOp Child: " + rightChildOfBoolOp.type);
 		 		
-		 		idIsBeingUsed = true;
-		 		checkScopeForId(_CurrentScopePointer, leftChildOfBoolOp);
-		 		idIsBeingUsed = false;
+		 		if (leftChildOfBoolOp.type[0] != "\"") {
+			 		idIsBeingUsed = true;
+		 			checkScopeForId(_CurrentScopePointer, leftChildOfBoolOp);
+		 			idIsBeingUsed = false;		 			
+		 		}
+
 		 		//Allows for conditions containing digits and boolean values a==1 a==true, etc.
 		 		if (rightChildOfBoolOp.type.match(/[a-z]/) && rightChildOfBoolOp.type.length === 1) {
 		 			idIsBeingUsed = true;
