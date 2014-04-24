@@ -9,6 +9,7 @@ var scopeCounter = 0;
 var foundInST = false;
 
 //var id = null;
+var initializingAnId = false;
 
 function traverseAST() {
 	
@@ -47,7 +48,7 @@ function expandAst(tempNode) {
 	 		var varDeclNode = tempNode.children[i];
 	 		var varDeclNodeLC = varDeclNode.children[0];
 	 		var varDeclNodeRC = varDeclNode.children[1];
-	 		var id = new Id(varDeclNodeRC.type, varDeclNodeLC.type, varDeclNodeLC.lineNumber, "no", _CurrentScopePointer.scopeNumber);
+	 		var id = new Id(varDeclNodeRC.type, varDeclNodeLC.type, varDeclNodeLC.lineNumber, false, _CurrentScopePointer.scopeNumber, false);
 	 		_CurrentScopePointer.scopeSymbolTable.push(id);
 	 		console.log(_CurrentScopePointer.scopeSymbolTable);
 	 	}
@@ -68,7 +69,9 @@ function expandAst(tempNode) {
 	 		var childOfAssign = assignNode.children[0];
 	 		console.log("Assign child: " + childOfAssign.type);
 	 		
+	 		initializingAnId = true;
 	 		checkScopeForId(_CurrentScopePointer, childOfAssign);
+	 		initializingAnId = false;
 	 	
 	 	}
 	 	else if (tempNode.children[i].type === "while") {
@@ -140,6 +143,10 @@ function checkScopeForId(scope, identifier) {
 		 				console.log("Found " + identifier.type + " in ST");
 		 				document.getElementById("taOutput").value += "id " + identifier.type + " on line " + identifier.lineNumber + " is in symbol table\n";
 		 				foundInST = true;
+		 				if (initializingAnId === true) {
+		 					scope.scopeSymbolTable[j].initialzed = true;
+		 					document.getElementById("taOutput").value += "Initializing identifier " + scope.scopeSymbolTable[j].id + " in scope " + scope.scopeNumber +"\n";
+		 				}
 		 			}	 			
 		 		}
 		 		//If the current scope did not contain the id, then move to the parent scope and check there
@@ -172,10 +179,11 @@ function Scope(scopeNumber, parent, children, parrallelScope) {
 	this.parrallelScope = parrallelScope;
 }
 
-function Id(id, type, lineNumber, initialized, scope) {
+function Id(id, type, lineNumber, initialized, scope, used) {
 	this.id = id;
 	this.type = type;
 	this.lineNumber = lineNumber;
 	this.initialized = initialized;
 	this.scope = scope;
+	this.used = used;
 }
