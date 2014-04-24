@@ -2,7 +2,7 @@
 
 var treeLevel = 1;
 var b = 0;
-var array = [];
+//var array = [];
 //var scopeBlock = null;
 var scopeCounter = 0;
 
@@ -16,7 +16,10 @@ function traverseAST() {
 	var tempNode = _ASTRoot;
 	expandAst(tempNode);
 	
+	checkForUnusedIdentifiers(_SymbolTableRoot);
+	
 	console.log(_SymbolTableRoot);
+	console.log("Scope Counter: " + scopeCounter);
 }
 var treeLevel = 0;
 
@@ -31,7 +34,7 @@ function expandAst(tempNode) {
 	 		b++;
 	 		
 	 		console.log("Initializing scope " + scopeCounter);
-	 		var scopeBlock = new Scope(scopeCounter, null, array, null);
+	 		var scopeBlock = new Scope(scopeCounter, null, null, null);
 	 		_SymbolTableRoot = scopeBlock;
 	 		_CurrentScopePointer = scopeBlock;
 	 		scopeCounter++;
@@ -39,8 +42,9 @@ function expandAst(tempNode) {
 	 	
 	 	if (tempNode.children[i].type === "block") {
 	 		console.log("Initializing scope " + scopeCounter);
-	 		var scopeBlock = new Scope(scopeCounter, _CurrentScopePointer, array, null);
+	 		var scopeBlock = new Scope(scopeCounter, _CurrentScopePointer, null);
 	 		_CurrentScopePointer.children.push(scopeBlock);
+	 		console.log("Adding child");
 	 		_CurrentScopePointer = scopeBlock;
 	 		scopeCounter++;
 	 	}
@@ -143,8 +147,10 @@ function checkScopeForId(scope, identifier) {
 		 				console.log("Found " + identifier.type + " in ST");
 		 				document.getElementById("taOutput").value += "id " + identifier.type + " on line " + identifier.lineNumber + " is in symbol table\n";
 		 				foundInST = true;
+		 				
+		 				//If we are assigning a value to an id, mark the id as initialized
 		 				if (initializingAnId === true) {
-		 					scope.scopeSymbolTable[j].initialzed = true;
+		 					scope.scopeSymbolTable[j].initialized = true;
 		 					document.getElementById("taOutput").value += "Initializing identifier " + scope.scopeSymbolTable[j].id + " in scope " + scope.scopeNumber +"\n";
 		 				}
 		 			}	 			
@@ -159,6 +165,7 @@ function checkScopeForId(scope, identifier) {
 		 			scopeNumber--;
 		 		}	 			
 	 		}
+	 		//Did not find id in ST
 	 		if (scopeNumber < 0 && foundInST === false) {
 		 		console.log("Did not find " + identifier.type + " in ST.");
 		 		document.getElementById("taOutput").value += "ERROR: id " + identifier.type + " on line " + identifier.lineNumber 
@@ -171,10 +178,27 @@ function checkScopeForId(scope, identifier) {
 			foundInST = false;	
 }
 
+//Search for unused identifiers
+function checkForUnusedIdentifiers(symbolTableRoot) {
+	var scope = symbolTableRoot;
+	var sentinal = 0;
+	while (sentinal < scopeCounter) {
+		for (var j = 0; j < scope.scopeSymbolTable.length; j++) {
+			if (scope.scopeSymbolTable[j].used === false) {
+				document.getElementById("taOutput").value += "WARNING: id " + scope.scopeSymbolTable[j].id + " on line " + scope.scopeSymbolTable[j].lineNumber 
+					+ " is declared but never used\n";
+			} 			
+		}
+			//Move to next scope block
+			scope = scope.children[0];	
+			sentinal++;
+	}
+}
+
 function Scope(scopeNumber, parent, children, parrallelScope) {
 	this.scopeNumber = scopeNumber;
 	this.parent = parent;
-	this.children = children;
+	this.children = [];
 	this.scopeSymbolTable = [];
 	this.parrallelScope = parrallelScope;
 }
