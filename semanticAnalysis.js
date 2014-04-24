@@ -1,14 +1,11 @@
 /* semanticAnalysis.js */
 
-var treeLevel = 1;
 var b = 0;
-//var array = [];
-//var scopeBlock = null;
+
 var scopeCounter = 0;
 
 var foundInST = false;
 
-//var id = null;
 var initializingAnId = false;
 var idIsBeingUsed = false;
 
@@ -22,8 +19,6 @@ function traverseAST() {
 	console.log(_SymbolTableRoot);
 	console.log("Scope Counter: " + scopeCounter);
 }
-var treeLevel = 0;
-
 
 function Scope(scopeNumber, parent, children, parrallelScope) {
 	this.scopeNumber = scopeNumber;
@@ -42,9 +37,11 @@ function Id(id, type, lineNumber, initialized, scope, used) {
 	this.used = used;
 }
 
+//---------------------------------------------------------------------------------------------------------------------------------------------------------
+//Scope Checking Below
+//---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 function expandAst(tempNode) { 
-	treeLevel += 1;
 	//Goes through the AST (DFIO) 
 	for (var i = 0; i < tempNode.children.length; i++) {
 						 
@@ -158,8 +155,7 @@ function expandAst(tempNode) {
 		 		}	 			
 	 		}	 	
 	 	}	 		
-	 				
-		//printASTVerboseOutput(astLevel, tempNode.children[i].type);			
+	 							
 		expandAst(tempNode.children[i]);
 	}
 	//when a block ends move pointer to parent scope and continue
@@ -167,7 +163,6 @@ function expandAst(tempNode) {
 		console.log("Moving scope back to scope: " + _CurrentScopePointer.parent.scopeNumber + " from scope: " + _CurrentScopePointer.scopeNumber);
 		_CurrentScopePointer = _CurrentScopePointer.parent;
 	}
-	treeLevel -= 1;
 }
 
 function checkScopeForId(scope, identifier) {
@@ -245,3 +240,7 @@ function checkForUnusedIdentifiers(symbolTableRoot) {
 			sentinal++;
 	}
 }
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------
+//Type Checking Below
+//---------------------------------------------------------------------------------------------------------------------------------------------------------
