@@ -134,6 +134,19 @@ function expandAst(tempNode) {
 			 		checkScopeForId(_CurrentScopePointer, childOfAssign);
 			 		idIsBeingUsed = false;	 				
 	 			}
+	 			else if (childOfAssign.type === "==" || childOfAssign.type === "!=") {
+	 				for (var p = 0; p < childOfAssign.children.length; p++) {
+	 					var childOfBoolOp = childOfAssign.children[p];
+	 					console.log("Child of bool op: " + childOfBoolOp.type);
+	 					
+	 					//Checks that the child is a letter, is not a string, and is of length 1 (prevents strings and bool values from processing here)
+	 					if (childOfBoolOp.type.match(/['a-z']/) && childOfBoolOp.type[0] != "\"" && childOfBoolOp.type.length === 1) {
+			 			idIsBeingUsed = true;
+			 			checkScopeForId(_CurrentScopePointer, childOfBoolOp);
+			 			idIsBeingUsed = false;	 				
+	 					}
+	 				}
+	 			}
 	 		}
 	 	}
 	 	else if (tempNode.children[i].type === "while") {
@@ -235,7 +248,7 @@ function checkScopeForId(scope, identifier) {
 		 				//If we are assigning a value to an id, mark the id as initialized
 		 				if (initializingAnId === true) {
 		 					scope.scopeSymbolTable[j].initialized = true;
-		 					document.getElementById("taOutput").value += "\t\t\tInitializing identifier " + scope.scopeSymbolTable[j].id + " from scope " + scope.scopeNumber +"\n\n";
+		 					document.getElementById("taOutput").value += "\t\t\tFound and initializing identifier " + scope.scopeSymbolTable[j].id + " from scope " + scope.scopeNumber +"\n\n";
 		 				}
 		 				if (idIsBeingUsed === true) {
 		 					scope.scopeSymbolTable[j].used = true;
@@ -270,20 +283,21 @@ function checkForUnusedIdentifiers(symbolTableRoot) {
 	var scope = symbolTableRoot;
 	var sentinal = 0;
 	while (sentinal < scopeCounter) {
-		for (var j = 0; j < scope.scopeSymbolTable.length; j++) {
+		//console.log("Scope Counter: " + scopeCounter);
+		for (var x = 0; x < scope.scopeSymbolTable.length; x++) {
 		    //Throws a warning if an id is declared but never used
-			if (scope.scopeSymbolTable[j].used === false) {
-				document.getElementById("taOutput").value += "\n\tWARNING: ID " + scope.scopeSymbolTable[j].id + " on line " + scope.scopeSymbolTable[j].lineNumber 
+			if (scope.scopeSymbolTable[x].used === false) {
+				document.getElementById("taOutput").value += "\n\tWARNING: ID " + scope.scopeSymbolTable[x].id + " on line " + scope.scopeSymbolTable[x].lineNumber 
 					+ " is declared but never used\n";
 			}
 			//Throws a warning if an id is declared but never initialized 
-			if (scope.scopeSymbolTable[j].initialized === false) {
-				document.getElementById("taOutput").value += "\n\tWARNING: ID " + scope.scopeSymbolTable[j].id + " on line " + scope.scopeSymbolTable[j].lineNumber 
+			if (scope.scopeSymbolTable[x].initialized === false) {
+				document.getElementById("taOutput").value += "\n\tWARNING: ID " + scope.scopeSymbolTable[x].id + " on line " + scope.scopeSymbolTable[x].lineNumber 
 					+ " is declared but never initialized\n";
 			}
 			//Throws a error if an id is used but was never initialized
-			if (scope.scopeSymbolTable[j].initialized === false && scope.scopeSymbolTable[j].used === true) {
-				document.getElementById("taOutput").value += "\n\tWARNING: ID " + scope.scopeSymbolTable[j].id + " on line " + scope.scopeSymbolTable[j].lineNumber 
+			if (scope.scopeSymbolTable[x].initialized === false && scope.scopeSymbolTable[x].used === true) {
+				document.getElementById("taOutput").value += "\n\tWARNING: ID " + scope.scopeSymbolTable[x].id + " on line " + scope.scopeSymbolTable[x].lineNumber 
 					+ " is used but was never initialized\n";
 			}			
 		}
