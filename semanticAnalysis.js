@@ -99,10 +99,13 @@ function expandAst(tempNode) {
 	 		}
 	 		else if(printNode.children.length > 1) { //If print has more than one child (1+a)...
 	 			console.log("Print has multiple children"); 
+	 			
+	 			//Loops through the children of print and checks for identifiers
 	 			for (var q = 0; q < printNode.children.length; q++) {
 	 				var printChild = printNode.children[q];
 	 				console.log("Type of print's child " + printChild.type);
-	 				if (printChild.type.match(/['a-z']/)) {
+	 				//Checks that the child is a letter, is not a string (prevents strings from processing here) **Add check for length 1 here??
+	 				if (printChild.type.match(/['a-z']/) && printChild.type[0] != "\"") {
 			 			idIsBeingUsed = true;
 			 			checkScopeForId(_CurrentScopePointer, printChild);
 			 			idIsBeingUsed = false;	 					
@@ -112,13 +115,26 @@ function expandAst(tempNode) {
 	 	}
 	 	else if (tempNode.children[i].type === "assign") {
 	 		var assignNode = tempNode.children[i];
-	 		var childOfAssign = assignNode.children[0];
-	 		console.log("Assign child: " + childOfAssign.type);
-	 		 
+	 		var childOfAssignBeingInitialized = assignNode.children[0];
+	 		
+	 		//Handles first child of assign, which is the identifier being initialized
+	 		console.log("Assign child being initialized: " + childOfAssignBeingInitialized.type);
 	 		initializingAnId = true;
-	 		checkScopeForId(_CurrentScopePointer, childOfAssign);
+	 		checkScopeForId(_CurrentScopePointer, childOfAssignBeingInitialized);
 	 		initializingAnId = false;
-	 	
+	 		
+	 		//Checks for other identifiers being used in the assign statement
+	 		for (var q = 1; q < assignNode.children.length; q++) {
+	 			var childOfAssign = assignNode.children[q];
+	 			console.log("Assign child: " + childOfAssign.type);
+	 			
+	 			//Checks that the child is a letter, is not a string, and is of length 1 (prevents strings and bool values from processing here)
+	 			if (childOfAssign.type.match(/['a-z']/) && childOfAssign.type[0] != "\"" && childOfAssign.type.length === 1) {
+			 		idIsBeingUsed = true;
+			 		checkScopeForId(_CurrentScopePointer, childOfAssign);
+			 		idIsBeingUsed = false;	 				
+	 			}
+	 		}
 	 	}
 	 	else if (tempNode.children[i].type === "while") {
 	 		var whileNode = tempNode.children[i];
