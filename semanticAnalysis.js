@@ -6,6 +6,11 @@ var scopeCounter = 0;
 
 var foundInST = false;
 
+/* These are used when checking ST for identifiers. If an identifier is being initialized or used, initializingAnId or idIsBeingUsed will be set to true.
+ * Then in checkScopeForId if either of these is true the function will set the initialized or used property of the id to true allowing me to keep track of what 
+ * identifiers have been initialized and used. This is then helpful when checking for warnings and errors, i.e. if the user tries to use an uninitialized id or declares 
+ * an id and does not use it.
+ */
 var declaringAnId = false;
 var initializingAnId = false;
 var idIsBeingUsed = false;
