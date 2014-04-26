@@ -290,10 +290,10 @@ function checkForUnusedIdentifiers(symbolTableRoot) {
 	while (sentinal < scopeCounter) {
 		//console.log("Scope Counter: " + scopeCounter);
 		for (var x = 0; x < scope.scopeSymbolTable.length; x++) {
-		    //Throws a warning if an id is declared but never used
-			if (scope.scopeSymbolTable[x].used === false) {
+		    //Throws a warning if an id is declared and initialized but never used
+			if (scope.scopeSymbolTable[x].used === false && scope.scopeSymbolTable[x].initialized === true) {
 				document.getElementById("taOutput").value += "\n\tWARNING: ID " + scope.scopeSymbolTable[x].id + " on line " + scope.scopeSymbolTable[x].lineNumber 
-					+ " is declared but never used\n";
+					+ " is declared and initialized but never used\n";
 			}
 			//Throws a warning if an id is declared but never initialized 
 			if (scope.scopeSymbolTable[x].initialized === false) {
