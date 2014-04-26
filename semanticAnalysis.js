@@ -79,13 +79,40 @@ function expandAst(tempNode) {
 	 		var varDeclNode = tempNode.children[i];
 	 		var varDeclNodeLC = varDeclNode.children[0];
 	 		var varDeclNodeRC = varDeclNode.children[1];
-	 		var id = new Id(varDeclNodeRC.type, varDeclNodeLC.type, varDeclNodeLC.lineNumber, false, _CurrentScopePointer.scopeNumber, false);
-	 		_CurrentScopePointer.scopeSymbolTable.push(id);
-	 		document.getElementById("taOutput").value += "\tAdded id " + id.id + " to the Symbol Table at scope level " + id.scope + "\n\n";
 	 		
-	 		varDeclNodeLC.pointerToSymbolTable = id; //Point to ST
-	 		
-	 		console.log(_CurrentScopePointer.scopeSymbolTable);
+	 		//If there are no ids in the ST
+	 		if(_CurrentScopePointer.scopeSymbolTable.length === 0) {
+		 		var id = new Id(varDeclNodeRC.type, varDeclNodeLC.type, varDeclNodeLC.lineNumber, false, _CurrentScopePointer.scopeNumber, false);
+		 		_CurrentScopePointer.scopeSymbolTable.push(id);
+		 		document.getElementById("taOutput").value += "\tAdded id " + id.id + " to the Symbol Table at scope level " + id.scope + "\n\n";
+		 		
+		 		varDeclNodeLC.pointerToSymbolTable = id; //Point to ST
+		 		
+		 		console.log(_CurrentScopePointer.scopeSymbolTable);	 			
+	 		}
+	 		else {
+	 			var tempArray = [];
+	 			//Populate a temp array with the current ids in the current scope's ST
+	 			for (var d = 0; d < _CurrentScopePointer.scopeSymbolTable.length; d++ ) {
+	 				tempArray.push(_CurrentScopePointer.scopeSymbolTable[d].id);
+	 			}
+	 			
+	 			//If the newly declared id IS NOT in the current scope's ST then add it	
+	 			if (($.inArray(varDeclNodeRC.type.toString(), tempArray) === -1 )) {
+					var id = new Id(varDeclNodeRC.type, varDeclNodeLC.type, varDeclNodeLC.lineNumber, false, _CurrentScopePointer.scopeNumber, false);
+			 		_CurrentScopePointer.scopeSymbolTable.push(id);
+			 		document.getElementById("taOutput").value += "\tAdded id " + id.id + " to the Symbol Table at scope level " + id.scope + "\n\n";
+				 		
+			 		varDeclNodeLC.pointerToSymbolTable = id; //Point to ST
+				 		
+			 		console.log(_CurrentScopePointer.scopeSymbolTable);		 					
+	 			}
+	 			//If the newly declared id IS in the current scope's ST then do not add it and throw an error
+	 			else {
+	 				document.getElementById("taOutput").value += "\n\tERROR: ID " + varDeclNodeRC.type + " on line " + varDeclNodeRC.lineNumber 
+						+ " has already been declared in this scope\n";
+				}	 			
+	 		} 		
 	 	}
 	 	else if (tempNode.children[i].type === "print") {
 	 		var printNode = tempNode.children[i];
