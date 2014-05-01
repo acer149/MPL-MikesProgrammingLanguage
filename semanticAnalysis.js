@@ -357,6 +357,22 @@ function traverseASTForTypeChecking() {
 }
 
 function secondExpandOfAST(tempNode) {
+		//Goes through the AST (DFIO) 
+	for (var i = 0; i < tempNode.children.length; i++) {
+		if (_ErrorCount === 0) {
+			if (tempNode.children[i].type === "assign" ) {
+				var assignNode = tempNode.children[i];
+				var secondChild = assignNode.children[1];
+				var typeOfTheIdBeingAssignedTo =  assignNode.children[0].pointerToSymbolTable.type;
+				console.log(typeOfTheIdBeingAssignedTo);
+				console.log(secondChild);
+				//var rightType
+			}
+			
+			
+		}
+		secondExpandOfAST(tempNode.children[i]);
+	}
 
 }
 
