@@ -1,7 +1,8 @@
 /* ast.js */
 
-function astNode(type, parent, children, pointerToSymbolTable, lineNumber) {
+function astNode(value, type, parent, children, pointerToSymbolTable, lineNumber) {
 
+	this.value = value;
 	this.type = type;
 	this.parent = parent;
 	this.children = [];
@@ -10,10 +11,10 @@ function astNode(type, parent, children, pointerToSymbolTable, lineNumber) {
 	
 }
 
-function addAstBranchNode(type, lineNumber) {
-	console.log("Adding ast branch Node: " + type);
+function addAstBranchNode(value, type, lineNumber) {
+	console.log("Adding ast branch Node: " + value);
 	//Creates a new node object with properties: type, parent(the node _CurrentAstPointer points to), and a children array
-	var node = new astNode(type, _CurrentAstPointer, children, null, lineNumber);
+	var node = new astNode(value, type, _CurrentAstPointer, children, null, lineNumber);
 	
 	if (_CurrentAstPointer === null) {
 		//First node is root
@@ -29,10 +30,10 @@ function addAstBranchNode(type, lineNumber) {
 	}
 }
 
-function addAstLeafNode(type, lineNumber) {
+function addAstLeafNode(value, type, lineNumber) {
 	//Creates a new node object with properties: type, parent(the node _CurrentAstPointer points to). No child array because it is a leaf node
-	var node = new astNode(type, _CurrentAstPointer, null, null, lineNumber);
-	console.log("Adding ast leaf Node: " + type);
+	var node = new astNode(value, type, _CurrentAstPointer, null, null, lineNumber);
+	console.log("Adding ast leaf Node: " + value);
 	if (_CurrentAstPointer === _ASTRoot) {
 		//error
 	}
@@ -93,14 +94,14 @@ function expandAstNode(tempNode) {
 		 
 		//Manage verbose output, prints root node of ast
 	 	if(_Verbose && _JustASTVerbose && q === 0) {
-	 		document.getElementById("taOutput").value += tempNode.type + "\n";
+	 		document.getElementById("taOutput").value += tempNode.value + "\n";
 	 		q++;	
 	 	}
 	 	
 	 	//Assign correct children to while and if
 	 	//Checks for a while or if statement and checks the number of children it has.  I did this in order to correct the 
 	 	//ast when a boolean expression is used as a condition. ie. while(a==b)
-	 	if ((tempNode.children[i].type === "while" || tempNode.children[i].type === "if") && tempNode.children[i].children.length != 2 ) {
+	 	if ((tempNode.children[i].value === "while" || tempNode.children[i].value === "if") && tempNode.children[i].children.length != 2 ) {
 	 		
 	 		var whileOrIfNode = tempNode.children[i];
 	 		
@@ -127,7 +128,7 @@ function expandAstNode(tempNode) {
 	 	//Assign correct children to assign statement
 	 	//Checks for an assign statement and checks the number of children it has.  I did this in order to correct the 
 	 	//ast when a int expression is used in an assign statement. ie. while(a==b)
-	 	if (tempNode.children[i].type === "assign" && tempNode.children[i].children.length != 2 ) {
+	 	if (tempNode.children[i].value === "assign" && tempNode.children[i].children.length != 2 ) {
 	 		
 	 		var assignNode = tempNode.children[i];
 	 		
@@ -148,7 +149,7 @@ function expandAstNode(tempNode) {
 	 	}
 		
 		//document.getElementById("taOutput").value += astLevel + tempNode.children[i].type + "\n"; // " at tree level " + treeLevel + "\n";			
-		printASTVerboseOutput(astLevel, tempNode.children[i].type);	
+		printASTVerboseOutput(astLevel, tempNode.children[i].value);	
 				
 		expandAstNode(tempNode.children[i]);
 	}

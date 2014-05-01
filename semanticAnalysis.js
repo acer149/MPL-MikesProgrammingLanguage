@@ -71,7 +71,7 @@ function expandAst(tempNode) {
 		 		scopeCounter++;
 		 	}
 		 	
-		 	if (tempNode.children[i].type === "block") {
+		 	if (tempNode.children[i].value === "block") {
 		 		console.log("Initializing scope " + scopeCounter);
 		 		var scopeBlock = new Scope(scopeCounter, _CurrentScopePointer, null);
 		 		_CurrentScopePointer.children.push(scopeBlock);
@@ -79,14 +79,14 @@ function expandAst(tempNode) {
 		 		_CurrentScopePointer = scopeBlock;
 		 		scopeCounter++;
 		 	}
-		 	else if (tempNode.children[i].type === "varDecl") {
+		 	else if (tempNode.children[i].value === "varDecl") {
 		 		var varDeclNode = tempNode.children[i];
 		 		var varDeclNodeLC = varDeclNode.children[0];
 		 		var varDeclNodeRC = varDeclNode.children[1];
 		 		
 		 		//If there are no ids in the ST
 		 		if(_CurrentScopePointer.scopeSymbolTable.length === 0) {
-			 		var id = new Id(varDeclNodeRC.type, varDeclNodeLC.type, varDeclNodeLC.lineNumber, false, _CurrentScopePointer.scopeNumber, false);
+			 		var id = new Id(varDeclNodeRC.value, varDeclNodeLC.value, varDeclNodeLC.lineNumber, false, _CurrentScopePointer.scopeNumber, false);
 			 		_CurrentScopePointer.scopeSymbolTable.push(id);
 			 		document.getElementById("taOutput").value += "\tAdded id " + id.id + " to the Symbol Table at scope level " + id.scope + "\n\n";
 			 		
@@ -102,8 +102,8 @@ function expandAst(tempNode) {
 		 			}
 		 			
 		 			//If the newly declared id IS NOT in the current scope's ST then add it	
-		 			if (($.inArray(varDeclNodeRC.type.toString(), tempArray) === -1 )) {
-						var id = new Id(varDeclNodeRC.type, varDeclNodeLC.type, varDeclNodeLC.lineNumber, false, _CurrentScopePointer.scopeNumber, false);
+		 			if (($.inArray(varDeclNodeRC.value.toString(), tempArray) === -1 )) {
+						var id = new Id(varDeclNodeRC.value, varDeclNodeLC.value, varDeclNodeLC.lineNumber, false, _CurrentScopePointer.scopeNumber, false);
 				 		_CurrentScopePointer.scopeSymbolTable.push(id);
 				 		document.getElementById("taOutput").value += "\tAdded id " + id.id + " to the Symbol Table at scope level " + id.scope + "\n\n";
 					 		
@@ -113,22 +113,22 @@ function expandAst(tempNode) {
 		 			}
 		 			//If the newly declared id IS in the current scope's ST then do not add it and throw an error
 		 			else {
-		 				document.getElementById("taOutput").value += "\n\tERROR: ID " + varDeclNodeRC.type + " on line " + varDeclNodeRC.lineNumber 
+		 				document.getElementById("taOutput").value += "\n\tERROR: ID " + varDeclNodeRC.value + " on line " + varDeclNodeRC.lineNumber 
 							+ " has already been declared in this scope\n";
 							_ErrorCount++;
 					}	 			
 		 		} 		
 		 	}
-		 	else if (tempNode.children[i].type === "print") {
+		 	else if (tempNode.children[i].value === "print") {
 		 		var printNode = tempNode.children[i];
 		 		
 		 		if (printNode.children.length === 1) {
 			 		var printChild = printNode.children[0];
-			 		console.log("Print child: " + printChild.type);
+			 		console.log("Print child: " + printChild.value);
 			 		//console.log( _CurrentScopePointer.scopeSymbolTable);
 			 		
 			 		//Checks for String Expression
-			 		if (printChild.type[0] != "\"") {
+			 		if (printChild.value[0] != "\"") {
 			 			idIsBeingUsed = true;
 			 			checkScopeForId(_CurrentScopePointer, printChild);
 			 			idIsBeingUsed = false;	
@@ -140,9 +140,9 @@ function expandAst(tempNode) {
 		 			//Loops through the children of print and checks for identifiers
 		 			for (var q = 0; q < printNode.children.length; q++) {
 		 				var printChild = printNode.children[q];
-		 				console.log("Type of print's child " + printChild.type);
+		 				console.log("Type of print's child " + printChild.value);
 		 				//Checks that the child is a letter, is not a string (prevents strings from processing here) **Add check for length 1 here??
-		 				if (printChild.type.match(/['a-z']/) && printChild.type[0] != "\"") {
+		 				if (printChild.value.match(/['a-z']/) && printChild.value[0] != "\"") {
 				 			idIsBeingUsed = true;
 				 			checkScopeForId(_CurrentScopePointer, printChild);
 				 			idIsBeingUsed = false;	 					
@@ -150,12 +150,12 @@ function expandAst(tempNode) {
 		 			}
 		 		}	
 		 	}
-		 	else if (tempNode.children[i].type === "assign") {
+		 	else if (tempNode.children[i].value === "assign") {
 		 		var assignNode = tempNode.children[i];
 		 		var childOfAssignBeingInitialized = assignNode.children[0];
 		 		
 		 		//Handles first child of assign, which is the identifier being initialized
-		 		console.log("Assign child being initialized: " + childOfAssignBeingInitialized.type);
+		 		console.log("Assign child being initialized: " + childOfAssignBeingInitialized.value);
 		 		initializingAnId = true;
 		 		checkScopeForId(_CurrentScopePointer, childOfAssignBeingInitialized);
 		 		initializingAnId = false;
@@ -163,21 +163,21 @@ function expandAst(tempNode) {
 		 		//Checks for other identifiers being used in the assign statement
 		 		for (var q = 1; q < assignNode.children.length; q++) {
 		 			var childOfAssign = assignNode.children[q];
-		 			console.log("Assign child: " + childOfAssign.type);
+		 			console.log("Assign child: " + childOfAssign.value);
 		 			
 		 			//Checks that the child is a letter, is not a string, and is of length 1 (prevents strings and bool values from processing here)
-		 			if (childOfAssign.type.match(/['a-z']/) && childOfAssign.type[0] != "\"" && childOfAssign.type.length === 1) {
+		 			if (childOfAssign.value.match(/['a-z']/) && childOfAssign.value[0] != "\"" && childOfAssign.value.length === 1) {
 				 		idIsBeingUsed = true;
 				 		checkScopeForId(_CurrentScopePointer, childOfAssign);
 				 		idIsBeingUsed = false;	 				
 		 			}
-		 			else if (childOfAssign.type === "==" || childOfAssign.type === "!=") {
+		 			else if (childOfAssign.value === "==" || childOfAssign.value === "!=") {
 		 				for (var p = 0; p < childOfAssign.children.length; p++) {
 		 					var childOfBoolOp = childOfAssign.children[p];
-		 					console.log("Child of bool op: " + childOfBoolOp.type);
+		 					console.log("Child of bool op: " + childOfBoolOp.value);
 		 					
 		 					//Checks that the child is a letter, is not a string, and is of length 1 (prevents strings and bool values from processing here)
-		 					if (childOfBoolOp.type.match(/['a-z']/) && childOfBoolOp.type[0] != "\"" && childOfBoolOp.type.length === 1) {
+		 					if (childOfBoolOp.value.match(/['a-z']/) && childOfBoolOp.value[0] != "\"" && childOfBoolOp.value.length === 1) {
 				 			idIsBeingUsed = true;
 				 			checkScopeForId(_CurrentScopePointer, childOfBoolOp);
 				 			idIsBeingUsed = false;	 				
@@ -186,60 +186,60 @@ function expandAst(tempNode) {
 		 			}
 		 		}
 		 	}
-		 	else if (tempNode.children[i].type === "while") {
+		 	else if (tempNode.children[i].value === "while") {
 		 		var whileNode = tempNode.children[i];
-		 		if (whileNode.children[0].type != "==" && whileNode.children[0].type != "!=") {
+		 		if (whileNode.children[0].value != "==" && whileNode.children[0].value != "!=") {
 			 		var childOfwhile = whileNode.children[0];
-			 		console.log("While child: " + childOfwhile.type);
+			 		console.log("While child: " + childOfwhile.value);
 			 		
 			 		idIsBeingUsed = true;
 			 		checkScopeForId(_CurrentScopePointer, childOfwhile);
 			 		idIsBeingUsed = false;	 			
 		 		}
-		 		else if (whileNode.children[0].type === "==" || whileNode.children[0].type === "!=") {
+		 		else if (whileNode.children[0].value === "==" || whileNode.children[0].value === "!=") {
 			 		var boolOp = whileNode.children[0];
 			 		var leftChildOfBoolOp = boolOp.children[0];
 			 		var rightChildOfBoolOp = boolOp.children[1];
-			 		console.log("Left BoolOp Child: " + leftChildOfBoolOp.type);
-			 		console.log("Right BoolOp Child: " + rightChildOfBoolOp.type);
+			 		console.log("Left BoolOp Child: " + leftChildOfBoolOp.value);
+			 		console.log("Right BoolOp Child: " + rightChildOfBoolOp.value);
 			 		
-			 		if (leftChildOfBoolOp.type[0] != "\"") {
+			 		if (leftChildOfBoolOp.value[0] != "\"") {
 				 		idIsBeingUsed = true;
 			 			checkScopeForId(_CurrentScopePointer, leftChildOfBoolOp);
 			 			idIsBeingUsed = false;		 			
 			 		}
 	
 			 		//Allows for conditions containing digits and boolean values a==1 a==true, etc.
-			 		if (rightChildOfBoolOp.type.match(/[a-z]/) && rightChildOfBoolOp.type.length === 1) {
+			 		if (rightChildOfBoolOp.value.match(/[a-z]/) && rightChildOfBoolOp.value.length === 1) {
 			 			idIsBeingUsed = true;
 			 			checkScopeForId(_CurrentScopePointer, rightChildOfBoolOp);
 			 			idIsBeingUsed = false;
 			 		}		 			
 		 		}	
 		 	}
-		 	else if (tempNode.children[i].type === "if") {
+		 	else if (tempNode.children[i].value === "if") {
 		 		var ifNode = tempNode.children[i];
-		 		if (ifNode.children[0].type != "==" && ifNode.children[0].type != "!=") {
+		 		if (ifNode.children[0].value != "==" && ifNode.children[0].value != "!=") {
 		 			var childOfIf = ifNode.children[0];
-		 			console.log("If child: " + childOfIf.type);
+		 			console.log("If child: " + childOfIf.value);
 			 		
 			 		idIsBeingUsed = true;
 			 		checkScopeForId(_CurrentScopePointer, childOfIf);
 			 		idIsBeingUsed = false;
 		 		}
-		 		else if (ifNode.children[0].type === "==" || ifNode.children[0].type === "!=") {
+		 		else if (ifNode.children[0].value === "==" || ifNode.children[0].value === "!=") {
 			 		var boolOp = ifNode.children[0];
 			 		var leftChildOfBoolOp = boolOp.children[0];
 			 		var rightChildOfBoolOp = boolOp.children[1];
-			 		console.log("Left BoolOp Child: " + leftChildOfBoolOp.type);
-			 		console.log("Right BoolOp Child: " + rightChildOfBoolOp.type);
+			 		console.log("Left BoolOp Child: " + leftChildOfBoolOp.value);
+			 		console.log("Right BoolOp Child: " + rightChildOfBoolOp.value);
 			 		
 			 		idIsBeingUsed = true;
 			 		checkScopeForId(_CurrentScopePointer, leftChildOfBoolOp);
 			 		idIsBeingUsed = false;
 			 		
 			 		//Allows for conditions containing digits and boolean values a==1 a==true, etc.
-			 		if (rightChildOfBoolOp.type.match(/[a-z]/) && rightChildOfBoolOp.type.length === 1) {
+			 		if (rightChildOfBoolOp.value.match(/[a-z]/) && rightChildOfBoolOp.value.length === 1) {
 			 			
 			 			idIsBeingUsed = true;
 			 			checkScopeForId(_CurrentScopePointer, rightChildOfBoolOp);
@@ -251,7 +251,7 @@ function expandAst(tempNode) {
 		expandAst(tempNode.children[i]);
 	}
 	//when a block ends move pointer to parent scope and continue
-	if (_CurrentScopePointer.parent != null && tempNode.type === "block") {
+	if (_CurrentScopePointer.parent != null && tempNode.value === "block") {
 		console.log("Moving scope back to scope: " + _CurrentScopePointer.parent.scopeNumber + " from scope: " + _CurrentScopePointer.scopeNumber);
 		_CurrentScopePointer = _CurrentScopePointer.parent;
 	}
@@ -261,21 +261,21 @@ function checkScopeForId(scope, identifier) {
 	 		console.log("ST len: " + scope.scopeSymbolTable.length + " of current scope " + scope.scopeNumber);
 	 		var scopeNumber = scope.scopeNumber;
 	 		
-	 		document.getElementById("taOutput").value += "\t\tChecking Symbol Table for id " + identifier.type + " on line " + identifier.lineNumber + "\n\n";
+	 		document.getElementById("taOutput").value += "\t\tChecking Symbol Table for id " + identifier.value + " on line " + identifier.lineNumber + "\n\n";
 	 		
 	 		//while the id has not be found in ST and while there are still scopes to check, continue searching
 	 		while (scopeNumber >= 0 && foundInST === false) {
 		 		//Searches current scope for the identifier
 		 		for (var j = 0; j < scope.scopeSymbolTable.length; j++) {
-		 			console.log("Compare " + identifier.type.toString() + " with " + scope.scopeSymbolTable[j].id);
-					if (($.inArray(identifier.type.toString(), scope.scopeSymbolTable[j].id) != -1 )) {
+		 			console.log("Compare " + identifier.value.toString() + " with " + scope.scopeSymbolTable[j].id);
+					if (($.inArray(identifier.value.toString(), scope.scopeSymbolTable[j].id) != -1 )) {
 						
 						if (scope.scopeSymbolTable[j].initialized == true) {
-		 					console.log("Found " + identifier.type + " in ST");
-		 					document.getElementById("taOutput").value += "\t\t\tFound id " + identifier.type + " in symbol table\n\n";							
+		 					console.log("Found " + identifier.value + " in ST");
+		 					document.getElementById("taOutput").value += "\t\t\tFound id " + identifier.value + " in symbol table\n\n";							
 						}
 						else if (initializingAnId === false) {
-							document.getElementById("taOutput").value += "\t\t\tWARNING: Found id " + identifier.type + " in symbol table, but it has not been intialized yet\n\n";
+							document.getElementById("taOutput").value += "\t\t\tWARNING: Found id " + identifier.value + " in symbol table, but it has not been intialized yet\n\n";
 						}
 
 		 				foundInST = true;
@@ -294,7 +294,7 @@ function checkScopeForId(scope, identifier) {
 		 		}
 		 		//If the current scope did not contain the id, then move to the parent scope and check there
 		 		if (foundInST === false) {
-		 			console.log("Did not find " + identifier.type + " in ST. the current scope is " + scope.scopeNumber 
+		 			console.log("Did not find " + identifier.value + " in ST. the current scope is " + scope.scopeNumber 
 		 				+ " checking parent scope " + scope.scopeNumber -1);
 		 				
 		 			//Did not find id in current scope, check parent scope...
@@ -304,8 +304,8 @@ function checkScopeForId(scope, identifier) {
 	 		}
 	 		//Did not find id in ST
 	 		if (scopeNumber < 0 && foundInST === false) {
-		 		console.log("Did not find " + identifier.type + " in ST.");
-		 		document.getElementById("taOutput").value += "\n\tERROR: ID " + identifier.type + " on line " + identifier.lineNumber 
+		 		console.log("Did not find " + identifier.value + " in ST.");
+		 		document.getElementById("taOutput").value += "\n\tERROR: ID " + identifier.value + " on line " + identifier.lineNumber 
 		 			+ " is NOT in symbol table. Please declare and initialize this variable before using it\n\n";
 		 		
 		 		_ErrorCount++;
@@ -360,16 +360,31 @@ function secondExpandOfAST(tempNode) {
 		//Goes through the AST (DFIO) 
 	for (var i = 0; i < tempNode.children.length; i++) {
 		if (_ErrorCount === 0) {
-			if (tempNode.children[i].type === "assign" ) {
+			if (tempNode.children[i].value === "assign" ) {
 				var assignNode = tempNode.children[i];
-				var secondChild = assignNode.children[1];
-				var typeOfTheIdBeingAssignedTo =  assignNode.children[0].pointerToSymbolTable.type;
-				console.log(typeOfTheIdBeingAssignedTo);
-				console.log(secondChild);
-				//var rightType
+		
+				var typeOfTheIdBeingAssignedTo = assignNode.children[0].pointerToSymbolTable.type;
+				
+				var typeOfTheSecondChild = assignNode.children[1].type;
+				
+				for (var w = 1; w < assignNode.children.length; w++) {
+					var typeOfCurrentChild = assignNode.children[w].type;
+					if (typeOfCurrentChild === "intOp") {
+						var intOp = assignNode.children[w];
+						var leftChildType = intOp.children[0].type;
+						var rightChildType = intOp.children[1].type;
+						if (leftChildType != rightChildType) {
+							document.getElementById("taOutput").value += "\n\tERROR: Cannot add type " + leftChildType + " to type " + rightChildType + " on line " + intOp.lineNumber + "\n";
+						}
+					}
+					else if (typeOfTheIdBeingAssignedTo != typeOfCurrentChild) {
+						document.getElementById("taOutput").value += "\n\tERROR: Cannot assign type " + typeOfTheSecondChild + " to type " + typeOfTheIdBeingAssignedTo + " on line " + assignNode.lineNumber + "\n"; 
+					}	
+				}
+				
+				_ErrorCount++;
 			}
-			
-			
+					
 		}
 		secondExpandOfAST(tempNode.children[i]);
 	}
