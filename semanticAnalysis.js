@@ -423,8 +423,8 @@ function secondExpandOfAST(tempNode) {
 
 
 function checkTypesForIntOp(node) {
-	var intOp = node;
-	//+
+	var intOp = node; //+
+	
 	var leftChildType;
 	var rightChildType;
 	if (intOp.children[0].value.match(/[a-z]/)) {

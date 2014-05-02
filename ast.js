@@ -131,19 +131,27 @@ function expandAstNode(tempNode) {
 	 	if (tempNode.children[i].value === "assign" && tempNode.children[i].children.length != 2 ) {
 	 		
 	 		var assignNode = tempNode.children[i];
-	 		
-	 		//Shift children around
-	 		var firstChild = assignNode.children[1]; //Should be child of intOperand
 	 		var intOperand = assignNode.children[2];
-	 		var secondChild = assignNode.children[3]; //Should be child of intOperand
+	 		var g = 0;
+	 		for (var k = 1; k < assignNode.children.length; k++) {
+	 			if (assignNode.children[k].value != "+") {
+	 				intOperand.children[g] = assignNode.children[k];
+	 				g++;
+	 			}
+	 		}
 	 		
-	 		//Sets int op children
-			intOperand.children[0] = firstChild;
-			intOperand.children[1] = secondChild;
+	 		// //Shift children around
+	 		// var firstChild = assignNode.children[1]; //Should be child of intOperand
+	 		// var intOperand = assignNode.children[2];
+	 		// var secondChild = assignNode.children[3]; //Should be child of intOperand
+	 		
+	 		// //Sets int op children
+			// intOperand.children[0] = firstChild;
+			// intOperand.children[1] = secondChild;
 			
 			//Corrects the assign node
 			assignNode.children[1] = intOperand;
-			assignNode.children.splice(2,2);
+			assignNode.children.splice(2,g+1);
 			
 	 		
 	 	}
