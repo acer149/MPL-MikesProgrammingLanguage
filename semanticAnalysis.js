@@ -23,7 +23,7 @@ function traverseAST() { //Builds ST and does scope checking
 	expandAst(tempNode); 
 	
 	if (_ErrorCount === 0) {
-		checkForUnusedIdentifiers(_SymbolTableRoot);
+		//checkForUnusedIdentifiers(_SymbolTableRoot);
 	}
 	
 	
@@ -184,6 +184,19 @@ function expandAst(tempNode) {
 		 					}
 		 				}
 		 			}
+		 			else if (childOfAssign.value === "+") {
+		 				for (var y = 0; y < childOfAssign.children.length; y++) {
+		 					var childOfIntOp = childOfAssign.children[y];
+		 					console.log("Child of int op: " + childOfIntOp.value);
+		 					
+		 					//Checks that the child is a letter, is not a string, and is of length 1 (prevents strings and bool values from processing here)
+		 					if (childOfIntOp.value.match(/['a-z']/) && childOfIntOp.value[0] != "\"" && childOfIntOp.value.length === 1) {
+				 			idIsBeingUsed = true;
+				 			checkScopeForId(_CurrentScopePointer, childOfIntOp);
+				 			idIsBeingUsed = false;	 				
+		 					}
+		 				}		 				
+		 			}
 		 		}
 		 	}
 		 	else if (tempNode.children[i].value === "while") {
@@ -281,6 +294,7 @@ function checkScopeForId(scope, identifier) {
 		 				foundInST = true;
 		 				
 		 				identifier.pointerToSymbolTable = scope.scopeSymbolTable[j]; //identifier in AST points to ST
+		 				console.log("Assigned pointer " + identifier.value + " on line" + identifier.lineNumber + " to ST");
 		 				
 		 				//If we are assigning a value to an id, mark the id as initialized
 		 				if (initializingAnId === true) {
@@ -365,24 +379,26 @@ function secondExpandOfAST(tempNode) {
 		
 				var typeOfTheIdBeingAssignedTo = assignNode.children[0].pointerToSymbolTable.type;
 				
-				var typeOfTheSecondChild = assignNode.children[1].type;
+				var typeOfTheSecondChild; //= assignNode.children[1].type;
 				
 				for (var w = 1; w < assignNode.children.length; w++) {
 					var typeOfCurrentChild = assignNode.children[w].type;
+					console.log("Type of current assign node child " + typeOfCurrentChild);
 					if (typeOfCurrentChild === "intOp") {
-						var intOp = assignNode.children[w];
-						var leftChildType = intOp.children[0].type;
-						var rightChildType = intOp.children[1].type;
-						if (leftChildType != rightChildType) {
-							document.getElementById("taOutput").value += "\n\tERROR: Cannot add type " + leftChildType + " to type " + rightChildType + " on line " + intOp.lineNumber + "\n";
+						checkTypesForIntOp(assignNode.children[w]); //assignNode.children[w] is a +
+					}
+					else if (typeOfCurrentChild === "TypeDependsOnVarDecl") { //Then the current child is an id and I must look to ST pointer
+						typeOfId = assignNode.children[w].pointerToSymbolTable.type;
+						if (typeOfTheIdBeingAssignedTo != typeOfId) {
+						document.getElementById("taOutput").value += "\n\tERROR: Cannot assign type " + typeOfId + " to type " + typeOfTheIdBeingAssignedTo + " on line " + assignNode.children[w].lineNumber + "\n";
+						_ErrorCount++;							
 						}
 					}
 					else if (typeOfTheIdBeingAssignedTo != typeOfCurrentChild) {
-						document.getElementById("taOutput").value += "\n\tERROR: Cannot assign type " + typeOfTheSecondChild + " to type " + typeOfTheIdBeingAssignedTo + " on line " + assignNode.lineNumber + "\n"; 
+						document.getElementById("taOutput").value += "\n\tERROR: Cannot assign type " + typeOfTheSecondChild + " to type " + typeOfTheIdBeingAssignedTo + " on line " + assignNode.lineNumber + "\n";
+						_ErrorCount++; 
 					}	
 				}
-				
-				_ErrorCount++;
 			}
 					
 		}
@@ -390,5 +406,33 @@ function secondExpandOfAST(tempNode) {
 	}
 
 }
+
+
+function checkTypesForIntOp(node) {
+	var intOp = node;
+	//+
+	var leftChildType;
+	var rightChildType;
+	if (intOp.children[0].value.match(/[a-z]/)) {
+		leftChildType = intOp.children[0].pointerToSymbolTable.type;
+	} 
+	else {
+		leftChildType = intOp.children[0].type;
+	}
+
+	if (intOp.children[1].value.match(/[a-z]/)) {
+		rightChildType = intOp.children[1].pointerToSymbolTable.type;
+	} 
+	else {
+		rightChildType = intOp.children[1].type;
+	}
+
+	console.log("Type of current intOp node children " + leftChildType + " and " + rightChildType);
+	if (leftChildType != rightChildType) {
+		document.getElementById("taOutput").value += "\n\tERROR: Cannot add type " + leftChildType + " to type " + rightChildType + " on line " + intOp.lineNumber + "\n";
+		_ErrorCount++;
+	}
+}
+
 
 
