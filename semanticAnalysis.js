@@ -366,8 +366,12 @@ function checkForUnusedIdentifiers(symbolTableRoot) {
 function traverseASTForTypeChecking() {
 	console.log("\n\nType Checking console messages are below \n\n");
 	
+	document.getElementById("taOutput").value += "\n\n*****TYPE CHECKING*****\n\n";
+	
 	var tempNode = _ASTRoot;
 	secondExpandOfAST(tempNode);
+	
+	document.getElementById("taOutput").value += "\n\n*****END TYPE CHECKING*****\n\n";
 }
 
 function secondExpandOfAST(tempNode) {
@@ -394,9 +398,17 @@ function secondExpandOfAST(tempNode) {
 						_ErrorCount++;							
 						}
 					}
-					else if (typeOfTheIdBeingAssignedTo != typeOfCurrentChild) {
-						document.getElementById("taOutput").value += "\n\tERROR: Cannot assign type " + typeOfTheSecondChild + " to type " + typeOfTheIdBeingAssignedTo + " on line " + assignNode.lineNumber + "\n";
-						_ErrorCount++; 
+					else if (typeOfCurrentChild === "string") {
+						if (typeOfTheIdBeingAssignedTo != typeOfCurrentChild) {
+						document.getElementById("taOutput").value += "\n\tERROR: Cannot assign type " + typeOfCurrentChild + " to type " + typeOfTheIdBeingAssignedTo + " on line " + assignNode.children[w].lineNumber + "\n";
+						_ErrorCount++;							
+						}						
+					}
+					else if (typeOfCurrentChild === "int") {
+						if (typeOfTheIdBeingAssignedTo != typeOfCurrentChild) {
+						document.getElementById("taOutput").value += "\n\tERROR: Cannot assign type " + typeOfCurrentChild + " to type " + typeOfTheIdBeingAssignedTo + " on line " + assignNode.children[w].lineNumber + "\n";
+						_ErrorCount++;							
+						}	
 					}	
 				}
 			}
@@ -420,7 +432,7 @@ function checkTypesForIntOp(node) {
 		leftChildType = intOp.children[0].type;
 	}
 
-	if (intOp.children[1].value.match(/[a-z]/)) {
+	if (intOp.children[1].value.match(/[a-z]/) && intOp.children[1].value[0] != "\"" ) {
 		rightChildType = intOp.children[1].pointerToSymbolTable.type;
 	} 
 	else {
