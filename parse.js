@@ -31,10 +31,10 @@ function parseProgram() {
 	}
 	else if(_ErrorCount > 0 && tokenToParse.lineNumber != undefined) {
 		//console.log("LIneNum: " + _LineNumber);
-		document.getElementById("taOutput").value += "\n\nPARSING FAILED with an error on line " + tokenToParse.lineNumber + "\n";	
+		document.getElementById("taWarnError").value += "\n\nPARSING FAILED with an error on line " + tokenToParse.lineNumber + "\n";	
 	}
 	else {
-		document.getElementById("taOutput").value += "\n\nPARSING FAILED with an error on line " + _LineNumber + "\n";
+		document.getElementById("taWarnError").value += "\n\nPARSING FAILED with an error on line " + _LineNumber + "\n";
 	}
 
 }

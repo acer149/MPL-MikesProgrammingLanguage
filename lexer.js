@@ -499,13 +499,13 @@ function warnings() {
 	//Warns of excess code after EOF marker
 	if (endOfFileReached && thereIsStuffAfterEOF) {
 		//console.log("WARNING: There is stuff after the EOF marker, this will be ignored.");
-		document.getElementById("taOutput").value += "\n\tWARNING: There is/are symbol(s) after the EOF marker, this/they will be ignored.\n\n";
+		document.getElementById("taWarnError").value += "\n\tWARNING: There is/are symbol(s) after the EOF marker, this/they will be ignored.\n\n";
 	}
 
 	//Warns if EOF was reached without reading a $. Inserts $
 	if (!endOfFileReached) {
 		//console.log("WARNING: EOF was reached without the use of '$'. I have inserted this symbol for you.");
-		document.getElementById("taOutput").value += "\n\n\tWARNING: EOF was reached without the use of '$'. I have inserted this symbol for you.";
+		document.getElementById("taWarnError").value += "\n\n\tWARNING: EOF was reached without the use of '$'. I have inserted this symbol for you.";
 
 		var code2 = document.getElementById("taSourceCode").value;
 		code2 += "\n$";
@@ -521,7 +521,7 @@ function errors() {
 	if (unrecognizedSymbol) {
 		//console.log("ERROR: Syntax error on line " + _LineNumber + " There was an unrecognized symbol  " + token);
 		//_Code[i]);
-		document.getElementById("taOutput").value += "\n\tSyntax error on line " + _LineNumber + " There was an unrecognized symbol  " + token;
+		document.getElementById("taWarnError").value += "\n\tSyntax error on line " + _LineNumber + " There was an unrecognized symbol  " + token;
 
 		_Index = _Code.length + 1;
 		_ErrorCount += 1;
@@ -530,13 +530,13 @@ function errors() {
 
 	if (openQuote) {
 		//console.log("Unended String");
-		document.getElementById("taOutput").value += "\n\tERROR: Unended String";
+		document.getElementById("taWarnError").value += "\n\tERROR: Unended String";
 		_ErrorCount += 1;
 	}
 
 	if (openParen) {
 		//console.log("Unended expression");
-		document.getElementById("taOutput").value += "\n\tERROR: Unended expression";
+		document.getElementById("taWarnError").value += "\n\tERROR: Unended expression";
 		_ErrorCount += 1;
 	}
 }

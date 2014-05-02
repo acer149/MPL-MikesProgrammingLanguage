@@ -113,7 +113,7 @@ function expandAst(tempNode) {
 		 			}
 		 			//If the newly declared id IS in the current scope's ST then do not add it and throw an error
 		 			else {
-		 				document.getElementById("taOutput").value += "\n\tERROR: ID " + varDeclNodeRC.value + " on line " + varDeclNodeRC.lineNumber 
+		 				document.getElementById("taWarnError").value += "\n\tERROR: ID " + varDeclNodeRC.value + " on line " + varDeclNodeRC.lineNumber 
 							+ " has already been declared in this scope\n";
 							_ErrorCount++;
 					}	 			
@@ -288,7 +288,7 @@ function checkScopeForId(scope, identifier) {
 		 					document.getElementById("taOutput").value += "\t\t\tFound id " + identifier.value + " in symbol table\n\n";							
 						}
 						else if (initializingAnId === false) {
-							document.getElementById("taOutput").value += "\t\t\tWARNING: Found id " + identifier.value + " in symbol table, but it has not been intialized yet\n\n";
+							document.getElementById("taWarnError").value += "\t\t\tWARNING: Found id " + identifier.value + " on line " + identifier.lineNumber + " in symbol table, but it has not been intialized yet\n\n";
 						}
 
 		 				foundInST = true;
@@ -319,7 +319,7 @@ function checkScopeForId(scope, identifier) {
 	 		//Did not find id in ST
 	 		if (scopeNumber < 0 && foundInST === false) {
 		 		console.log("Did not find " + identifier.value + " in ST.");
-		 		document.getElementById("taOutput").value += "\n\tERROR: ID " + identifier.value + " on line " + identifier.lineNumber 
+		 		document.getElementById("taWarnError").value += "\n\tERROR: ID " + identifier.value + " on line " + identifier.lineNumber 
 		 			+ " is NOT in symbol table. Please declare and initialize this variable before using it\n\n";
 		 		
 		 		_ErrorCount++;
@@ -338,17 +338,17 @@ function checkForUnusedIdentifiers(symbolTableRoot) {
 		for (var x = 0; x < scope.scopeSymbolTable.length; x++) {
 		    //Throws a warning if an id is declared and initialized but never used
 			if (scope.scopeSymbolTable[x].used === false && scope.scopeSymbolTable[x].initialized === true) {
-				document.getElementById("taOutput").value += "\n\tWARNING: ID " + scope.scopeSymbolTable[x].id + " on line " + scope.scopeSymbolTable[x].lineNumber 
+				document.getElementById("taWarnError").value += "\n\tWARNING: ID " + scope.scopeSymbolTable[x].id + " on line " + scope.scopeSymbolTable[x].lineNumber 
 					+ " is declared and initialized but never used\n";
 			}
 			//Throws a warning if an id is declared but never initialized 
 			if (scope.scopeSymbolTable[x].initialized === false) {
-				document.getElementById("taOutput").value += "\n\tWARNING: ID " + scope.scopeSymbolTable[x].id + " on line " + scope.scopeSymbolTable[x].lineNumber 
+				document.getElementById("taWarnError").value += "\n\tWARNING: ID " + scope.scopeSymbolTable[x].id + " on line " + scope.scopeSymbolTable[x].lineNumber 
 					+ " is declared but never initialized\n";
 			}
 			//Throws a error if an id is used but was never initialized
 			if (scope.scopeSymbolTable[x].initialized === false && scope.scopeSymbolTable[x].used === true) {
-				document.getElementById("taOutput").value += "\n\tWARNING: ID " + scope.scopeSymbolTable[x].id + " on line " + scope.scopeSymbolTable[x].lineNumber 
+				document.getElementById("taWarnError").value += "\n\tWARNING: ID " + scope.scopeSymbolTable[x].id + " on line " + scope.scopeSymbolTable[x].lineNumber 
 					+ " is used but was never initialized\n";
 			}			
 		}
@@ -394,19 +394,19 @@ function secondExpandOfAST(tempNode) {
 					else if (typeOfCurrentChild === "TypeDependsOnVarDecl") { //Then the current child is an id and I must look to ST pointer
 						typeOfId = assignNode.children[w].pointerToSymbolTable.type;
 						if (typeOfTheIdBeingAssignedTo != typeOfId) {
-						document.getElementById("taOutput").value += "\n\tERROR: Cannot assign type " + typeOfId + " to type " + typeOfTheIdBeingAssignedTo + " on line " + assignNode.children[w].lineNumber + "\n";
+						document.getElementById("taWarnError").value += "\n\tERROR: Cannot assign type " + typeOfId + " to type " + typeOfTheIdBeingAssignedTo + " on line " + assignNode.children[w].lineNumber + "\n";
 						_ErrorCount++;							
 						}
 					}
 					else if (typeOfCurrentChild === "string") {
 						if (typeOfTheIdBeingAssignedTo != typeOfCurrentChild) {
-						document.getElementById("taOutput").value += "\n\tERROR: Cannot assign type " + typeOfCurrentChild + " to type " + typeOfTheIdBeingAssignedTo + " on line " + assignNode.children[w].lineNumber + "\n";
+						document.getElementById("taWarnError").value += "\n\tERROR: Cannot assign type " + typeOfCurrentChild + " to type " + typeOfTheIdBeingAssignedTo + " on line " + assignNode.children[w].lineNumber + "\n";
 						_ErrorCount++;							
 						}						
 					}
 					else if (typeOfCurrentChild === "int") {
 						if (typeOfTheIdBeingAssignedTo != typeOfCurrentChild) {
-						document.getElementById("taOutput").value += "\n\tERROR: Cannot assign type " + typeOfCurrentChild + " to type " + typeOfTheIdBeingAssignedTo + " on line " + assignNode.children[w].lineNumber + "\n";
+						document.getElementById("taWarnError").value += "\n\tERROR: Cannot assign type " + typeOfCurrentChild + " to type " + typeOfTheIdBeingAssignedTo + " on line " + assignNode.children[w].lineNumber + "\n";
 						_ErrorCount++;							
 						}	
 					}	
@@ -441,7 +441,7 @@ function checkTypesForIntOp(node) {
 
 	console.log("Type of current intOp node children " + leftChildType + " and " + rightChildType);
 	if (leftChildType != rightChildType) {
-		document.getElementById("taOutput").value += "\n\tERROR: Cannot add type " + leftChildType + " to type " + rightChildType + " on line " + intOp.lineNumber + "\n";
+		document.getElementById("taWarnError").value += "\n\tERROR: Cannot add type " + leftChildType + " to type " + rightChildType + " on line " + intOp.lineNumber + "\n";
 		_ErrorCount++;
 	}
 }
