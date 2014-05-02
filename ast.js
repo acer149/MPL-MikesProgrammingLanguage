@@ -151,7 +151,7 @@ function expandAstNode(tempNode) {
 			
 			//Corrects the assign node
 			assignNode.children[1] = intOperand;
-			assignNode.children.splice(2,g+1);
+			assignNode.children.splice(2,k);
 			
 	 		
 	 	}

@@ -424,21 +424,23 @@ function secondExpandOfAST(tempNode) {
 
 function checkTypesForIntOp(node) {
 	var intOp = node; //+
-	
 	var leftChildType;
 	var rightChildType;
-	if (intOp.children[0].value.match(/[a-z]/)) {
-		leftChildType = intOp.children[0].pointerToSymbolTable.type;
-	} 
-	else {
-		leftChildType = intOp.children[0].type;
-	}
-
-	if (intOp.children[1].value.match(/[a-z]/) && intOp.children[1].value[0] != "\"" ) {
-		rightChildType = intOp.children[1].pointerToSymbolTable.type;
-	} 
-	else {
-		rightChildType = intOp.children[1].type;
+	
+	for (var d = 0; d < intOp.children.length-1; d++) {
+		if (intOp.children[d].value.match(/[a-z]/) && intOp.children[d].value[0] != "\"") {
+			//console.log(intOp.children[d].value);
+			leftChildType = intOp.children[d].pointerToSymbolTable.type;
+		} 
+		else {
+			leftChildType = intOp.children[d].type;
+		}
+		if (intOp.children[(d + 1)].value.match(/[a-z]/) && intOp.children[(d + 1)].value[0] != "\"" ) {
+			rightChildType = intOp.children[(d + 1)].pointerToSymbolTable.type;
+		} 
+		else {
+			rightChildType = intOp.children[(d + 1)].type;
+		}		
 	}
 
 	console.log("Type of current intOp node children " + leftChildType + " and " + rightChildType);
