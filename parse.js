@@ -31,10 +31,10 @@ function parseProgram() {
 	}
 	else if(_ErrorCount > 0 && tokenToParse.lineNumber != undefined) {
 		//console.log("LIneNum: " + _LineNumber);
-		document.getElementById("taWarnError").value += "\n\nPARSING FAILED with an error on line " + tokenToParse.lineNumber + "\n";	
+		document.getElementById("taWarnError").value += "PARSING FAILED with an error on line " + tokenToParse.lineNumber + "\n\n";	
 	}
 	else {
-		document.getElementById("taWarnError").value += "\n\nPARSING FAILED with an error on line " + _LineNumber + "\n";
+		document.getElementById("taWarnError").value += "PARSING FAILED with an error on line " + _LineNumber + "\n\n";
 	}
 
 }
@@ -468,7 +468,7 @@ function match(expectedToken) {
 				}
 				else if (tokenToParse.type === "T_String") {
 					addLeafNode("string");
-					addAstLeafNode("string", tokenToParse.lineNumber);
+					addAstLeafNode("string", "string", tokenToParse.lineNumber);
 					tokenToParse.cstType = "VarDecl";
 					matchVerboseOutput("Found", "a", "string keyword");
 					//document.getElementById("taOutput").value += "\n\t\t\tParsing\n";

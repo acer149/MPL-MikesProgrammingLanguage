@@ -20,6 +20,10 @@ function startCompiler() {
 	if (_ErrorCount === 0) {
 		traverseASTForTypeChecking();
 	}
+	
+	if (_ErrorCount === 0) {
+		document.getElementById("taWarnError").value += "Yay no errors\n\n";
+	}
 }
 
 function trim(str)      // Use a regular expression to remove leading and trailing spaces.
