@@ -127,7 +127,7 @@ function lexer() {
 				}
 				//Checks for digit in string error
 				if (_Code[_Index].match(digit)) {
-					document.getElementById("taOutput").value += "\tERROR: Strings cannot contain digits \n\n";
+					document.getElementById("taWarnError").value += "ERROR: Strings cannot contain digits \n\n";
 					_Index += _Code.length;//Kills lexer
 				}
 				token += _Code[_Index++];
