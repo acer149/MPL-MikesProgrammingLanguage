@@ -414,6 +414,44 @@ function secondExpandOfAST(tempNode) {
 					}	
 				}
 			}
+			else if (tempNode.children[i].value === "while" || tempNode.children[i].value === "if") {
+				var ifOrWhileNode = tempNode.children[i];
+				console.log(ifOrWhileNode);
+				for (var v = 0; v < ifOrWhileNode.children.length; v++) {
+					var typeOfCurrentChild = ifOrWhileNode.children[v].type;
+					
+					console.log("typeOfCurrentChild " + typeOfCurrentChild);
+					if (typeOfCurrentChild === "boolOp") { //Then the current child is an id and I must look to ST pointer
+						var boolOp = ifOrWhileNode.children[v];
+						var leftChild = boolOp.children[0];
+						var rightChild = boolOp.children[1];
+						var typeOfLeftChild;
+						var typeOfRightChild;
+						
+						if (leftChild.value.match(/[a-z]/)) {
+							typeOfLeftChild = leftChild.pointerToSymbolTable.type;
+							console.log("typeOfLeftChild " + typeOfLeftChild);
+						}
+						else {
+							typeOfLeftChild = leftChild.type;
+							console.log("typeOfLeftChild " + typeOfLeftChild);
+						}
+						if (rightChild.value.match(/[a-z]/)) {
+							typeOfRightChild = rightChild.pointerToSymbolTable.type;
+							console.log("typeOfRightChild " + typeOfRightChild);
+						}
+						else {
+							typeOfRightChild = rightChild.type;
+							console.log("typeOfRightChild " + typeOfRightChild);
+						}
+						
+						if (typeOfRightChild != typeOfLeftChild) {
+						document.getElementById("taWarnError").value += "ERROR: Cannot compare type " + typeOfLeftChild + " to type " + typeOfRightChild + " on line " + ifOrWhileNode.children[v].lineNumber + "\n\n";
+						_ErrorCount++;							
+						}
+					}				
+				}
+			}
 					
 		}
 		secondExpandOfAST(tempNode.children[i]);

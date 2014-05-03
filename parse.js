@@ -376,7 +376,7 @@ function parseBoolop() {
 	
 	if (tokenToParse.value === "==" || tokenToParse.value === "!=") {
 		addBranchNode("boolOp");
-		addAstBranchNode(tokenToParse.value, "noType", tokenToParse.lineNumber);
+		addAstBranchNode(tokenToParse.value, "boolOp", tokenToParse.lineNumber);
 		match("T_BoolOp");
 		movePointerUpTree();
 		movePointerUpAST();
