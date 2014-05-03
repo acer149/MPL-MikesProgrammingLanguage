@@ -430,7 +430,7 @@ function secondExpandOfAST(tempNode) {
 					var typeOfCurrentChild = ifOrWhileNode.children[v].type;
 					
 					console.log("typeOfCurrentChild " + typeOfCurrentChild);
-					if (typeOfCurrentChild === "boolOp") { //Then the current child is an id and I must look to ST pointer
+					if (typeOfCurrentChild === "boolOp") {
 						var boolOp = ifOrWhileNode.children[v];
 						var leftChild = boolOp.children[0];
 						var rightChild = boolOp.children[1];
