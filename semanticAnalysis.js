@@ -399,17 +399,26 @@ function secondExpandOfAST(tempNode) {
 						document.getElementById("taWarnError").value += "ERROR: Cannot assign type " + typeOfId + " to type " + typeOfTheIdBeingAssignedTo + " on line " + assignNode.children[w].lineNumber + "\n\n";
 						_ErrorCount++;							
 						}
+						else {
+							document.getElementById("taOutput").value += "\n\tMatching " + typeOfId + " to type " + typeOfTheIdBeingAssignedTo + " on line " + assignNode.children[w].lineNumber + "\n\n";
+						}
 					}
 					else if (typeOfCurrentChild === "string") {
 						if (typeOfTheIdBeingAssignedTo != typeOfCurrentChild) {
 						document.getElementById("taWarnError").value += "ERROR: Cannot assign type " + typeOfCurrentChild + " to type " + typeOfTheIdBeingAssignedTo + " on line " + assignNode.children[w].lineNumber + "\n\n";
 						_ErrorCount++;							
+						}
+						else {
+							document.getElementById("taOutput").value += "\n\tMatching " + typeOfCurrentChild + " to type " + typeOfTheIdBeingAssignedTo + " on line " + assignNode.children[w].lineNumber + "\n\n";
 						}						
 					}
 					else if (typeOfCurrentChild === "int") {
 						if (typeOfTheIdBeingAssignedTo != typeOfCurrentChild) {
 						document.getElementById("taWarnError").value += "ERROR: Cannot assign type " + typeOfCurrentChild + " to type " + typeOfTheIdBeingAssignedTo + " on line " + assignNode.children[w].lineNumber + "\n\n";
 						_ErrorCount++;							
+						}
+						else {
+							document.getElementById("taOutput").value += "\n\tMatching " + typeOfCurrentChild + " to type " + typeOfTheIdBeingAssignedTo + " on line " + assignNode.children[w].lineNumber + "\n\n";
 						}	
 					}	
 				}
@@ -449,6 +458,9 @@ function secondExpandOfAST(tempNode) {
 						document.getElementById("taWarnError").value += "ERROR: Cannot compare type " + typeOfLeftChild + " to type " + typeOfRightChild + " on line " + ifOrWhileNode.children[v].lineNumber + "\n\n";
 						_ErrorCount++;							
 						}
+						else {
+							document.getElementById("taOutput").value += "\n\tMatching " + typeOfLeftChild + " to type " + typeOfRightChild + " on line " + ifOrWhileNode.children[v].lineNumber + "\n\n";
+						}
 					}				
 				}
 			}
@@ -485,6 +497,9 @@ function checkTypesForIntOp(node) {
 	if (leftChildType != rightChildType) {
 		document.getElementById("taWarnError").value += "ERROR: Cannot add type " + leftChildType + " to type " + rightChildType + " on line " + intOp.lineNumber + "\n\n";
 		_ErrorCount++;
+	}
+	else {
+		document.getElementById("taOutput").value += "\n\tMatching " + leftChildType + " to type " + rightChildType + " on line " + intOp.lineNumber + "\n\n";
 	}
 }
 
