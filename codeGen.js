@@ -40,9 +40,11 @@ function expandAstForCodeGen(tempNode) {
 			
 			if (tempNode.children[i].value === "varDecl") {
 				console.log("Found a Variable Declaration");
+				//Load Acc with 0
 				opCodeArray.push("A9");
 				opCodeArray.push("00");
 				
+				//Store Acc is Temp
 				opCodeArray.push("8D");
 				opCodeArray.push("T" + staticDataTempIndex);
 				opCodeArray.push("XX");
@@ -57,16 +59,19 @@ function expandAstForCodeGen(tempNode) {
 			if (tempNode.children[i].value === "assign") {
 				var tempMemAddress;
 				console.log("Found an Assign Statement");
+				//Load Acc with input
 				opCodeArray.push("A9");
 				opCodeArray.push("0" + tempNode.children[i].children[1].value.toString());	
 				
+				//Grabs the temp address stored in the static table for the match variable
 				for (var t = 0; t < staticDataTable.length; t++) {
+					//finds the variable
 					if (tempNode.children[i].children[0].value === staticDataTable[t].variable) {
 						tempMemAddress = staticDataTable[t].temp.slice(0,2);
 					}
 				}
 
-				
+				//Store Acc in Temp
 				opCodeArray.push("8D");
 				opCodeArray.push(tempMemAddress);
 				opCodeArray.push("XX");			
@@ -75,8 +80,10 @@ function expandAstForCodeGen(tempNode) {
 			if (tempNode.children[i].value === "print") {
 				var tempMemAddress;
 				console.log("Found an Print Statement");
+				//Load Y Reg with contents of variable
 				opCodeArray.push("AC");	
 				
+				//Grabs the temp address stored in the static table for the match variable
 				for (var y = 0; y < staticDataTable.length; y++) {
 					if (tempNode.children[i].children[0].value === staticDataTable[y].variable) {
 						tempMemAddress = staticDataTable[y].temp.slice(0,2);
@@ -85,9 +92,10 @@ function expandAstForCodeGen(tempNode) {
 				opCodeArray.push(tempMemAddress);
 				opCodeArray.push("XX");
 
-				
+				//Load X Reg with 1
 				opCodeArray.push("A2");
 				opCodeArray.push("01");
+				//System Call
 				opCodeArray.push("FF");			
 			}
 		}
