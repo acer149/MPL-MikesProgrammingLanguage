@@ -63,11 +63,11 @@ function expandAstForCodeGen(tempNode) {
 				opCodeArray.push("A9");
 				opCodeArray.push("0" + tempNode.children[i].children[1].value.toString());	
 				
-				//Grabs the temp address stored in the static table for the match variable
+				//Grabs the temp address stored in the static table for the matching variable
 				for (var t = 0; t < staticDataTable.length; t++) {
 					//finds the variable
 					if (tempNode.children[i].children[0].value === staticDataTable[t].variable) {
-						tempMemAddress = staticDataTable[t].temp.slice(0,2);
+						tempMemAddress = staticDataTable[t].temp.slice(0,2).toString();
 					}
 				}
 
@@ -83,10 +83,10 @@ function expandAstForCodeGen(tempNode) {
 				//Load Y Reg with contents of variable
 				opCodeArray.push("AC");	
 				
-				//Grabs the temp address stored in the static table for the match variable
+				//Grabs the temp address stored in the static table for the matching variable
 				for (var y = 0; y < staticDataTable.length; y++) {
 					if (tempNode.children[i].children[0].value === staticDataTable[y].variable) {
-						tempMemAddress = staticDataTable[y].temp.slice(0,2);
+						tempMemAddress = staticDataTable[y].temp.slice(0,2).toString();
 					}
 				}
 				opCodeArray.push(tempMemAddress);
@@ -103,17 +103,51 @@ function expandAstForCodeGen(tempNode) {
 }
 
 function backPatch() {
-	for (var z = 0; z < opCodeArray.length; z++) {
-		if (opCodeArray[z] === "T0") {
-			opCodeArray[z] = "2F";
+	console.log("opCodeArray length: " + opCodeArray.length);
+	var startStaticData = opCodeArray.length + 1;
+	
+	//Go through the Static Data table and fill in addresses 
+	for (var q = 0; q < staticDataTable.length; q++) {
+		if (staticDataTable[q].temp === "T"+ q + "XX") {
+			//console.log("Matching: " + staticDataTable[q].temp + " to: " + "T"+ q + "XX");
+			staticDataTable[q].address = startStaticData ;
 		}
-		else if (opCodeArray[z] === "T1") {
-			opCodeArray[z] = "30";
-		}
-		else if (opCodeArray[z] === "XX") {
-			opCodeArray[z] = "00";
-		}
+		startStaticData++;
 	}
+	
+	//****
+	var tempIndex = 0;
+	for (var z = 0; z < opCodeArray.length; z++) {
+		//console.log("Matching: " + opCodeArray[z] + " to: " + "T" + tempIndex);
+		if (opCodeArray[z] === "T" + tempIndex) {
+			opCodeArray[z] = staticDataTable[tempIndex].address;
+			//Function call so that all of the current temp indexes can be backpatched before moving to next index
+			backPatchAllOfTheSameTemp(tempIndex);
+			tempIndex++;
+		}
+		 else if (opCodeArray[z] === "XX") {
+			 opCodeArray[z] = "00";
+		 }
+	}
+}
+
+function backPatchAllOfTheSameTemp(tempIndexValue) {
+	for (var a = 0; a < opCodeArray.length; a++) {
+		if (opCodeArray[a] === "T" + tempIndexValue) {
+			opCodeArray[a] = staticDataTable[tempIndexValue].address;
+		}		
+	}
+}
+
+//Brings back memories of these conversions from OS
+function toHex(aDecimalNum) {
+	var hexNum = aDecimalNum.toString(16).toUpperCase();
+	return hexNum;
+}
+
+function toDecimal(aHexNum) {
+	var decimalNum = parseInt(aHexNum, 16);
+	return decimalNum;
 }
 
 function printOpCodes() {
