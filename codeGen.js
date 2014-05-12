@@ -19,8 +19,15 @@ function traverseASTForCodeGen() { //Builds ST and does scope checking
 	var tempNode = _ASTRoot;
 	expandAstForCodeGen(tempNode); 
 	
-	backPatch();
-	printOpCodes();
+	if (opCodeArray.length > 255) {
+		document.getElementById("taWarnError").value += "ERROR: 6502 program size has exceeded 255 bytes, please shorten your source code\n\n";
+		_ErrorCount++;
+	}
+	
+	if (_ErrorCount === 0) {
+		backPatch();
+		printOpCodes();	
+	}
 	
 	console.log(staticDataTable);
 	
@@ -53,7 +60,7 @@ function expandAstForCodeGen(tempNode) {
 				
 				document.getElementById("taOutput").value += "\t\tNew Static Table Entry: TEMP: T"+ staticDataTempIndex 
 								+ " XX, VARIABLE: " + tempNode.children[i].children[1].value 
-								+ ", ADDRESS: To be determined once the begining of static data is identified\n\n";
+								+ ", ADDRESS: To be determined once the beginning of static data is identified\n\n";
 				var tableEntry = new StaticTableEntry("T" + staticDataTempIndex + "XX", tempNode.children[i].children[1].value, lengthOfPreviousTemp);
 				lengthOfPreviousTemp++; 
 				staticDataTable.push(tableEntry);

@@ -210,12 +210,14 @@ function printASTVerboseOutput(astLevel, node) {
 
 function test1 () {
 	
-		document.getElementById("taSourceCode").value = "{\nprint (" + " \"hello\" " + ")\n}" + "\n$";	
+		document.getElementById("taSourceCode").value = "{\n\tint a\n\ta = 2\n\tprint (" + " a " + ")\n}" + "\n$";	
 }
 
 function test2 () {
 	 
-		document.getElementById("taSourceCode").value = "{\n\tprint (a)\n\tint a\n\t if (a){\n\t\tprint(\"a\")\n\t}\n}" + "\n$";	
+		document.getElementById("taSourceCode").value = "{\n\tint a\n\tint b\n\tint c\n"
+									+ "\ta = 2\n\tb = 5\n\tc = 9\n\tprint (" + " a " + ")\n\tprint (" + " b " + ")" 
+									+ "\n\tprint (" + " c " + ")" + "\n}\n$";	
 }
 
 function test3 () {
