@@ -15,7 +15,7 @@ function StaticTableEntry(temp, variable, address) {
 function traverseASTForCodeGen() { //Builds ST and does scope checking
 	
 	document.getElementById("taOutput").value += "\n\n*****CODE GENERATION*****\n\n";
-	console.log("\nCode Generation Console Messages...");
+	console.log("\nCode Generation Console Messages...\n");
 	var tempNode = _ASTRoot;
 	expandAstForCodeGen(tempNode); 
 	
@@ -40,15 +40,20 @@ function expandAstForCodeGen(tempNode) {
 			
 			if (tempNode.children[i].value === "varDecl") {
 				console.log("Found a Variable Declaration");
+				document.getElementById("taOutput").value += "\t\tLoad Acc with 0 --> A9 00\n\n";
 				//Load Acc with 0
 				opCodeArray.push("A9");
 				opCodeArray.push("00");
 				
+				document.getElementById("taOutput").value += "\t\tStore Acc in T"+ staticDataTempIndex + " XX --> 8D T"+ staticDataTempIndex + " XX \n\n";
 				//Store Acc is Temp
 				opCodeArray.push("8D");
 				opCodeArray.push("T" + staticDataTempIndex);
 				opCodeArray.push("XX");
 				
+				document.getElementById("taOutput").value += "\t\tNew Static Table Entry: TEMP: T"+ staticDataTempIndex 
+								+ " XX, VARIABLE: " + tempNode.children[i].children[1].value 
+								+ ", ADDRESS: To be determined once the begining of static data is identified\n\n";
 				var tableEntry = new StaticTableEntry("T" + staticDataTempIndex + "XX", tempNode.children[i].children[1].value, lengthOfPreviousTemp);
 				lengthOfPreviousTemp++; 
 				staticDataTable.push(tableEntry);
@@ -59,6 +64,9 @@ function expandAstForCodeGen(tempNode) {
 			if (tempNode.children[i].value === "assign") {
 				var tempMemAddress;
 				console.log("Found an Assign Statement");
+				document.getElementById("taOutput").value += "\t\tLoad Acc with input: 0" + tempNode.children[i].children[1].value.toString() 
+							+ " --> A9 0" + tempNode.children[i].children[1].value.toString() + "\n\n";
+				
 				//Load Acc with input
 				opCodeArray.push("A9");
 				opCodeArray.push("0" + tempNode.children[i].children[1].value.toString());	
@@ -70,7 +78,8 @@ function expandAstForCodeGen(tempNode) {
 						tempMemAddress = staticDataTable[t].temp.slice(0,2).toString();
 					}
 				}
-
+				
+				document.getElementById("taOutput").value += "\t\tStore Acc in "+ tempMemAddress + " XX --> 8D "  + tempMemAddress + " XX\n\n";
 				//Store Acc in Temp
 				opCodeArray.push("8D");
 				opCodeArray.push(tempMemAddress);
@@ -89,12 +98,15 @@ function expandAstForCodeGen(tempNode) {
 						tempMemAddress = staticDataTable[y].temp.slice(0,2).toString();
 					}
 				}
+				document.getElementById("taOutput").value += "\t\tLoad Y Register with contents of variable --> AC " + tempMemAddress + " XX\n\n";
+				
 				opCodeArray.push(tempMemAddress);
 				opCodeArray.push("XX");
-
+				document.getElementById("taOutput").value += "\t\tLoad X Register with 1 --> A2 01\n\n";
 				//Load X Reg with 1
 				opCodeArray.push("A2");
 				opCodeArray.push("01");
+				document.getElementById("taOutput").value += "\t\tPerform System Call --> FF\n\n";
 				//System Call
 				opCodeArray.push("FF");			
 			}
@@ -110,8 +122,10 @@ function backPatch() {
 	for (var q = 0; q < staticDataTable.length; q++) {
 		if (staticDataTable[q].temp === "T"+ q + "XX") {
 			//console.log("Matching: " + staticDataTable[q].temp + " to: " + "T"+ q + "XX");
-			staticDataTable[q].address = startStaticData ;
+			document.getElementById("taOutput").value += "\t\tBack Patching T"+ q + "XX to memory address " + startStaticData + "\n\n";
+			staticDataTable[q].address = startStaticData;
 		}
+		//startStaticData = toDecimal(startStaticData);
 		startStaticData++;
 	}
 	
@@ -152,10 +166,12 @@ function toDecimal(aHexNum) {
 
 function printOpCodes() {
 	var newlineLimit = 0;
+	document.getElementById("taOutput").value += "EXECUTABLE CODE:\n\n";
+	document.getElementById("taOutput").value += "\t\t";
 	for (var index = 0; index < opCodeArray.length; index++) {
 		document.getElementById("taOutput").value += (opCodeArray[index] + " ");
 		if (newlineLimit > 6) {
-			document.getElementById("taOutput").value += "\n";
+			document.getElementById("taOutput").value += "\n\t\t";
 			newlineLimit = -1;
 		}
 		newlineLimit++;
