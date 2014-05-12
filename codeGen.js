@@ -19,6 +19,7 @@ function traverseASTForCodeGen() { //Builds ST and does scope checking
 	var tempNode = _ASTRoot;
 	expandAstForCodeGen(tempNode); 
 	
+	backPatch();
 	printOpCodes();
 	
 	console.log(staticDataTable);
@@ -70,10 +71,42 @@ function expandAstForCodeGen(tempNode) {
 				opCodeArray.push(tempMemAddress);
 				opCodeArray.push("XX");			
 			}
+			
+			if (tempNode.children[i].value === "print") {
+				var tempMemAddress;
+				console.log("Found an Print Statement");
+				opCodeArray.push("AC");	
+				
+				for (var y = 0; y < staticDataTable.length; y++) {
+					if (tempNode.children[i].children[0].value === staticDataTable[y].variable) {
+						tempMemAddress = staticDataTable[y].temp.slice(0,2);
+					}
+				}
+				opCodeArray.push(tempMemAddress);
+				opCodeArray.push("XX");
+
+				
+				opCodeArray.push("A2");
+				opCodeArray.push("01");
+				opCodeArray.push("FF");			
+			}
 		}
 	}
 }
 
+function backPatch() {
+	for (var z = 0; z < opCodeArray.length; z++) {
+		if (opCodeArray[z] === "T0") {
+			opCodeArray[z] = "2F";
+		}
+		else if (opCodeArray[z] === "T1") {
+			opCodeArray[z] = "30";
+		}
+		else if (opCodeArray[z] === "XX") {
+			opCodeArray[z] = "00";
+		}
+	}
+}
 
 function printOpCodes() {
 	var newlineLimit = 0;
