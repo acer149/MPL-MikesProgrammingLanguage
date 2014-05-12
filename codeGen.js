@@ -42,17 +42,35 @@ function expandAstForCodeGen(tempNode) {
 				opCodeArray.push("A9");
 				opCodeArray.push("00");
 				
+				opCodeArray.push("8D");
 				opCodeArray.push("T" + staticDataTempIndex);
 				opCodeArray.push("XX");
 				
 				var tableEntry = new StaticTableEntry("T" + staticDataTempIndex + "XX", tempNode.children[i].children[1].value, lengthOfPreviousTemp);
-				lengthOfPreviousTemp = 
+				lengthOfPreviousTemp++; 
 				staticDataTable.push(tableEntry);
 				staticDataTempIndex++;
 			
 			}
+			
+			if (tempNode.children[i].value === "assign") {
+				var tempMemAddress;
+				console.log("Found an Assign Statement");
+				opCodeArray.push("A9");
+				opCodeArray.push("0" + tempNode.children[i].children[1].value.toString());	
+				
+				for (var t = 0; t < staticDataTable.length; t++) {
+					if (tempNode.children[i].children[0].value === staticDataTable[t].variable) {
+						tempMemAddress = staticDataTable[t].temp.slice(0,2);
+					}
+				}
+
+				
+				opCodeArray.push("8D");
+				opCodeArray.push(tempMemAddress);
+				opCodeArray.push("XX");			
+			}
 		}
-		
 	}
 }
 
